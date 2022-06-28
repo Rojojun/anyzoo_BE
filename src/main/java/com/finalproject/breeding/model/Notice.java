@@ -1,24 +1,19 @@
 package com.finalproject.breeding.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.xml.soap.Name;
 
 @Setter
 @Getter
 @Entity
-public class BoardMain {
+public class Notice {
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
-
-    @JoinColumn(name = "BOARDKIND_ID")
-    @ManyToOne
-    private BoardKind boardKind;
 
     @JoinColumn(name = "USER_ID")
     @ManyToOne
@@ -26,14 +21,13 @@ public class BoardMain {
 
     @Column
     @NotNull
-    private Long LikeCnt;
+    private String title;
+
+    @Column
+    @NotNull
+    private String img;
 
     @Column
     @NotNull
     private String content;
-
-    @Column
-    @NotNull
-    private Long viewCnt;
-
 }

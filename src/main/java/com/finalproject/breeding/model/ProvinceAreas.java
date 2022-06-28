@@ -1,39 +1,33 @@
 package com.finalproject.breeding.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.xml.soap.Name;
 
 @Setter
 @Getter
 @Entity
-public class BoardMain {
+public class ProvinceAreas {
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 
-    @JoinColumn(name = "BOARDKIND_ID")
+    @JoinColumn(name = "CITYAREAS_ID")
     @ManyToOne
-    private BoardKind boardKind;
-
-    @JoinColumn(name = "USER_ID")
-    @ManyToOne
-    private User user;
+    private CityAreas cityAreas;
 
     @Column
     @NotNull
-    private Long LikeCnt;
+    private String adm_code;
 
     @Column
     @NotNull
-    private String content;
+    private String name;
 
     @Column
     @NotNull
-    private Long viewCnt;
-
+    private String version;
 }

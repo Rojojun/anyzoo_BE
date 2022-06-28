@@ -1,39 +1,33 @@
 package com.finalproject.breeding.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.xml.soap.Name;
 
 @Setter
 @Getter
 @Entity
-public class BoardMain {
+public class Reels {
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 
-    @JoinColumn(name = "BOARDKIND_ID")
+    @JoinColumn(name = "BOARDMAIN_ID")
     @ManyToOne
-    private BoardKind boardKind;
+    private BoardMain boardMain;
 
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "POSTCATEGORY_ID")
     @ManyToOne
-    private User user;
+    private PostCategory postCategory;
 
     @Column
     @NotNull
-    private Long LikeCnt;
+    private String video;
 
     @Column
     @NotNull
-    private String content;
-
-    @Column
-    @NotNull
-    private Long viewCnt;
-
+    private String titleImg;
 }
