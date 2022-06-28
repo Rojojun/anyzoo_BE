@@ -1,5 +1,6 @@
-package com.finalproject.breeding.model;
+package com.finalproject.breeding.model.category;
 
+import com.finalproject.breeding.model.category.CityAreas;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;

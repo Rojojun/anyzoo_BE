@@ -1,4 +1,4 @@
-package com.finalproject.breeding.model;
+package com.finalproject.breeding.model.category;
 
 import com.sun.istack.NotNull;
 import lombok.Getter;
@@ -9,25 +9,20 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Entity
-public class Notice {
-
+public class CityAreas {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 
-    @JoinColumn(name = "USER_ID")
-    @ManyToOne
-    private User user;
+    @Column
+    @NotNull
+    private String adm_code;
 
     @Column
     @NotNull
-    private String title;
+    private String name;
 
     @Column
     @NotNull
-    private String img;
-
-    @Column
-    @NotNull
-    private String content;
+    private String version;
 }

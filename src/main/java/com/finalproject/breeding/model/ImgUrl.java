@@ -15,9 +15,8 @@ public class ImgUrl {
     @Id
     private Long id;
 
-    @JoinColumn(name = "BOARDMAIN_ID")
-    @ManyToOne
-    private BoardMain boardMain;
+   @Column
+    private Long boardMainId;
 
     @Column
     @NotNull

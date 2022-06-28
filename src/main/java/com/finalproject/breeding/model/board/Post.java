@@ -1,6 +1,6 @@
-package com.finalproject.breeding.model;
+package com.finalproject.breeding.model.board;
 
-import com.sun.istack.NotNull;
+import com.finalproject.breeding.model.category.PostCategory;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Entity
-public class Reels {
+public class Post {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -20,14 +20,7 @@ public class Reels {
     private BoardMain boardMain;
 
     @JoinColumn(name = "POSTCATEGORY_ID")
-    @ManyToOne
+    @OneToOne
     private PostCategory postCategory;
 
-    @Column
-    @NotNull
-    private String video;
-
-    @Column
-    @NotNull
-    private String titleImg;
 }

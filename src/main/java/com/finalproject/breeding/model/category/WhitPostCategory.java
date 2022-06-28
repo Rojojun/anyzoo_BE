@@ -1,4 +1,4 @@
-package com.finalproject.breeding.model;
+package com.finalproject.breeding.model.category;
 
 import com.sun.istack.NotNull;
 import lombok.Getter;
@@ -9,7 +9,8 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Entity
-public class CommuCategory {
+public class WhitPostCategory {
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;

@@ -1,6 +1,6 @@
 package com.finalproject.breeding.model;
 
-import com.sun.istack.NotNull;
+import com.finalproject.breeding.model.board.WithPost;
 import lombok.Getter;
 import lombok.Setter;
 
