@@ -1,14 +1,17 @@
-package com.finalproject.breeding.model;
+package com.finalproject.breeding.model.board;
 
+import com.finalproject.breeding.model.category.ProvinceAreas;
+import com.finalproject.breeding.model.category.WhitPostCategory;
 import com.sun.istack.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
-@Setter
 @Getter
 @Entity
+@NoArgsConstructor
 public class WithPost {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +19,7 @@ public class WithPost {
     private Long id;
 
     @JoinColumn(name = "BOARDMAIN_ID")
-    @ManyToOne
+    @OneToOne
     private BoardMain boardMain;
 
     @JoinColumn(name = "WITHPOSTCATEGORY_ID")

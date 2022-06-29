@@ -2,14 +2,15 @@ package com.finalproject.breeding.model;
 
 import com.sun.istack.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
 @Getter
-@Setter
 @Entity
-public class User {
+@NoArgsConstructor
+public class User extends Timestamped{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
@@ -33,5 +34,9 @@ public class User {
     @NotNull
     private Long exp;
 
-    // tier, user_role = enum
+    @Column(nullable = false)
+    private UserRole userRole;
+
+    @Column(nullable = false)
+    private Tier tier;
 }
