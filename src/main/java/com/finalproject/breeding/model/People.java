@@ -2,14 +2,15 @@ package com.finalproject.breeding.model;
 
 import com.finalproject.breeding.model.board.WithPost;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
-@Setter
 @Getter
 @Entity
-public class People {
+@NoArgsConstructor
+public class People extends Timestamped{
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

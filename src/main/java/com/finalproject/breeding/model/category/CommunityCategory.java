@@ -9,7 +9,8 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Entity
-public class CommuCategory {
+public class CommunityCategory {
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;

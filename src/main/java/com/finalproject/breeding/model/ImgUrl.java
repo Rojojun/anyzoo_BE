@@ -2,13 +2,14 @@ package com.finalproject.breeding.model;
 
 import com.sun.istack.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
-@Setter
 @Getter
 @Entity
+@NoArgsConstructor
 public class ImgUrl {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)

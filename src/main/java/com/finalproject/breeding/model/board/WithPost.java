@@ -4,13 +4,14 @@ import com.finalproject.breeding.model.category.ProvinceAreas;
 import com.finalproject.breeding.model.category.WhitPostCategory;
 import com.sun.istack.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
-@Setter
 @Getter
 @Entity
+@NoArgsConstructor
 public class WithPost {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)

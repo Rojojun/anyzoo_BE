@@ -1,16 +1,17 @@
 package com.finalproject.breeding.model.board;
 
-import com.finalproject.breeding.model.category.CommuCategory;
+import com.finalproject.breeding.model.category.CommunityCategory;
 import com.finalproject.breeding.model.category.ProvinceAreas;
 import com.sun.istack.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
-@Setter
 @Getter
 @Entity
+@NoArgsConstructor
 public class Community {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +24,7 @@ public class Community {
 
     @JoinColumn(name = "COMMUCATEGORY_ID")
     @ManyToOne
-    private CommuCategory commuCategory;
+    private CommunityCategory communityCategory;
 
     @JoinColumn(name = "PROVINCEAREAS_ID")
     @ManyToOne

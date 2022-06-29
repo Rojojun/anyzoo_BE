@@ -1,19 +1,21 @@
 package com.finalproject.breeding.model.board;
 
 import com.finalproject.breeding.model.ImgUrl;
+import com.finalproject.breeding.model.Timestamped;
 import com.finalproject.breeding.model.User;
 import com.finalproject.breeding.model.category.BoardKind;
 import com.sun.istack.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Setter
 @Getter
 @Entity
-public class BoardMain {
+@NoArgsConstructor
+public class BoardMain extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
@@ -41,5 +43,4 @@ public class BoardMain {
     @OneToMany
     @JoinColumn(name = "IMG_URL")
     private List<ImgUrl> imgUrls;
-
 }

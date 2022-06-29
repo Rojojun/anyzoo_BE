@@ -3,14 +3,15 @@ package com.finalproject.breeding.model;
 import com.finalproject.breeding.model.board.BoardMain;
 import com.sun.istack.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
-@Setter
 @Getter
 @Entity
-public class Comment {
+@NoArgsConstructor
+public class Comment extends Timestamped{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
