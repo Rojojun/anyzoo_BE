@@ -1,5 +1,6 @@
 package com.finalproject.breeding.model;
 
+import com.finalproject.breeding.dto.CommentRequestDto;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,5 +25,11 @@ public class Comment {
 
     @Column
     @NotNull
-    private String content;
+    private String comment;
+
+    public Comment(CommentRequestDto requestDto, BoardMain boardMain){
+        this.comment = requestDto.getComment();
+        boardMain.getId();
+
+    }
 }
