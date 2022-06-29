@@ -2,24 +2,14 @@ package com.finalproject.breeding.controller;
 
 import com.finalproject.breeding.dto.CommentRequestDto;
 import com.finalproject.breeding.model.Comment;
-import com.finalproject.breeding.model.board.BoardMain;
 import com.finalproject.breeding.repository.BoardMainRepository;
 import com.finalproject.breeding.repository.CommentRepository;
 import com.finalproject.breeding.service.CommentService;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.filters.ExpiresFilter;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import lombok.RequiredArgsConstructor;
 
 import javax.servlet.http.HttpServletRequest;
-import java.nio.charset.Charset;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,8 +18,7 @@ public class CommentController {
     private final CommentRepository commentRepository;
 
     private final CommentService commentService;
-
-    private final BoardMainRepository boardMainRepository;
+    
 
     //댓글 작성
     @PostMapping("/api/comment/{boardMainId}")
