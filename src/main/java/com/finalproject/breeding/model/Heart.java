@@ -24,4 +24,9 @@ public class Heart {
     @ManyToOne
     private BoardMain boardMain;
 
+    public Heart(User user, BoardMain boardMain){
+        this.user = user;
+        this.boardMain = boardMain;
+    }
+
 }
