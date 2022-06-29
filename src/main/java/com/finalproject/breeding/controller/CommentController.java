@@ -18,7 +18,7 @@ public class CommentController {
     private final CommentRepository commentRepository;
 
     private final CommentService commentService;
-    
+
 
     //댓글 작성
     @PostMapping("/api/comment/{boardMainId}")
@@ -31,14 +31,14 @@ public class CommentController {
     }
 
     //댓글 삭제
-    @DeleteMapping("/api/comment/{id}")
+    @DeleteMapping("/api/comment/edit/{id}")
     public Long deleteComment(@PathVariable Long id, HttpServletRequest httpServletRequest){
         commentRepository.deleteById(id);
         return id;
     }
 
     //댓글 수정
-    @PatchMapping ("/api/house/{id}")
+    @PatchMapping ("/api/comment/edit/{id}")
     public Long patchComment(@RequestBody CommentRequestDto requestDto,
                              @PathVariable Long id,
                              HttpServletRequest httpServletRequest) {
