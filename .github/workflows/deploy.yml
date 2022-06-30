@@ -53,9 +53,9 @@ jobs:
         run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://rojojun/$GITHUB_SHA.zip
 
       - name: Code Deploy #애플리케이션 배포그룹에 배포 생성
-        run: aws deploy create-deployment --application-name anizoo
+        run: aws deploy create-deployment --application-name final_project
           --deployment-config-name CodeDeployDefault.OneAtATime
-          --deployment-group-name dev
+          --deployment-group-name relaese
           --s3-location bucket=rojojun,bundleType=zip,key=$GITHUB_SHA.zip
 
         #application-name : CodeDeploy 애플리케이션 name
