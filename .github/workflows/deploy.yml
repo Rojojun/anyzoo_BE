@@ -55,7 +55,7 @@ jobs:
       - name: Code Deploy #애플리케이션 배포그룹에 배포 생성
         run: aws deploy create-deployment --application-name anizoo
           --deployment-config-name CodeDeployDefault.OneAtATime
-          --deployment-group-name dev_project
+          --deployment-group-name dev
           --s3-location bucket=rojojun,bundleType=zip,key=$GITHUB_SHA.zip
 
         #application-name : CodeDeploy 애플리케이션 name
