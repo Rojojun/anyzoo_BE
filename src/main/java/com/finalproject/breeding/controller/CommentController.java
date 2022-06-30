@@ -2,7 +2,6 @@ package com.finalproject.breeding.controller;
 
 import com.finalproject.breeding.dto.CommentRequestDto;
 import com.finalproject.breeding.model.Comment;
-import com.finalproject.breeding.repository.BoardMainRepository;
 import com.finalproject.breeding.repository.CommentRepository;
 import com.finalproject.breeding.service.CommentService;
 import lombok.RequiredArgsConstructor;

@@ -1,11 +1,11 @@
 package com.finalproject.breeding.model.board;
 
+import com.finalproject.breeding.dto.CommunityRequestDto;
 import com.finalproject.breeding.model.category.CommunityCategory;
 import com.finalproject.breeding.model.category.ProvinceAreas;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -33,4 +33,18 @@ public class Community {
     @Column
     @NotNull
     private String title;
+
+    public Community(CommunityRequestDto requestDto,
+                     BoardMain boardMain,
+                     CommunityCategory communityCategory,
+                     ProvinceAreas provinceAreas) {
+        this.title = requestDto.getTitle();
+        this.boardMain = boardMain;
+        this.communityCategory = communityCategory;
+        this.provinceAreas = provinceAreas;
+    }
+
+    public void updateCommunity(CommunityRequestDto requestDto) {
+        this.title = requestDto.getTitle();
+    }
 }
