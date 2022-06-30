@@ -53,7 +53,7 @@ jobs:
         run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://isntye-deploy/$GITHUB_SHA.zip
 
       - name: Code Deploy #애플리케이션 배포그룹에 배포 생성
-        run: aws deploy create-deployment --application-name anizoo
+        run: aws deploy create-deployment --application-name ani_zoo
           --deployment-config-name CodeDeployDefault.OneAtATime
           --deployment-group-name dev
           --s3-location bucket=isntye-deploy,bundleType=zip,key=$GITHUB_SHA.zip
