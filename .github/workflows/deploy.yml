@@ -3,7 +3,7 @@ on:
     branches:
       - master
 
-name: deploy
+name: Deploy String boot to Amazon EC2
 env:
   PROJECT_NAME: action_codedeploy
 
@@ -28,20 +28,3 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
         shell: bash
-
-      - name: Make zip file
-        run: zip -qq -r ./$GITHUB_SHA.zip .
-        shell: bash
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_ACCESS_SECRET_KEY_ID
-          aws-region: ap-northeast-2
-
-      - name: Upload to S3
-        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://rojojun/$PROJECT_NAME/$GITHUB_SHA.zip
-
-      - name: Code Deploy
-        run: aws deploy create-deployment --application-name final_project --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name relaese --s3-location bucket=rojojun,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
