@@ -19,6 +19,7 @@ public class ReelsService {
     private final BoardMainRepository boardMainRepository;
     private final PostCategoryRepository postCategoryRepository;
 
+    //릴스 작성
     @Transactional
     public Reels createReels(ReelsRequestDto requestDto, Long boardMainId, Long postCategoryId) {
 
@@ -31,6 +32,14 @@ public class ReelsService {
         Reels reels = new Reels(requestDto, boardMain, postCategory);
         reelsRepository.save(reels);
         return reels;
+    }
+    //릴스 수정
+    @Transactional
+    public void patchReels(ReelsRequestDto requestDto, Long reelsId) {
+        Reels reels = reelsRepository.findById(reelsId).orElseThrow(
+                () -> new NullPointerException("릴스가 존재하지 않습니다."));
+
+        reels.updateReels(requestDto);
     }
 
 }

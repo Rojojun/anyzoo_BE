@@ -33,6 +33,7 @@ public class CommentService {
         return comment;
     }
 
+    //댓글 수정
     @Transactional
     public void patchComment(CommentRequestDto requestDto, Long id) {
         Comment comment = commentRepository.findById(id).orElseThrow(
