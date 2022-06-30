@@ -19,7 +19,7 @@ public class ReelsController {
 
     //릴스 작성
     @PostMapping("/api/reels")
-    public Reels createReels(@RequestBody ReelsRequestDto requestDto){
+    public Reels createReels(@RequestBody ReelsRequestDto requestDto, HttpServletRequest httpServletRequest){
         Long boardMainId = 1L;
         Long postCategoryId = 1L;
         return reelsService.createReels(requestDto, boardMainId, postCategoryId);
