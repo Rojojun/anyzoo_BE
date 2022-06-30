@@ -1,16 +1,16 @@
-
-
-
-
-
-name: deploy #Reps Action 페이지에 나타나는 이름
-
 on:
   push:
-    branches: master #이벤트가 발생하는 브랜치
+    branches:
+      - master
+
+name: deploy
+env:
+  PROJECT_NAME: action_codedeploy
+
 jobs:
-  build:
-    runs-on: ubuntu-latest #실행 환경 지정
+  deploy:
+    name: DEPLOY
+    runs-on: ubuntu-18.04
 
     steps:
       - name: Checkout
@@ -21,43 +21,27 @@ jobs:
         with:
           java-version: 1.8
 
-      #- name: Setup MySQL
-      #  uses: samin/mysql-action@v1
-      #  with:
-      #    character set server: 'utf8'
-      #    mysql database: moum-mysql
-      #    mysql user: admin
-      #    mysql password: ${{ secrets.MYSQL_PASSWORD }}
-
       - name: Grant execute permission for gradlew
-        run: chmod +x ./gradlew
+        run: chmod +x gradlew
         shell: bash
 
       - name: Build with Gradle
         run: ./gradlew build
         shell: bash
 
-      - name: Make zip file #압축파일 생성
-        run: zip -qq -r ./$GITHUB_SHA.zip . #$GITHUB_SHA.zip == github action에서 제공하는 기본 환경변수
+      - name: Make zip file
+        run: zip -qq -r ./$GITHUB_SHA.zip .
         shell: bash
 
-      #CD
-      - name: Configure AWS credentials #AWS cli credentials == aws 서비스 사용 인증 과정
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_ACCESS_SECRET_KEY_ID }}
-          aws-region: ap-northeast-2
+          aws-access-key-id: $
+          aws-secret-access-key: $
+          aws-region: $
 
-      - name: Upload to S3 #S3 업로드
-        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://rojojun/$GITHUB_SHA.zip
+      - name: Upload to S3
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://isntyet-deploy/$PROJECT_NAME/$GITHUB_SHA.zip
 
-      - name: Code Deploy #애플리케이션 배포그룹에 배포 생성
-        run: aws deploy create-deployment --application-name final_project
-          --deployment-config-name CodeDeployDefault.OneAtATime
-          --deployment-group-name relaese
-          --s3-location bucket=rojojun,bundleType=zip,key=$GITHUB_SHA.zip
-
-        #application-name : CodeDeploy 애플리케이션 name
-        #deployment-group-name : CodeDeploy 애플리케이션 배포 그룹 이름
-        #S3-location bucket : S3 버킷 이름
+      - name: Code Deploy
+        run: aws deploy create-deployment --application-name testapp --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name dev --s3-location bucket=isntyet-deploy,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
