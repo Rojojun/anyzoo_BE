@@ -46,17 +46,17 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_ACCESS_PRIVATE_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_ACCESS_SECRET_KEY_ID }}
           aws-region: ap-northeast-2
 
       - name: Upload to S3 #S3 업로드
-        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://isntye-deploy/$GITHUB_SHA.zip
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://rojojun/$GITHUB_SHA.zip
 
       - name: Code Deploy #애플리케이션 배포그룹에 배포 생성
         run: aws deploy create-deployment --application-name anizoo
           --deployment-config-name CodeDeployDefault.OneAtATime
           --deployment-group-name dev
-          --s3-location bucket=isntye-deploy,bundleType=zip,key=$GITHUB_SHA.zip
+          --s3-location bucket=rojojun,bundleType=zip,key=$GITHUB_SHA.zip
 
         #application-name : CodeDeploy 애플리케이션 name
         #deployment-group-name : CodeDeploy 애플리케이션 배포 그룹 이름
