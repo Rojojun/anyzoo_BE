@@ -62,9 +62,9 @@ jobs:
         run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://hanghae99-final-be/$GITHUB_SHA.zip
 
       - name: Code Deploy #애플리케이션 배포그룹에 배포 생성
-        run: aws deploy create-deployment --application-name anizoo-deploy
+        run: aws deploy create-deployment --application-name anizoo-deploy11
           --deployment-config-name CodeDeployDefault.OneAtATime
-          --deployment-group-name dev-server
+          --deployment-group-name dev-server11
           --s3-location bucket=hanghae99-final-be,bundleType=zip,key=$GITHUB_SHA.zip
 
         #application-name : CodeDeploy 애플리케이션 name
