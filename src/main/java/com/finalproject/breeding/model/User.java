@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 public class User extends Timestamped{
@@ -34,9 +35,17 @@ public class User extends Timestamped{
     @NotNull
     private Long exp;
 
-    @Column(nullable = false)
-    private UserRole userRole;
+//    @Column(nullable = false)
+//    private UserRole userRole;
 
-    @Column(nullable = false)
-    private Tier tier;
+    @Column
+    private int tier;
+
+    public User(String test) {
+        this.email = test;
+        this.password = test;
+        this.nickname = test;
+        this.exp = 0L;
+        this.tier = 0;
+    }
 }

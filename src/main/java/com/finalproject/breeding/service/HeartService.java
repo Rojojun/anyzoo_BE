@@ -25,7 +25,7 @@ public class HeartService {
     public void upHeart(Long boardMainId, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
                 ()->new NullPointerException("해당 유저가 존재하지 않습니다.")
-        )
+        );
         BoardMain boardMain = boardMainRepository.findById(boardMainId).orElseThrow(
                 ()->new NullPointerException("해당 게시글이 존재하지 않습니다.")
         );
@@ -38,8 +38,7 @@ public class HeartService {
             heartRepository.delete(heart);
         }
 
-        int count = heartRepository.findAllByBoardMain(boardMain).size();
-        boardMain.setLikeCnt(count);
+        boardMain.setLikeCnt((long) heartRepository.findAllByBoardMain(boardMain).size());
         boardMainRepository.save(boardMain);
 
     }
