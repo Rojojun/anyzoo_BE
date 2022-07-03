@@ -1,4 +1,2 @@
-package com.finalproject.breeding.dto;
-
-public class PostRequestDto {
+package com.finalproject.breeding.dto;public class PostRequestDto {
 }
