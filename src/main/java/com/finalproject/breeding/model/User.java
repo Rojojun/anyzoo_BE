@@ -1,6 +1,8 @@
 package com.finalproject.breeding.model;
 
+import com.finalproject.breeding.dto.UserEditDto;
 import com.sun.istack.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,7 +19,7 @@ public class User extends Timestamped{
 
     @Column(unique = true)
     @NotNull
-    private String email;
+    private String username;
 
     @Column
     @NotNull
@@ -34,9 +36,28 @@ public class User extends Timestamped{
     @NotNull
     private Long exp;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
+    @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
+    @Enumerated(EnumType.STRING)
     private Tier tier;
+
+    @Builder
+    public User(String username, String password, String nickname, String img, Long exp, UserRole userRole, Tier tier){
+        this.username = username;
+        this.password = password;
+        this.nickname = nickname;
+        this.img = img;
+        this.exp = exp;
+        this.userRole = userRole;
+        this.tier = tier;
+    }
+
+    public void edit(UserEditDto userEditDto){
+        this.nickname = userEditDto.getNickname();
+        this.password = userEditDto.getPassword();
+        this.img = userEditDto.getImg();
+    }
 }
