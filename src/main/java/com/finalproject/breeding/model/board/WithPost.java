@@ -1,7 +1,10 @@
 package com.finalproject.breeding.model.board;
 
+import com.finalproject.breeding.dto.CommunityRequestDto;
+import com.finalproject.breeding.dto.WithPostRequestDto;
+import com.finalproject.breeding.model.category.CommunityCategory;
 import com.finalproject.breeding.model.category.ProvinceAreas;
-import com.finalproject.breeding.model.category.WhitPostCategory;
+import com.finalproject.breeding.model.category.WithPostCategory;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +13,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 public class WithPost {
@@ -24,7 +28,7 @@ public class WithPost {
 
     @JoinColumn(name = "WITHPOSTCATEGORY_ID")
     @ManyToOne
-    private WhitPostCategory whitPostCategory;
+    private WithPostCategory withPostCategory;
 
     @JoinColumn(name = "PROVINCEAREA_ID")
     @ManyToOne
@@ -49,4 +53,14 @@ public class WithPost {
     @Column
     @NotNull
     private Long peopleCnt;
+
+    public WithPost(WithPostCategory withPostCategory, WithPostRequestDto withPostRequestDto, BoardMain boardMain){
+        this.withPostCategory = withPostCategory;
+        this.title = withPostRequestDto.getTitle();
+        this.date = withPostRequestDto.getDate();
+        this.limitPeople = withPostRequestDto.getLimitPeople();
+        this.location = withPostRequestDto.getDate();
+        this.peopleCnt = 1L;
+        this.boardMain = boardMain;
+    }
 }

@@ -1,5 +1,6 @@
 package com.finalproject.breeding.model;
 
+import com.finalproject.breeding.model.board.BoardMain;
 import com.finalproject.breeding.model.board.WithPost;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,5 +24,10 @@ public class People extends Timestamped{
     @JoinColumn(name = "USER_ID")
     @ManyToOne
     private User user;
+
+    public People(User user, WithPost withPost){
+        this.user = user;
+        this.withPost = withPost;
+    }
 
 }

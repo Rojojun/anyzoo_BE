@@ -9,6 +9,7 @@ import javax.persistence.*;
 
 @Getter
 @Entity
+@Setter
 @NoArgsConstructor
 public class BoardKind {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,4 +19,9 @@ public class BoardKind {
     @Column
     @NotNull
     private String boardName;
+
+    public BoardKind(String test){
+
+        this.boardName = test;
+    }
 }
