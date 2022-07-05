@@ -22,8 +22,8 @@ public class HeartService {
     private final UserRepository userRepository;
 
     @Transactional
-    public void upHeart(Long boardMainId, Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(
+    public void upHeart(Long boardMainId, String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(
                 ()->new NullPointerException("해당 유저가 존재하지 않습니다.")
         );
         BoardMain boardMain = boardMainRepository.findById(boardMainId).orElseThrow(
@@ -43,8 +43,8 @@ public class HeartService {
 
     }
 
-    public boolean checkHeart(Long boardMainId, Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(
+    public boolean checkHeart(Long boardMainId, String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(
                 ()->new NullPointerException("해당 유저가 존재하지 않습니다.")
         );
         BoardMain boardMain = boardMainRepository.findById(boardMainId).orElseThrow(
@@ -54,8 +54,8 @@ public class HeartService {
     }
 
     @Transactional
-    public List<HeartMapping> getHeart(Long userId){
-        User user = userRepository.findById(userId).orElseThrow(
+    public List<HeartMapping> getHeart(String username){
+        User user = userRepository.findByUsername(username).orElseThrow(
                 ()->new NullPointerException("해당 유저가 존재하지 않습니다.")
         );
         return heartRepository.findByUser(user);

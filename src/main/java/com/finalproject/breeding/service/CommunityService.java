@@ -1,6 +1,7 @@
 package com.finalproject.breeding.service;
 
 import com.finalproject.breeding.dto.CommunityRequestDto;
+import com.finalproject.breeding.model.User;
 import com.finalproject.breeding.model.board.BoardMain;
 import com.finalproject.breeding.model.board.Community;
 import com.finalproject.breeding.model.category.CommunityCategory;
@@ -22,7 +23,10 @@ public class CommunityService {
     private final BoardMainRepository boardMainRepository;
 
     @Transactional
-    public void communitySave(CommunityRequestDto communityRequestDto) {
+    public void communitySave(CommunityRequestDto communityRequestDto, String username) {
+        CommunityCategory communityCategory = new CommunityCategory("test");
+        communityCategoryRepository.save(communityCategory);
+        User user = userRepository.findByUsername(username).orElseThrow(()->new NullPointerException("해당 유저가 존재하지 않습니다."));
         communityRepository.save(
                 new Community(
                         communityCategoryRepository.findByName(communityRequestDto.getName()),
@@ -31,7 +35,7 @@ public class CommunityService {
                                 new BoardMain(
                                         boardKindRepository.findById(1L).orElseThrow(()->new NullPointerException("해당 카테고리가 존재하지 않습니다.")),
                                         communityRequestDto,
-                                        userRepository.findById(1L).orElseThrow(()->new NullPointerException("해당유저가 존재하지 않습니다."))
+                                        user
                                 )
                         )
                 )
@@ -40,6 +44,7 @@ public class CommunityService {
 
     @Transactional //커뮤니티 글 수정
     public void communityUpdate(Long communityId, CommunityRequestDto communityRequestDto){
+
         Community community = communityDetail(communityId);
         BoardMain boardMain = community.getBoardMain();
         boardMain.update(communityRequestDto);

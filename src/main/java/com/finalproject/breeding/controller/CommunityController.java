@@ -8,10 +8,14 @@ import com.finalproject.breeding.model.category.CommunityCategory;
 import com.finalproject.breeding.repository.BoardKindRepository;
 import com.finalproject.breeding.repository.CommunityCategoryRepository;
 import com.finalproject.breeding.repository.UserRepository;
+import com.finalproject.breeding.security.UserDetailsImpl;
 import com.finalproject.breeding.service.CommunityService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.sql.Update;
 import org.springframework.data.domain.Slice;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,8 +31,10 @@ public class CommunityController {
     private final UserRepository userRepository;
 
     @PostMapping("/api/community") //커뮤니티글등록
-    public void communitySave(@RequestBody CommunityRequestDto communityRequestDto){
-        communityService.communitySave(communityRequestDto);
+    public void communitySave(@RequestBody CommunityRequestDto communityRequestDto,
+                              @AuthenticationPrincipal UserDetailsImpl userDetails){
+        String username = userDetails.getUsername();
+        communityService.communitySave(communityRequestDto, username);
     }
 
     @PatchMapping("/api/community/{communityId}")
@@ -62,11 +68,4 @@ public class CommunityController {
         return communityService.getLikeCommunity(page, communityCategoryId);
     }
 
-
-    @PostMapping("/api/test")
-    public void test(){
-        communityCategoryRepository.save(new CommunityCategory("test"));
-        boardKindRepository.save(new BoardKind("test"));
-        userRepository.save(new User("test"));
-    }
 }

@@ -1,6 +1,5 @@
 package com.finalproject.breeding.config;
 
-import com.finalproject.breeding.security.UserDetailsServiceImpl;
 import com.finalproject.breeding.token.JwtAccessDeniedHandler;
 import com.finalproject.breeding.token.JwtAuthenticationEntryPoint;
 import com.finalproject.breeding.token.TokenProvider;
