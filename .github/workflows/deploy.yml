@@ -1,13 +1,8 @@
-
-
-
-
-
 name: deploy #Reps Action 페이지에 나타나는 이름
 
 on:
   push:
-    branches: master #이벤트가 발생하는 브랜치
+    branches: [ master ] #이벤트가 발생하는 브랜치
 jobs:
   build:
     runs-on: ubuntu-latest #실행 환경 지정
@@ -21,13 +16,27 @@ jobs:
         with:
           java-version: 1.8
 
-      #- name: Setup MySQL
-      #  uses: samin/mysql-action@v1
-      #  with:
-      #    character set server: 'utf8'
-      #    mysql database: moum-mysql
-      #    mysql user: admin
-      #    mysql password: ${{ secrets.MYSQL_PASSWORD }}
+      # gradle caching
+      - name: Gradle Caching
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      # application.properties 추가정보 입력 시작
+      - name: Create ./src/main/resources/
+        run: |
+          mkdir -p  ./src/main/resources/
+      # create application-prod.properties
+      - name: make application.properties
+        run: |
+          cd ./src/main/resources
+          touch ./application.properties
+          echo "${{ secrets.PROPERTIES }}" > ./application.properties
+        shell: bash
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
@@ -46,17 +55,17 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_ACCESS_SECRET_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_ID }}
           aws-region: ap-northeast-2
 
       - name: Upload to S3 #S3 업로드
-        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://rojojun/$GITHUB_SHA.zip
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://hanghae99-final-be/$GITHUB_SHA.zip
 
       - name: Code Deploy #애플리케이션 배포그룹에 배포 생성
-        run: aws deploy create-deployment --application-name anizoo
+        run: aws deploy create-deployment --application-name anizoo-deploy11
           --deployment-config-name CodeDeployDefault.OneAtATime
-          --deployment-group-name dev
-          --s3-location bucket=rojojun,bundleType=zip,key=$GITHUB_SHA.zip
+          --deployment-group-name dev-server11
+          --s3-location bucket=hanghae99-final-be,bundleType=zip,key=$GITHUB_SHA.zip
 
         #application-name : CodeDeploy 애플리케이션 name
         #deployment-group-name : CodeDeploy 애플리케이션 배포 그룹 이름
