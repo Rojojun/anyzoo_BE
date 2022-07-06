@@ -1,6 +1,7 @@
 package com.finalproject.breeding.model.board;
 
 import com.finalproject.breeding.dto.CommunityRequestDto;
+import com.finalproject.breeding.model.User;
 import com.finalproject.breeding.model.category.CommunityCategory;
 import com.finalproject.breeding.model.category.ProvinceAreas;
 import com.sun.istack.NotNull;
@@ -19,6 +20,9 @@ public class Community {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
+    @JoinColumn(name = "USER_ID")
+    @ManyToOne
+    private User user;
     @Column
     @NotNull
     private String title;
@@ -35,12 +39,6 @@ public class Community {
 //    private ProvinceAreas provinceAreas;
 
 
-
-    public Community(CommunityCategory communityCategory, CommunityRequestDto communityRequestDto, BoardMain boardMain){
-        this.communityCategory = communityCategory;
-        this.title = communityRequestDto.getTitle();
-        this.boardMain = boardMain;
-    }
 
     public void update(CommunityRequestDto communityRequestDto, BoardMain boardMain) {
         this.title = communityRequestDto.getTitle();

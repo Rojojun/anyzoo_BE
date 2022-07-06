@@ -8,5 +8,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BoardMainRepository extends JpaRepository<BoardMain, Long> {
-    Slice<BoardMain> findByBoardKindAndUser(PageRequest pageRequest, BoardKind boardKind, User user);
+//    Slice<BoardMain> findByBoardKindAndUser(PageRequest pageRequest, BoardKind boardKind, User user);
+
+
 }

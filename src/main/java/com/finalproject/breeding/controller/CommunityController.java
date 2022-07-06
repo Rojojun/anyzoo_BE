@@ -1,15 +1,11 @@
 package com.finalproject.breeding.controller;
 
 import com.finalproject.breeding.dto.CommunityRequestDto;
+import com.finalproject.breeding.dto.CommunityResDto;
 import com.finalproject.breeding.error.StatusResponseDto;
 import com.finalproject.breeding.model.User;
 import com.finalproject.breeding.model.board.Community;
-import com.finalproject.breeding.model.category.BoardKind;
-import com.finalproject.breeding.model.category.CommunityCategory;
-import com.finalproject.breeding.repository.BoardKindRepository;
-import com.finalproject.breeding.repository.CommunityCategoryRepository;
-import com.finalproject.breeding.repository.UserRepository;
-import com.finalproject.breeding.security.UserDetailsImpl;
+import com.finalproject.breeding.repository.CommunityMapping;
 import com.finalproject.breeding.service.CommunityService;
 import com.finalproject.breeding.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +13,6 @@ import org.hibernate.sql.Update;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,5 +65,12 @@ public class CommunityController {
         Long page = Long.parseLong(httpServletRequest.getParameter("page"));
         return communityService.getLikeCommunity(page, communityCategoryId);
     }
+
+    @GetMapping("/api/test12")
+    public Slice<CommunityMapping> get(HttpServletRequest httpServletRequest){
+        Long page = Long.parseLong(httpServletRequest.getParameter("page"));
+        return communityService.get(page);
+    }
+
 
 }

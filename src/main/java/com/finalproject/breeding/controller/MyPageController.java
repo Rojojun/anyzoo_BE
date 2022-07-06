@@ -16,15 +16,15 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public class MyPageController {
 
-    private final MyPageService myPageService;
-    private final UserService userService;
-
-    @GetMapping("/api/mypage/{boardKindId}")
-    public Slice<BoardMain> getMyBoard(HttpServletRequest httpServletRequest,
-                                       @PathVariable Long boardKindId){
-        User user = userService.getUser();
-
-        Long page = Long.parseLong(httpServletRequest.getParameter("page"));
-        return myPageService.getMyBoard(page, boardKindId, user);
-    }
+//    private final MyPageService myPageService;
+//    private final UserService userService;
+//
+//    @GetMapping("/api/mypage/{boardKindId}")
+//    public Slice<BoardMain> getMyBoard(HttpServletRequest httpServletRequest,
+//                                       @PathVariable Long boardKindId){
+//        User user = userService.getUser();
+//
+//        Long page = Long.parseLong(httpServletRequest.getParameter("page"));
+//        return myPageService.getMyBoard(page, boardKindId, user);
+//    }
 }

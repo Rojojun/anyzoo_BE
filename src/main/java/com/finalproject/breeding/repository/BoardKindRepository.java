@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface BoardKindRepository extends JpaRepository<BoardKind, Long> {
     BoardKind findByBoardName(String boardName);
+
+
 }

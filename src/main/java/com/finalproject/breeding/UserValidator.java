@@ -8,6 +8,7 @@ import com.finalproject.breeding.error.CustomException;
 import com.finalproject.breeding.error.ErrorCode;
 import com.finalproject.breeding.model.User;
 import com.finalproject.breeding.model.board.BoardMain;
+import com.finalproject.breeding.model.board.Community;
 import com.finalproject.breeding.service.UserService;
 import lombok.RequiredArgsConstructor;
 
@@ -56,12 +57,12 @@ public class UserValidator {
             throw new CustomException(ErrorCode.REFRESH_TOKEN_REISSUE_WRONG_INPUT);
         }
     }
-    public static void validateBoardMainAndUser(User user, BoardMain boardMain) {
+    public static void validateBoardMainAndUser(User user, Community community) {
 
         Long userId = user.getId();
-        Long boardMainUserId = boardMain.getUser().getId();
+        Long communityUserId = community.getUser().getId();
 
-        if (!userId.equals(boardMainUserId)) {
+        if (!userId.equals(communityUserId)) {
             throw new CustomException(ErrorCode.POST_UPDATE_WRONG_ACCESS);
         }
     }

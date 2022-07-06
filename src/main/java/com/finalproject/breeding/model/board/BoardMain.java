@@ -24,9 +24,7 @@ public class BoardMain extends Timestamped {
     @ManyToOne
     private BoardKind boardKind;
 
-    @JoinColumn(name = "USER_ID")
-    @ManyToOne
-    private User user;
+
 
     @Column
     @NotNull
@@ -36,30 +34,11 @@ public class BoardMain extends Timestamped {
     @NotNull
     private String content;
 
-//    @Column
-//    @NotNull
-//    private Long viewCnt;
-
-//    @OneToMany
-//    @JoinColumn(name = "IMG_URL")
-//    private List<ImgUrl> imgUrls;
-
-    public BoardMain(BoardKind boardKind, CommunityRequestDto communityRequestDto, User user){
-        this.boardKind = boardKind;
-        this.content = communityRequestDto.getContent();
-        this.likeCnt = 0L;
-        this.user = user;
-    }
 
     public void update(CommunityRequestDto communityRequestDto) {
         this.content = communityRequestDto.getContent();
     }
-    public BoardMain(BoardKind boardKind, WithPostRequestDto withPostRequestDto, User user){
-        this.boardKind = boardKind;
-        this.content = withPostRequestDto.getContent();
-        this.likeCnt = 0L;
-        this.user = user;
-    }
+
     public void plusLikeCnt(BoardMain boardMain){
         this.likeCnt = boardMain.getLikeCnt()+1L;
     }

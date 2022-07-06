@@ -2,6 +2,7 @@ package com.finalproject.breeding.service;
 
 import com.finalproject.breeding.UserValidator;
 import com.finalproject.breeding.dto.CommunityRequestDto;
+import com.finalproject.breeding.dto.CommunityResDto;
 import com.finalproject.breeding.error.CustomException;
 import com.finalproject.breeding.error.ErrorCode;
 import com.finalproject.breeding.model.User;
@@ -35,12 +36,12 @@ public class CommunityService {
         Community community = Community.builder()
                 .communityCategory(checkCategory(communityRequestDto.getName()))
                 .boardMain(boardMainRepository.save(BoardMain.builder()
-                        .user(user)
                         .boardKind(boardKindRepository.findByBoardName(boardName))
                         .likeCnt(0L)
                         .content(communityRequestDto.getContent())
                         .build()))
                 .title(communityRequestDto.getTitle())
+                .user(user)
                 .build();
         communityRepository.save(community);
         Map<String, Object> data = new HashMap<>();
@@ -53,7 +54,7 @@ public class CommunityService {
     public Map<String, Object> communityUpdate(Long communityId, CommunityRequestDto communityRequestDto, User user){
         Community community = communityRepository.findById(communityId).orElseThrow(()->new CustomException(ErrorCode.POST_NOT_FOUND));
         BoardMain boardMain = community.getBoardMain();
-        UserValidator.validateBoardMainAndUser(user, boardMain);
+        UserValidator.validateBoardMainAndUser(user, community);
 
         boardMain.update(communityRequestDto);
         community.update(communityRequestDto, boardMain);
@@ -66,14 +67,15 @@ public class CommunityService {
 
     @Transactional // 커뮤니티 글 삭제(유저확인 필요-추가예정)
     public void communityDelete(Long communityId){
-        Community community = communityDetail(communityId);
+        Community community = communityRepository.findById(communityId).orElseThrow(()->new NullPointerException("d"));
         boardMainRepository.delete(community.getBoardMain());
         communityRepository.delete(community);
     }
 
     @Transactional(readOnly = true) //디테일글 조회
     public Community communityDetail(Long communityId) {
-        return communityRepository.findById(communityId).orElseThrow(()->new NullPointerException("해당 글을 찾지 못했습니다."));
+        Community community = communityRepository.findById(communityId).orElseThrow(()->new NullPointerException("d"));
+        return community;
     }
 
     @Transactional(readOnly = true) // 커뮤니티 글 전체조회 및 카테고리별 조회(좋아요순, 무한스크롤)
@@ -102,5 +104,11 @@ public class CommunityService {
         if(communityCategory==null){throw new CustomException(ErrorCode.NOT_FOUND_BOARDKIND_INFO);}
         return communityCategory;
     }
+
+    public Slice<CommunityMapping> get(Long page){
+        PageRequest pageRequest = PageRequest.of(Math.toIntExact(page), 4, Sort.by(Sort.Direction.DESC, "boardMain.createdAt"));
+        return communityRepository.findByOrderByIdDesc(pageRequest);
+    }
+
 
 }

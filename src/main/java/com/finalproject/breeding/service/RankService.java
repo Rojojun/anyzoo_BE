@@ -22,6 +22,7 @@ public class RankService {
 
         Calendar time = new GregorianCalendar();
         time.add(Calendar.DATE, -7);
+        System.out.println(time);
 
         return postRepository.findByOrderByLikeCntDesc(PageRequest.of(0, 3), time);
     }
