@@ -20,7 +20,6 @@ public class PostListResponseDto {
     private Long boardMainId;
     private String contents;
     private Long likeCnt;
-    private Long postCategoryId;
     private String postCategory;
     private LocalDateTime dateTime;
 
@@ -34,8 +33,8 @@ public class PostListResponseDto {
         this.boardMainId = post.getBoardMain().getId();
         this.contents = post.getBoardMain().getContent();
         this.likeCnt = post.getBoardMain().getLikeCnt();
-        this.postCategoryId = post.getPostCategory().getId();
-        this.postCategory = post.getPostCategory().getName();
         this.dateTime = post.getBoardMain().getCreatedAt();
+
+        this.postCategory = post.getPostNReelsCategory().name();
     }
 }

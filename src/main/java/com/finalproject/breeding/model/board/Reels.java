@@ -1,10 +1,9 @@
 package com.finalproject.breeding.model.board;
 
-import com.finalproject.breeding.model.category.PostCategory;
+import com.finalproject.breeding.model.PostNReelsCategory;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -21,9 +20,9 @@ public class Reels {
     @OneToOne
     private BoardMain boardMain;
 
-    @JoinColumn(name = "POSTCATEGORY_ID")
+   /* @JoinColumn(name = "POSTCATEGORY_ID")
     @ManyToOne
-    private PostCategory postCategory;
+    private PostNReelsCategory postNReelsCategory;*/
 
     @Column
     @NotNull

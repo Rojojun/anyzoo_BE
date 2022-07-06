@@ -13,6 +13,6 @@ public class PostRequestDto {
 
     private String content;
     private LocalDateTime dateTime;
-    private String name; //카테고리이름
+    private String categoryName; //카테고리이름
 
 }
