@@ -1,5 +1,6 @@
 package com.finalproject.breeding.model.board;
 
+import com.finalproject.breeding.dto.PostRequest4EditDto;
 import com.finalproject.breeding.model.category.PostCategory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,4 +26,12 @@ public class Post {
     @ManyToOne
     private PostCategory postCategory;
 
+    public Post(PostCategory postCategory, BoardMain boardMain) {
+        this.boardMain = boardMain;
+        this.postCategory = postCategory;
+    }
+
+    public void updatePost(PostRequest4EditDto requestDto) {
+
+    }
 }

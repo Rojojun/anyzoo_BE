@@ -1,6 +1,7 @@
 package com.finalproject.breeding.model.board;
 
 import com.finalproject.breeding.dto.CommunityRequestDto;
+import com.finalproject.breeding.dto.PostRequestDto;
 import com.finalproject.breeding.dto.WithPostRequestDto;
 import com.finalproject.breeding.model.Timestamped;
 import com.finalproject.breeding.model.User;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -62,4 +64,9 @@ public class BoardMain extends Timestamped {
         this.user = user;
     }
 
+    public BoardMain(PostRequestDto postRequestDto, User user) {
+        this.content = postRequestDto.getContent();
+        this.likeCnt = 0L;
+        this.user = user;
+    }
 }
