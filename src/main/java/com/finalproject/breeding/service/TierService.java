@@ -13,31 +13,25 @@ public class TierService {
     private final UserRepository userRepository;
 
     @Transactional
-    public void upTenExp(Long userId){
-        User user = userRepository.findById(userId).orElseThrow(
-                ()->new NullPointerException("해당 유저가 존재하지 않습니다.")
-        );
+    public void upTenExp(User user){
         user.tenExpUp(user);
         checkExp(user);
         userRepository.save(user);
     }
 
     @Transactional
-    public void upFiveExp(Long userId){
-        User user = userRepository.findById(userId).orElseThrow(
-                ()->new NullPointerException("해당 유저가 존재하지 않습니다.")
-        );
+    public void upFiveExp(User user){
         user.fiveExpUp(user);
         checkExp(user);
         userRepository.save(user);
     }
 
     public void checkExp(User user){
-        if (user.getTier()<=2 || user.getExp()>=10000){
+        if (user.getTier()<=2 && user.getExp()>=10000){
             user.oneLvUp(user);
-        } else if (user.getTier()<=4 || user.getExp()>=20000) {
+        } else if (user.getTier()<=4 && user.getExp()>=20000) {
             user.twoLvUp(user);
-        } else if(user.getTier()==5 || user.getExp()>=40000) {
+        } else if(user.getTier()==5 && user.getExp()>=40000) {
             user.threeLvUp(user);
         }
     }

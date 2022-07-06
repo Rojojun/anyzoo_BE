@@ -1,5 +1,7 @@
 package com.finalproject.breeding.securityUtil;
 
+import com.finalproject.breeding.error.CustomException;
+import com.finalproject.breeding.error.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,7 +17,7 @@ public class SecurityUtil {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || authentication.getName() == null) {
-            throw  new RuntimeException("Security Context 에 인증 정보가 없습니다.");
+            throw  new CustomException(ErrorCode.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
         }
 
         return authentication.getName();

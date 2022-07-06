@@ -1,5 +1,8 @@
 package com.finalproject.breeding.service;
 
+import com.finalproject.breeding.error.CustomException;
+import com.finalproject.breeding.error.ErrorCode;
+import com.finalproject.breeding.error.StatusResponseDto;
 import com.finalproject.breeding.model.Heart;
 import com.finalproject.breeding.model.User;
 import com.finalproject.breeding.model.board.BoardMain;
@@ -8,10 +11,14 @@ import com.finalproject.breeding.repository.HeartMapping;
 import com.finalproject.breeding.repository.HeartRepository;
 import com.finalproject.breeding.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -19,45 +26,37 @@ public class HeartService {
 
     private final BoardMainRepository boardMainRepository;
     private final HeartRepository heartRepository;
-    private final UserRepository userRepository;
 
     @Transactional
-    public void upHeart(Long boardMainId, String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(
-                ()->new NullPointerException("해당 유저가 존재하지 않습니다.")
-        );
+    public Map<String, Object> upHeart(Long boardMainId, User user) {
         BoardMain boardMain = boardMainRepository.findById(boardMainId).orElseThrow(
-                ()->new NullPointerException("해당 게시글이 존재하지 않습니다.")
+                ()->new CustomException(ErrorCode.POST_NOT_FOUND)
         );
-
+        Map<String, Object> data = new HashMap<>();
         if (heartRepository.findByUserAndBoardMain(user, boardMain)==null){
             Heart heart = new Heart(user, boardMain);
             heartRepository.save(heart);
+            data.put("like", false);
+
         } else {
             Heart heart = heartRepository.getHeartByUserAndBoardMain(user, boardMain);
             heartRepository.delete(heart);
+            data.put("like", true);
         }
-
-        boardMain.setLikeCnt((long) heartRepository.findAllByBoardMain(boardMain).size());
-        boardMainRepository.save(boardMain);
+        return data;
 
     }
 
-    public boolean checkHeart(Long boardMainId, String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(
-                ()->new NullPointerException("해당 유저가 존재하지 않습니다.")
-        );
+    public boolean checkHeart(Long boardMainId, User user) {
+
         BoardMain boardMain = boardMainRepository.findById(boardMainId).orElseThrow(
-                ()->new NullPointerException("해당 게시글이 존재하지 않습니다.")
+                ()->new CustomException(ErrorCode.POST_NOT_FOUND)
         );
         return heartRepository.findByUserAndBoardMain(user, boardMain) == null;
     }
 
     @Transactional
-    public List<HeartMapping> getHeart(String username){
-        User user = userRepository.findByUsername(username).orElseThrow(
-                ()->new NullPointerException("해당 유저가 존재하지 않습니다.")
-        );
+    public List<HeartMapping> getHeart(User user){
         return heartRepository.findByUser(user);
     }
 }
