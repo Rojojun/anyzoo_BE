@@ -37,6 +37,8 @@ public class BoardMain extends Timestamped {
     @NotNull
     private String content;
 
+
+
 //    @Column
 //    @NotNull
 //    private Long viewCnt;
@@ -51,6 +53,9 @@ public class BoardMain extends Timestamped {
         this.likeCnt = 0L;
         this.user = user;
     }
+
+
+
 
     public void update(CommunityRequestDto communityRequestDto) {
         this.content = communityRequestDto.getContent();

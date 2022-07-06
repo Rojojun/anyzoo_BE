@@ -41,19 +41,15 @@ public class User extends Timestamped{
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
-    @Column(nullable = true)
-    @Enumerated(EnumType.STRING)
-    private Tier tier;
 
     @Builder
-    public User(String username, String password, String nickname, String img, Long exp, UserRole userRole, Tier tier){
+    public User(String username, String password, String nickname, String img, Long exp, UserRole userRole){
         this.username = username;
         this.password = password;
         this.nickname = nickname;
         this.img = img;
         this.exp = exp;
         this.userRole = userRole;
-        this.tier = tier;
     }
 
     public void edit(UserEditDto userEditDto){
