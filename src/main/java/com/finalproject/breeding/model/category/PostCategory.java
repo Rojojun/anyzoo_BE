@@ -19,4 +19,8 @@ public class PostCategory {
     @Column
     @NotNull
     private String name;
+
+    public PostCategory(String test) {
+        this.name = test;
+    }
 }

@@ -25,4 +25,8 @@ public class Post {
     @ManyToOne
     private PostCategory postCategory;
 
+    public Post(PostCategory postCategory, BoardMain boardMain) {
+        this.boardMain = boardMain;
+        this.postCategory = postCategory;
+    }
 }
