@@ -33,7 +33,7 @@ public class CommentController {
     public ResponseEntity<MyDto> createComment(@RequestBody CommentRequestDto requestDto,
                                  @PathVariable Long boardMainId
                                  ){
-        
+
         String username = SecurityUtil.getCurrentUsername(); //현제 로그인한 유저 pk
     return commentService.createComment(requestDto, boardMainId, username);
     }
