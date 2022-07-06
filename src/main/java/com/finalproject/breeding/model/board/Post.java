@@ -1,10 +1,8 @@
 package com.finalproject.breeding.model.board;
 
-import com.finalproject.breeding.model.category.PostCategory;
+import com.finalproject.breeding.dto.PostRequest4EditDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.mapping.ToOne;
 
 import javax.persistence.*;
 
@@ -25,4 +23,12 @@ public class Post {
     @ManyToOne
     private PostCategory postCategory;
 
+    public Post(PostCategory postCategory, BoardMain boardMain) {
+        this.boardMain = boardMain;
+        this.postCategory = postCategory;
+    }
+
+    public void updatePost(PostRequest4EditDto requestDto) {
+
+    }
 }

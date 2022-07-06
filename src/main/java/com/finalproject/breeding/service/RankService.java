@@ -17,14 +17,14 @@ public class RankService {
 
     private final PostRepository postRepository;
 
-    @Transactional(readOnly = true)
+  /*  @Transactional(readOnly = true)
     public List<Post> getWeekPost() {
 
         Calendar time = new GregorianCalendar();
         time.add(Calendar.DATE, -7);
         System.out.println(time);
 
-        return postRepository.findByOrderByLikeCntDesc(PageRequest.of(0, 3), time);
+        return postRepository.findByOrderByLikeCntDesc();
     }
 
 
@@ -33,6 +33,6 @@ public class RankService {
         Calendar time = new GregorianCalendar();
         time.add(Calendar.DATE, -1);
 
-        return postRepository.findByOrderByLikeCntDesc(PageRequest.of(0, 2), time);
-    }
+        return postRepository.findByOrderByLikeCntDesc();
+    }*/
 }

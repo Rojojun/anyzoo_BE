@@ -1,14 +1,6 @@
 package com.finalproject.breeding.service;
 
-import com.finalproject.breeding.model.User;
-import com.finalproject.breeding.model.board.BoardMain;
-import com.finalproject.breeding.model.category.BoardKind;
-import com.finalproject.breeding.repository.BoardKindRepository;
-import com.finalproject.breeding.repository.BoardMainRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor

@@ -1,9 +1,6 @@
 package com.finalproject.breeding.controller;
 
-import com.finalproject.breeding.model.category.BoardKind;
 import com.finalproject.breeding.model.category.CommunityCategory;
-import com.finalproject.breeding.model.category.PostCategory;
-import com.finalproject.breeding.repository.BoardKindRepository;
 import com.finalproject.breeding.repository.CommunityCategoryRepository;
 import com.finalproject.breeding.repository.PostCategoryRepository;
 import lombok.RequiredArgsConstructor;

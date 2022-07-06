@@ -14,11 +14,11 @@ public class RankController {
 
     private final RankService rankService;
 
-    @GetMapping("/api/rank/week")
+    /*@GetMapping("/api/rank/week")
     public List<Post> getWeekPost(){
         return rankService.getWeekPost();
     }
 
     @GetMapping("/api/rank/now")
-    public List<Post> getNowPost(){return rankService.getNowPost();}
+    public List<Post> getNowPost(){return rankService.getNowPost();}*/
 }

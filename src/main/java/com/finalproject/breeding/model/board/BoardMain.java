@@ -1,10 +1,9 @@
 package com.finalproject.breeding.model.board;
 
 import com.finalproject.breeding.dto.CommunityRequestDto;
-import com.finalproject.breeding.dto.WithPostRequestDto;
+import com.finalproject.breeding.dto.PostRequestDto;
 import com.finalproject.breeding.model.Timestamped;
 import com.finalproject.breeding.model.User;
-import com.finalproject.breeding.model.category.BoardKind;
 import com.sun.istack.NotNull;
 import lombok.*;
 
@@ -46,4 +45,9 @@ public class BoardMain extends Timestamped {
         this.likeCnt = boardMain.getLikeCnt()-1L;
     }
 
+    public BoardMain(PostRequestDto postRequestDto, User user) {
+        this.content = postRequestDto.getContent();
+        this.likeCnt = 0L;
+        this.user = user;
+    }
 }
