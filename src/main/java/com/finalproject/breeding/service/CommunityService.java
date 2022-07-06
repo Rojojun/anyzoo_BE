@@ -1,6 +1,9 @@
 package com.finalproject.breeding.service;
 
+import com.finalproject.breeding.UserValidator;
 import com.finalproject.breeding.dto.CommunityRequestDto;
+import com.finalproject.breeding.error.CustomException;
+import com.finalproject.breeding.error.ErrorCode;
 import com.finalproject.breeding.model.User;
 import com.finalproject.breeding.model.board.BoardMain;
 import com.finalproject.breeding.model.board.Community;
@@ -13,42 +16,52 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class CommunityService {
     private final CommunityRepository communityRepository;
     private final CommunityCategoryRepository communityCategoryRepository;
-    private final UserRepository userRepository;
     private final BoardKindRepository boardKindRepository;
     private final BoardMainRepository boardMainRepository;
 
     @Transactional
-    public void communitySave(CommunityRequestDto communityRequestDto, String username) {
-        CommunityCategory communityCategory = new CommunityCategory("test");
-        communityCategoryRepository.save(communityCategory);
-        User user = userRepository.findByUsername(username).orElseThrow(()->new NullPointerException("해당 유저가 존재하지 않습니다."));
-        communityRepository.save(
-                new Community(
-                        communityCategoryRepository.findByName(communityRequestDto.getName()),
-                        communityRequestDto,
-                        boardMainRepository.save(
-                                new BoardMain(
-                                        boardKindRepository.findById(1L).orElseThrow(()->new NullPointerException("해당 카테고리가 존재하지 않습니다.")),
-                                        communityRequestDto,
-                                        user
-                                )
-                        )
-                )
-        );
+    public Map<String, Object> communitySave(CommunityRequestDto communityRequestDto, User user) {
+
+        String boardName = "community";
+
+        Community community = Community.builder()
+                .communityCategory(checkCategory(communityRequestDto.getName()))
+                .boardMain(boardMainRepository.save(BoardMain.builder()
+                        .user(user)
+                        .boardKind(boardKindRepository.findByBoardName(boardName))
+                        .likeCnt(0L)
+                        .content(communityRequestDto.getContent())
+                        .build()))
+                .title(communityRequestDto.getTitle())
+                .build();
+        communityRepository.save(community);
+        Map<String, Object> data = new HashMap<>();
+        data.put("communityId", community.getId());
+        data.put("boardMainId", community.getBoardMain().getId());
+        return data;
     }
 
     @Transactional //커뮤니티 글 수정
-    public void communityUpdate(Long communityId, CommunityRequestDto communityRequestDto){
-
-        Community community = communityDetail(communityId);
+    public Map<String, Object> communityUpdate(Long communityId, CommunityRequestDto communityRequestDto, User user){
+        Community community = communityRepository.findById(communityId).orElseThrow(()->new CustomException(ErrorCode.POST_NOT_FOUND));
         BoardMain boardMain = community.getBoardMain();
+        UserValidator.validateBoardMainAndUser(user, boardMain);
+
         boardMain.update(communityRequestDto);
-        community.updaate(communityRequestDto, boardMain);
+        community.update(communityRequestDto, boardMain);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("communityId", community.getId());
+        data.put("boardMainId", community.getBoardMain().getId());
+        return data;
     }
 
     @Transactional // 커뮤니티 글 삭제(유저확인 필요-추가예정)
@@ -82,6 +95,12 @@ public class CommunityService {
         }else{
             return communityRepository.findByCommunityCategoryIdOrderByCreatedAtDesc(pageRequest, communityCategoryId);
         }
+    }
+
+    public CommunityCategory checkCategory(String name){
+        CommunityCategory communityCategory = communityCategoryRepository.findByCategoryName(name);
+        if(communityCategory==null){throw new CustomException(ErrorCode.NOT_FOUND_BOARDKIND_INFO);}
+        return communityCategory;
     }
 
 }

@@ -1,15 +1,15 @@
 package com.finalproject.breeding.model.category;
 
 import com.sun.istack.NotNull;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class PostCategory {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,5 +18,5 @@ public class PostCategory {
 
     @Column
     @NotNull
-    private String name;
+    private String categoryName;
 }

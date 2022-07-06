@@ -12,7 +12,6 @@ import com.finalproject.breeding.repository.UserRepository;
 import com.finalproject.breeding.security.UserDetailsImpl;
 import com.finalproject.breeding.securityUtil.SecurityUtil;
 import com.finalproject.breeding.token.TokenProvider;
-import com.nimbusds.jwt.JWT;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

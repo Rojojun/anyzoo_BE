@@ -75,6 +75,9 @@ public enum ErrorCode {
 
     USER_UPDATE_WRONG_ACCESS(HttpStatus.BAD_REQUEST, 400, "본인이 아니면 수정할 수 없습니다"),
 
+    NOT_FOUND_BOARDKIND_INFO(HttpStatus.NOT_FOUND, 404, "해당 카테고리가 존재하지 않습니다"),
+    NOT_FOUND_CATEGORY_INFO(HttpStatus.NOT_FOUND, 404, "해당 카테고리가 존재하지 않습니다"),
+
     // apply
     APPLY_WRONG_ERROR(HttpStatus.BAD_REQUEST, 400, "본인의 프로젝트에 지원 신청 할 수 없습니다"),
     ALREADY_STARTED_ERROR(HttpStatus.BAD_REQUEST, 400, "모집중인 프로젝트가 아닙니다"),

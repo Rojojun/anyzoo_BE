@@ -36,11 +36,13 @@ public class HeartService {
         if (heartRepository.findByUserAndBoardMain(user, boardMain)==null){
             Heart heart = new Heart(user, boardMain);
             heartRepository.save(heart);
+            boardMain.plusLikeCnt(boardMain);
             data.put("like", false);
 
         } else {
             Heart heart = heartRepository.getHeartByUserAndBoardMain(user, boardMain);
             heartRepository.delete(heart);
+            boardMain.minusLikeCnt(boardMain);
             data.put("like", true);
         }
         return data;

@@ -4,5 +4,7 @@ import com.finalproject.breeding.model.category.CommunityCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CommunityCategoryRepository extends JpaRepository<CommunityCategory, Long> {
-    CommunityCategory findByName(String name);
+
+
+    CommunityCategory findByCategoryName(String name);
 }

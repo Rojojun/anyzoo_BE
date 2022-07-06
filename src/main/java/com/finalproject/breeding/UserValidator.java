@@ -6,9 +6,14 @@ import com.finalproject.breeding.dto.SignupRequestDto;
 import com.finalproject.breeding.dto.TokenRequestDto;
 import com.finalproject.breeding.error.CustomException;
 import com.finalproject.breeding.error.ErrorCode;
+import com.finalproject.breeding.model.User;
+import com.finalproject.breeding.model.board.BoardMain;
+import com.finalproject.breeding.service.UserService;
+import lombok.RequiredArgsConstructor;
 
 import java.util.regex.Pattern;
 
+@RequiredArgsConstructor
 public class UserValidator {
 
     public static void validateInputNickname(SignupRequestDto requestDto) {
@@ -51,4 +56,14 @@ public class UserValidator {
             throw new CustomException(ErrorCode.REFRESH_TOKEN_REISSUE_WRONG_INPUT);
         }
     }
+    public static void validateBoardMainAndUser(User user, BoardMain boardMain) {
+
+        Long userId = user.getId();
+        Long boardMainUserId = boardMain.getUser().getId();
+
+        if (!userId.equals(boardMainUserId)) {
+            throw new CustomException(ErrorCode.POST_UPDATE_WRONG_ACCESS);
+        }
+    }
+
 }

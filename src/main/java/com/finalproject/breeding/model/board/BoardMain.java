@@ -6,16 +6,15 @@ import com.finalproject.breeding.model.Timestamped;
 import com.finalproject.breeding.model.User;
 import com.finalproject.breeding.model.category.BoardKind;
 import com.sun.istack.NotNull;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
-@Setter
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class BoardMain extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -60,6 +59,12 @@ public class BoardMain extends Timestamped {
         this.content = withPostRequestDto.getContent();
         this.likeCnt = 0L;
         this.user = user;
+    }
+    public void plusLikeCnt(BoardMain boardMain){
+        this.likeCnt = boardMain.getLikeCnt()+1L;
+    }
+    public void minusLikeCnt(BoardMain boardMain){
+        this.likeCnt = boardMain.getLikeCnt()-1L;
     }
 
 }

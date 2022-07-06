@@ -1,6 +1,7 @@
 package com.finalproject.breeding.controller;
 
 import com.finalproject.breeding.dto.CommunityRequestDto;
+import com.finalproject.breeding.error.StatusResponseDto;
 import com.finalproject.breeding.model.User;
 import com.finalproject.breeding.model.board.Community;
 import com.finalproject.breeding.model.category.BoardKind;
@@ -10,9 +11,12 @@ import com.finalproject.breeding.repository.CommunityCategoryRepository;
 import com.finalproject.breeding.repository.UserRepository;
 import com.finalproject.breeding.security.UserDetailsImpl;
 import com.finalproject.breeding.service.CommunityService;
+import com.finalproject.breeding.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.sql.Update;
 import org.springframework.data.domain.Slice;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,27 +24,28 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
 public class CommunityController {
 
     private final CommunityService communityService;
-    private final CommunityCategoryRepository communityCategoryRepository;
-    private final BoardKindRepository boardKindRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @PostMapping("/api/community") //커뮤니티글등록
-    public void communitySave(@RequestBody CommunityRequestDto communityRequestDto,
-                              @AuthenticationPrincipal UserDetailsImpl userDetails){
-        String username = userDetails.getUsername();
-        communityService.communitySave(communityRequestDto, username);
+    public ResponseEntity<Object> communitySave(@RequestBody CommunityRequestDto communityRequestDto){
+        User user = userService.getUser();
+        Map<String, Object> data = communityService.communitySave(communityRequestDto, user);
+        return new ResponseEntity<>(new StatusResponseDto("등록 완료 되었습니다.", data), HttpStatus.OK);
     }
 
     @PatchMapping("/api/community/{communityId}")
-    public void communityUpdate(@PathVariable Long communityId,
+    public ResponseEntity<Object> communityUpdate(@PathVariable Long communityId,
                                      @Validated(Update.class) @RequestBody CommunityRequestDto communityRequestDto){
-        communityService.communityUpdate(communityId, communityRequestDto);
+        User user = userService.getUser();
+        Map<String, Object> data = communityService.communityUpdate(communityId, communityRequestDto, user);
+        return new ResponseEntity<>(new StatusResponseDto("수정 완료 되었습니다.", data), HttpStatus.OK);
     }
 
     @DeleteMapping("/api/community/{communityId}")
