@@ -36,7 +36,7 @@ public class User extends Timestamped{
     @NotNull
     private Long exp;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 

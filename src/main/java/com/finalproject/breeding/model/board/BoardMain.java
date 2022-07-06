@@ -4,6 +4,7 @@ import com.finalproject.breeding.dto.CommunityRequestDto;
 import com.finalproject.breeding.dto.PostRequestDto;
 import com.finalproject.breeding.model.Timestamped;
 import com.finalproject.breeding.model.User;
+import com.finalproject.breeding.model.category.BoardKind;
 import com.sun.istack.NotNull;
 import lombok.*;
 
@@ -12,15 +13,13 @@ import javax.persistence.*;
 @Getter
 @Entity
 @NoArgsConstructor
-@Builder
-@AllArgsConstructor
 public class BoardMain extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 
-    @JoinColumn(name = "BOARDKIND_ID")
-    @ManyToOne
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private BoardKind boardKind;
 
 
@@ -45,9 +44,9 @@ public class BoardMain extends Timestamped {
         this.likeCnt = boardMain.getLikeCnt()-1L;
     }
 
-    public BoardMain(PostRequestDto postRequestDto, User user) {
+    public BoardMain(PostRequestDto postRequestDto) {
         this.content = postRequestDto.getContent();
         this.likeCnt = 0L;
-        this.user = user;
+        this.boardKind = BoardKind.POST;
     }
 }
