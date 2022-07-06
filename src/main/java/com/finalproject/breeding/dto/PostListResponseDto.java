@@ -1,6 +1,5 @@
 package com.finalproject.breeding.dto;
 
-import com.finalproject.breeding.model.board.BoardMain;
 import com.finalproject.breeding.model.board.Post;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PostResponseDto {
+public class PostListResponseDto {
     private Long id;
     private String boardKind;
     private String nickname;
@@ -25,10 +24,10 @@ public class PostResponseDto {
     private String postCategory;
     private LocalDateTime dateTime;
 
-    public PostResponseDto(Post post) {
+    public PostListResponseDto(Post post) {
         this.id = post.getId();
-        //   this.boardKindId = post.getBoardMain().getBoardKind().getId();
-        //   this.boardKind = post.getBoardMain().getBoardKind().getBoardName();
+   //   this.boardKindId = post.getBoardMain().getBoardKind().getId();
+   //   this.boardKind = post.getBoardMain().getBoardKind().getBoardName();
         this.nickname = post.getBoardMain().getUser().getNickname();
         this.userProfileImg = post.getBoardMain().getUser().getImg();
         //this.img = post.getBoardMain();
