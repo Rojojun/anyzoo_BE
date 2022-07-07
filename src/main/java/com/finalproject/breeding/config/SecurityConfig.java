@@ -1,8 +1,8 @@
 package com.finalproject.breeding.config;
 
-import com.finalproject.breeding.token.JwtAccessDeniedHandler;
-import com.finalproject.breeding.token.JwtAuthenticationEntryPoint;
-import com.finalproject.breeding.token.TokenProvider;
+import com.finalproject.breeding.user.token.JwtAccessDeniedHandler;
+import com.finalproject.breeding.user.token.JwtAuthenticationEntryPoint;
+import com.finalproject.breeding.user.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
