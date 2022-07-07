@@ -9,22 +9,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
-public class UserRequestDto {
+public class SignupRequestDto {
     private String username;
     private String nickname;
     private String password;
     private String img;
-
-    public User toUser(PasswordEncoder passwordEncoder){
-        return User.builder()
-                .username(username)
-                .password(passwordEncoder.encode(password))
-                .userRole(UserRole.ROLE_USER)
-                .nickname(nickname)
-                .build();
-    }
 
     public UsernamePasswordAuthenticationToken toAuthentication(){
         return new UsernamePasswordAuthenticationToken(username, password);

@@ -1,6 +1,6 @@
 package com.finalproject.breeding.model.board;
 
-import com.finalproject.breeding.model.PostNReelsCategory;
+
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
