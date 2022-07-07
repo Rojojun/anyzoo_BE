@@ -4,6 +4,7 @@ import com.finalproject.breeding.dto.CommentRequestDto;
 import com.finalproject.breeding.dto.MyDto;
 import com.finalproject.breeding.error.ErrorCode;
 import com.finalproject.breeding.model.Comment;
+import com.finalproject.breeding.repository.CommentMapping;
 import com.finalproject.breeding.repository.CommentRepository;
 import com.finalproject.breeding.securityUtil.SecurityUtil;
 import com.finalproject.breeding.service.CommentService;
@@ -94,8 +95,8 @@ public class CommentController {
 
     //댓글 불러오기
     @GetMapping("/api/comment/{boardMainId}")
-    public List<Comment> getAllCommnet(@PathVariable Long boardMainId){
-        List<Comment> comments= commentRepository.findAllByBoardMain_Id(boardMainId);
+    public List<CommentMapping> getAllCommnet(@PathVariable Long boardMainId){
+        List<CommentMapping> comments= commentRepository.findAllByBoardMain_Id(boardMainId);
         return comments;
     }
 
