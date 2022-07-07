@@ -1,10 +1,10 @@
 package com.finalproject.breeding.model.board;
 
-import com.finalproject.breeding.model.category.PostCategory;
+import com.finalproject.breeding.dto.PostRequest4EditDto;
+import com.finalproject.breeding.dto.PostRequestDto;
+import com.finalproject.breeding.model.PostNReelsCategory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.mapping.ToOne;
 
 import javax.persistence.*;
 
@@ -21,8 +21,29 @@ public class Post {
     @OneToOne
     private BoardMain boardMain;
 
-    @JoinColumn(name = "POSTCATEGORY_ID")
-    @ManyToOne
-    private PostCategory postCategory;
+    @JoinColumn(nullable = false)
+    private PostNReelsCategory postNReelsCategory;
 
+    public Post(PostRequestDto postRequestDto, BoardMain boardMain) {
+        this.boardMain = boardMain;
+
+        switch (postRequestDto.getCategoryName()) {
+            case "comic":
+                this.postNReelsCategory = PostNReelsCategory.COMIC;
+                break;
+            case "cool":
+                this.postNReelsCategory = PostNReelsCategory.COOL;
+                break;
+            case "pretty":
+                this.postNReelsCategory = PostNReelsCategory.PRETTY;
+                break;
+            case "cute":
+                this.postNReelsCategory = PostNReelsCategory.CUTE;
+                break;
+        }
+    }
+
+    public void updatePost(PostRequest4EditDto requestDto) {
+
+    }
 }

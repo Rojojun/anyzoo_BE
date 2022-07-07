@@ -2,8 +2,8 @@ package com.finalproject.breeding.service;
 
 import com.finalproject.breeding.dto.CommentRequestDto;
 import com.finalproject.breeding.dto.MyDto;
-import com.finalproject.breeding.exception.StatusEnum;
 import com.finalproject.breeding.model.Comment;
+import com.finalproject.breeding.exception.StatusEnum;
 import com.finalproject.breeding.model.User;
 import com.finalproject.breeding.model.board.BoardMain;
 import com.finalproject.breeding.repository.BoardMainRepository;

@@ -1,5 +1,6 @@
 package com.finalproject.breeding.model.category;
 
+import com.finalproject.breeding.dto.BoardKindDto;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,12 +17,11 @@ public class BoardKind {
     @Id
     private Long id;
 
-    @Column
+    @Column(unique = true)
     @NotNull
     private String boardName;
 
-    public BoardKind(String test){
-
-        this.boardName = test;
+    public BoardKind(String boardName){
+        this.boardName = boardName;
     }
 }

@@ -2,8 +2,8 @@ package com.finalproject.breeding.controller;
 
 import com.finalproject.breeding.dto.CommentRequestDto;
 import com.finalproject.breeding.dto.MyDto;
-import com.finalproject.breeding.exception.StatusEnum;
 import com.finalproject.breeding.model.Comment;
+import com.finalproject.breeding.exception.StatusEnum;
 import com.finalproject.breeding.repository.CommentRepository;
 import com.finalproject.breeding.securityUtil.SecurityUtil;
 import com.finalproject.breeding.service.CommentService;
@@ -26,6 +26,7 @@ public class CommentController {
     private final CommentRepository commentRepository;
 
     private final CommentService commentService;
+
 
 
     //댓글 작성
@@ -95,8 +96,15 @@ public class CommentController {
     //댓글 불러오기
     @GetMapping("/api/comment/{boardMainId}")
     public List<Comment> getAllCommnet(@PathVariable Long boardMainId){
-        List<Comment> comments= commentRepository.findAllByBoardMain_Id(boardMainId);
+        List<Comment> comments= commentRepository.findAllByBoardMainId(boardMainId);
         return comments;
+    }
+
+    //댓글 수 불러오기
+    @GetMapping("/api/comment/count/{boardMainId}")
+    public Long getCommnetCount(@PathVariable Long boardMainId){
+        Long count= (long) commentRepository.findAllByBoardMainId(boardMainId).size();
+        return count;
     }
 
 }
