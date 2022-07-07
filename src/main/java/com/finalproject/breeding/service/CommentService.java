@@ -44,7 +44,7 @@ public class CommentService {
         commentRepository.save(comment);
 
         dto.setStatus(ErrorCode.OK);
-        dto.setData(boardMainId);
+        dto.setData("boardMainId :"+boardMainId);
         dto.setMessage("댓글 등록!");
         return new ResponseEntity<>(dto, header, HttpStatus.OK);
 

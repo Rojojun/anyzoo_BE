@@ -54,12 +54,12 @@ public class CommentController {
         if (Objects.equals(userId, userId1)) {   //댓글의 닉네임와 일치한다면
             commentRepository.deleteById(commentId);
             dto.setStatus(ErrorCode.OK);
-            dto.setData(commentId);
+            dto.setData("commentId :"+commentId);
             dto.setMessage("댓글 삭제!");
             return new ResponseEntity<>(dto, header, HttpStatus.OK);
         }else{
             dto.setStatus(ErrorCode.COMMENT_WRONG_INPUT);
-            dto.setData(commentId);
+            dto.setData("commentId :"+commentId);
             dto.setMessage("사용자의 댓글이 아닙니다!");
             return new ResponseEntity<>(dto,header, HttpStatus.BAD_REQUEST);
         }
@@ -81,12 +81,12 @@ public class CommentController {
 
             commentService.patchComment(requestDto,commentId);
             dto.setStatus(ErrorCode.OK);
-            dto.setData(commentId);
+            dto.setData("commentId :"+commentId);
             dto.setMessage("댓글 수정!");
             return new ResponseEntity<>(dto, header, HttpStatus.OK);
         }else{
             dto.setStatus(ErrorCode.COMMENT_WRONG_INPUT);
-            dto.setData(commentId);
+            dto.setData("commentId :"+commentId);
             dto.setMessage("사용자의 댓글이 아닙니다!");
             return new ResponseEntity<>(dto,header, HttpStatus.BAD_REQUEST);
         }
