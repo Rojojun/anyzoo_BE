@@ -108,4 +108,5 @@ public enum ErrorCode {
     private final HttpStatus status;
     private final int errorCode;
     private final String errorMessage;
+
 }
