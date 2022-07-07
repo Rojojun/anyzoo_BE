@@ -3,10 +3,8 @@ package com.finalproject.breeding.model.board;
 
 import com.finalproject.breeding.dto.PostRequest4EditDto;
 import com.finalproject.breeding.dto.PostRequestDto;
-import com.finalproject.breeding.model.PostNReelsCategory;
+import com.finalproject.breeding.model.category.PostNReelsCategory;
 import com.finalproject.breeding.model.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

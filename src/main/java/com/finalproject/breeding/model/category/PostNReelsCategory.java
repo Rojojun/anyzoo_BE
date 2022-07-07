@@ -1,4 +1,4 @@
-package com.finalproject.breeding.model;
+package com.finalproject.breeding.model.category;
 
 public enum PostNReelsCategory {
     CUTE,
