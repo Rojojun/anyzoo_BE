@@ -55,6 +55,7 @@ public enum ErrorCode {
 
     // 이미지
     WRONG_INPUT_IMAGE(HttpStatus.BAD_REQUEST, 400, "이미지는 반드시 있어야 합니다"),
+    Image_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "해당 이미지를 찾을 수 없습니다"),
     IMAGE_UPLOAD_ERROR(HttpStatus.BAD_REQUEST, 400, "이미지 업로드에 실패했습니다"),
     WRONG_IMAGE_FORMAT(HttpStatus.BAD_REQUEST, 400, "지원하지 않는 파일 형식입니다"),
 
