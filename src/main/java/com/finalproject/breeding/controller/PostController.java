@@ -1,20 +1,19 @@
 package com.finalproject.breeding.controller;
 
-import com.finalproject.breeding.dto.PostListResponseDto;
-import com.finalproject.breeding.dto.PostRequest4EditDto;
 import com.finalproject.breeding.dto.PostRequestDto;
 import com.finalproject.breeding.dto.PostResponseDto;
 import com.finalproject.breeding.error.StatusResponseDto;
 import com.finalproject.breeding.model.User;
-import com.finalproject.breeding.securityUtil.SecurityUtil;
+import com.finalproject.breeding.repository.PostRepository;
 import com.finalproject.breeding.service.PostService;
 import com.finalproject.breeding.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @RestController
@@ -22,6 +21,7 @@ import java.util.Map;
 public class PostController {
     private final PostService postService;
     private final UserService userService;
+    private final PostRepository postRepository;
 
     @PostMapping("/api/post")
     public ResponseEntity<Object> registPost(@RequestBody PostRequestDto postRequestDto){
@@ -36,12 +36,18 @@ public class PostController {
 //    public List<PostListResponseDto> readAllPost(/*@RequestParam(required = false) String postCategory*/) {
 //        return postService.readAllPost(/*postCategory*/);
 //    }
-//
-//    // 게시글 상세 조회
-//    @GetMapping("/api/post/{id}")
-//    public PostResponseDto readPostDetail(@PathVariable Long id) {
-//        return postService.getPostDetail(id);
-//    }
+
+    // 게시글 상세 조회
+    @GetMapping("/api/post/{id}")
+    public PostResponseDto getPostDetail(@PathVariable Long id) {
+        return postService.getPostDetail(id);
+    }
+
+    @GetMapping("/api/post")
+    public Slice<PostMapping> getAllPost(HttpServletRequest httpServletRequest){
+        Long page = Long.parseLong(httpServletRequest.getParameter("page"));
+        return postService.getAll(page);
+    }
 //
 //    //게시글 삭제
 //    @DeleteMapping("/api/post/{id}")

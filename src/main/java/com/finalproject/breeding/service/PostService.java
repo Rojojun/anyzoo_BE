@@ -1,20 +1,18 @@
 package com.finalproject.breeding.service;
 
-import com.finalproject.breeding.dto.PostListResponseDto;
-import com.finalproject.breeding.dto.PostRequest4EditDto;
 import com.finalproject.breeding.dto.PostRequestDto;
 import com.finalproject.breeding.dto.PostResponseDto;
-import com.finalproject.breeding.model.PostNReelsCategory;
 import com.finalproject.breeding.model.User;
 import com.finalproject.breeding.model.board.BoardMain;
 import com.finalproject.breeding.model.board.Post;
-import com.finalproject.breeding.model.category.BoardKind;
 import com.finalproject.breeding.repository.BoardMainRepository;
 import com.finalproject.breeding.repository.PostRepository;
-import com.finalproject.breeding.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.*;
 
@@ -30,7 +28,8 @@ public class PostService {
         postRepository.save(post);
 
         Map<String, Object> data = new HashMap<>();
-        data.put("post", post);
+        data.put("postId", post.getId());
+        data.put("boardMainId", post.getBoardMain().getId());
         return data;
 
     }
@@ -49,12 +48,14 @@ public class PostService {
 //        return postListResponseDtoList;
 //    }
 //
-//    public PostResponseDto getPostDetail(Long id) {
-//        Post post = postRepository.findById(id).orElseThrow(
-//                () -> new IllegalArgumentException("존재하지 않는 게시글입니다.")
-//        );
-//        return new PostResponseDto(post);
-//    }
+    public PostResponseDto getPostDetail(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 게시글입니다.")
+        );
+        return new PostResponseDto(post);
+    }
+
+    
 //
 //    // 삭제하기
 //    public void deletePost(Long id, String username) {
