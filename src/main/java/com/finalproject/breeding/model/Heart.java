@@ -3,7 +3,6 @@ package com.finalproject.breeding.model;
 import com.finalproject.breeding.model.board.BoardMain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -23,5 +22,10 @@ public class Heart {
     @JoinColumn(name = "BOARDMAIN_ID")
     @ManyToOne
     private BoardMain boardMain;
+
+    public Heart(User user, BoardMain boardMain){
+        this.user = user;
+        this.boardMain = boardMain;
+    }
 
 }

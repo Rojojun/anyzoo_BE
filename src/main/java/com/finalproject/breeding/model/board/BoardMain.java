@@ -1,16 +1,14 @@
 package com.finalproject.breeding.model.board;
 
-import com.finalproject.breeding.model.ImgUrl;
+import com.finalproject.breeding.dto.CommunityRequestDto;
+import com.finalproject.breeding.dto.PostRequestDto;
 import com.finalproject.breeding.model.Timestamped;
 import com.finalproject.breeding.model.User;
 import com.finalproject.breeding.model.category.BoardKind;
 import com.sun.istack.NotNull;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @Entity
@@ -20,27 +18,35 @@ public class BoardMain extends Timestamped {
     @Id
     private Long id;
 
-    @JoinColumn(name = "BOARDKIND_ID")
-    @ManyToOne
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private BoardKind boardKind;
 
-    @JoinColumn(name = "USER_ID")
-    @ManyToOne
-    private User user;
+
 
     @Column
     @NotNull
-    private Long LikeCnt;
+    private Long likeCnt;
 
     @Column
     @NotNull
     private String content;
 
-    @Column
-    @NotNull
-    private Long viewCnt;
 
-    @OneToMany
-    @JoinColumn(name = "IMG_URL")
-    private List<ImgUrl> imgUrls;
+    public void update(CommunityRequestDto communityRequestDto) {
+        this.content = communityRequestDto.getContent();
+    }
+
+    public void plusLikeCnt(BoardMain boardMain){
+        this.likeCnt = boardMain.getLikeCnt()+1L;
+    }
+    public void minusLikeCnt(BoardMain boardMain){
+        this.likeCnt = boardMain.getLikeCnt()-1L;
+    }
+
+    public BoardMain(PostRequestDto postRequestDto) {
+        this.content = postRequestDto.getContent();
+        this.likeCnt = 0L;
+        this.boardKind = BoardKind.POST;
+    }
 }

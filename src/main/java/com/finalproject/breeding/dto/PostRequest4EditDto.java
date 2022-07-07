@@ -1,12 +1,12 @@
 package com.finalproject.breeding.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
-public class BaordKindRequestDto {
-    private String boardName;
+public class PostRequest4EditDto {
+    private String content;
 }
