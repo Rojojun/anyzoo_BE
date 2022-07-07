@@ -27,8 +27,8 @@ public class PostListResponseDto {
         this.id = post.getId();
    //   this.boardKindId = post.getBoardMain().getBoardKind().getId();
    //   this.boardKind = post.getBoardMain().getBoardKind().getBoardName();
-        this.nickname = post.getBoardMain().getUser().getNickname();
-        this.userProfileImg = post.getBoardMain().getUser().getImg();
+//        this.nickname = post.getBoardMain().getUser().getNickname();
+//        this.userProfileImg = post.getBoardMain().getUser().getImg();
         //this.img = post.getBoardMain();
         this.boardMainId = post.getBoardMain().getId();
         this.contents = post.getBoardMain().getContent();

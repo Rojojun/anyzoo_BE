@@ -1,44 +1,42 @@
 package com.finalproject.breeding.controller;
 
 import com.finalproject.breeding.dto.*;
+import com.finalproject.breeding.error.StatusResponseDto;
 import com.finalproject.breeding.model.User;
-import com.finalproject.breeding.repository.UserRepository;
-import com.finalproject.breeding.security.UserDetailsImpl;
 import com.finalproject.breeding.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 
 @RestController
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    private final UserRepository userRepository;
 
     @PostMapping("/user/signup")
-    public ResponseEntity<UserResponseDto> signup(@RequestBody UserRequestDto memberRequestDto) {
-        userService.signup(memberRequestDto);
-        return ResponseEntity.ok(new UserResponseDto("회원가입 됬다"));
+    public ResponseEntity<Object> signup(@RequestBody SignupRequestDto signupRequestDto) {
+        Map<String, Object>data = userService.signup(signupRequestDto);
+        return new ResponseEntity<>(new StatusResponseDto("회원가입이 되었습니다.", data), HttpStatus.OK);
     }
 
     @PostMapping("/user/login")
-    public ResponseEntity<UserResponseDto> login(@RequestBody UserRequestDto memberRequestDto) {
-        return ResponseEntity.ok(new UserResponseDto(userService.login(memberRequestDto), "로그인 되었습니다"));
+    public ResponseEntity<Object> login(@RequestBody LoginDto loginDto) {
+        Map<String, Object> data = userService.login(loginDto);
+        return new ResponseEntity<>(new StatusResponseDto("로그인이 되었습니다.", data), HttpStatus.OK);
     }
 
 
-    @PatchMapping("/user/edit")
-    public ResponseEntity<UserResponseDto> edit(@RequestBody UserEditDto userEditDto){
-        userService.edit(userEditDto);
-        return ResponseEntity.ok(new UserResponseDto("수정 완료 됬다"));
-    }
+    //@PatchMapping("/user/edit")
+    //public ResponseEntity<UserResponseDto> edit(@RequestBody UserEditDto userEditDto){
+    //    userService.edit(userEditDto);
+    //    return ResponseEntity.ok(new UserResponseDto("수정 완료 됬다"));
+    //}
 
     //oauth 통신할 api 추가하면 됨.
 
@@ -48,22 +46,22 @@ public class UserController {
     }
 
     @PostMapping("/user/reissue")
-    public ResponseEntity<TokenDto> reissue(@RequestBody TokenRequestDto tokenRequestDto) {
-        return ResponseEntity.ok(userService.reissue(tokenRequestDto));
+    public ResponseEntity<Object> reissue(@RequestBody TokenRequestDto tokenRequestDto) {
+        TokenDto tokenDto = userService.reissue(tokenRequestDto);
+        return new ResponseEntity<>(new StatusResponseDto("토큰이 재발급 되었습니다.", tokenDto), HttpStatus.OK);
     }
 
-    @GetMapping("/test")
-    public String test() {
-       Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-       User principal = (User) authentication.getPrincipal();
-       String username = principal.getUsername();
-       return username;
+    @GetMapping("/user/userInfo")
+    @ResponseBody
+    public UserInfo Session() {
+       User user = userService.getUser();
+       return new UserInfo(user.getUsername(), user.getNickname(), user.getImg(), user.getTier(), user.getExp());
     }
 
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public UserResponseDto notFound(Exception e) {
-        return new UserResponseDto(e.getMessage());
-    }
+    //@ExceptionHandler(Exception.class)
+    //@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    //public UserResponseDto notFound(Exception e) {
+    //    return new UserResponseDto(e.getMessage());
+    //}
 
 }

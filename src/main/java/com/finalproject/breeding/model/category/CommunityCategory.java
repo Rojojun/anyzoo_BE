@@ -1,13 +1,12 @@
 package com.finalproject.breeding.model.category;
 
 import com.sun.istack.NotNull;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Setter
+@Builder
+@AllArgsConstructor
 @Getter
 @Entity
 @NoArgsConstructor
@@ -19,9 +18,5 @@ public class CommunityCategory {
 
     @Column
     @NotNull
-    private String name;
-
-    public CommunityCategory(String test){
-        this.name = test;
-    }
+    private String categoryName;
 }

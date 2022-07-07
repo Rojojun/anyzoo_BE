@@ -2,8 +2,8 @@ package com.finalproject.breeding.service;
 
 import com.finalproject.breeding.dto.CommentRequestDto;
 import com.finalproject.breeding.dto.MyDto;
+import com.finalproject.breeding.error.ErrorCode;
 import com.finalproject.breeding.model.Comment;
-import com.finalproject.breeding.exception.StatusEnum;
 import com.finalproject.breeding.model.User;
 import com.finalproject.breeding.model.board.BoardMain;
 import com.finalproject.breeding.repository.BoardMainRepository;
@@ -43,7 +43,7 @@ public class CommentService {
         Comment comment = new Comment(requestDto,boardMain,user);
         commentRepository.save(comment);
 
-        dto.setStatus(StatusEnum.OK);
+        dto.setStatus(ErrorCode.OK);
         dto.setData(boardMainId);
         dto.setMessage("댓글 등록!");
         return new ResponseEntity<>(dto, header, HttpStatus.OK);

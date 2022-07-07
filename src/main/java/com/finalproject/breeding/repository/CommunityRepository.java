@@ -17,4 +17,12 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
 
     @Query("select c " + "from Community c " + "order by c.boardMain.likeCnt desc ")
     Slice<Community> findByCommunityCategory(PageRequest pageRequest, CommunityCategory communityCategory);
+
+
+//    @Query("select c " + "from Community c " + "order by c.boardMain.likeCnt desc ")
+//    Slice<CommunityMapping> findByOrderByLikeCntDesc(PageRequest pageRequest);
+
+    Slice<CommunityMapping> findByOrderByIdDesc(PageRequest pageRequest);
+
+
 }

@@ -15,4 +15,6 @@ public class PostRequestDto {
     private LocalDateTime dateTime;
     private String categoryName; //카테고리이름
 
+
+
 }
