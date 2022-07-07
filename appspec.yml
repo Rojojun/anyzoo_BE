@@ -1,18 +1,11 @@
 version: 0.0
 os: linux
+
 files:
-  - source:  /
-    destination: /home/ubuntu/zoo
-    overwrite: yes
-
-permissions:
-  - object: /
-    pattern: "**"
-    owner: ubuntu
-    group: ubuntu
-
+  - source: /
+    destination: /home/ec2-user/app # 인스턴스에서 파일이 저장될 위치
 hooks:
-  ApplicationStart:
-    - location: scripts/gh_deploy.sh
+  AfterInstall:
+    - location: deploy.sh
       timeout: 60
-      runas: ubuntu
+      runas: root
