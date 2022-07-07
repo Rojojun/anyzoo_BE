@@ -22,13 +22,13 @@ public class UserController {
     @PostMapping("/user/signup")
     public ResponseEntity<Object> signup(@RequestBody SignupRequestDto signupRequestDto) {
         Map<String, Object>data = userService.signup(signupRequestDto);
-        return new ResponseEntity<>(new StatusResponseDto("회원가입 되었습니다.", data), HttpStatus.OK);
+        return new ResponseEntity<>(new StatusResponseDto("회원가입이 되었습니다.", data), HttpStatus.OK);
     }
 
     @PostMapping("/user/login")
     public ResponseEntity<Object> login(@RequestBody LoginDto loginDto) {
         Map<String, Object> data = userService.login(loginDto);
-        return new ResponseEntity<>(new StatusResponseDto("로그인 되었습니다.", data), HttpStatus.OK);
+        return new ResponseEntity<>(new StatusResponseDto("로그인이 되었습니다.", data), HttpStatus.OK);
     }
 
 

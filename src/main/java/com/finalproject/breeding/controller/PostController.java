@@ -1,5 +1,6 @@
 package com.finalproject.breeding.controller;
 
+import com.finalproject.breeding.dto.PostListResponseDto;
 import com.finalproject.breeding.dto.PostRequestDto;
 import com.finalproject.breeding.dto.PostResponseDto;
 import com.finalproject.breeding.error.StatusResponseDto;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -30,24 +32,19 @@ public class PostController {
         return new ResponseEntity<>(new StatusResponseDto("등록 되었습니다.", data), HttpStatus.OK);
     }
 
-    // 카테고리로 게시글 조회하기 서비스 구현 예정,
-    // 코드 상으로 남아있음 -> 주석처리함
-//    @GetMapping("/api/post")
-//    public List<PostListResponseDto> readAllPost(/*@RequestParam(required = false) String postCategory*/) {
-//        return postService.readAllPost(/*postCategory*/);
-//    }
+    // 카테고리로 게시글 조회하기 (all,cute,cool,pretty,comic)
+    @GetMapping("/api/post/category/{categoryname}")
+    public Slice<com.finalproject.breeding.repository.PostMapping> readAllPost(HttpServletRequest httpServletRequest, @PathVariable String categoryname) {
+        Long page = Long.parseLong(httpServletRequest.getParameter("page"));
+        return postService.readCategoryPost(page, categoryname);
+    }
 
     // 게시글 상세 조회
-    @GetMapping("/api/post/{id}")
+    @GetMapping("/api/post/detail/{id}")
     public PostResponseDto getPostDetail(@PathVariable Long id) {
         return postService.getPostDetail(id);
     }
 
-    @GetMapping("/api/post")
-    public Slice<PostMapping> getAllPost(HttpServletRequest httpServletRequest){
-        Long page = Long.parseLong(httpServletRequest.getParameter("page"));
-        return postService.getAll(page);
-    }
 //
 //    //게시글 삭제
 //    @DeleteMapping("/api/post/{id}")
