@@ -4,15 +4,15 @@ import com.finalproject.breeding.UserValidator;
 import com.finalproject.breeding.dto.*;
 import com.finalproject.breeding.error.CustomException;
 import com.finalproject.breeding.error.ErrorCode;
+import com.finalproject.breeding.error.StatusResponseDto;
+import com.finalproject.breeding.model.EmailVerification;
 import com.finalproject.breeding.model.RefreshToken;
 import com.finalproject.breeding.model.User;
 import com.finalproject.breeding.model.UserRole;
 import com.finalproject.breeding.repository.RefreshTokenRepository;
 import com.finalproject.breeding.repository.UserRepository;
-import com.finalproject.breeding.security.UserDetailsImpl;
 import com.finalproject.breeding.securityUtil.SecurityUtil;
 import com.finalproject.breeding.token.TokenProvider;
-import com.nimbusds.jwt.JWT;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -21,11 +21,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -35,9 +35,12 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
+    //이메일 인증 발송 의존성 추가가
+   private final VerificationEmailSenderService verificationEmailSenderService;
 
     @Transactional
     public Map<String, Object> signup(SignupRequestDto signupRequestDto) {
+
         // 회원 아이디 중복 확인
         String username = signupRequestDto.getUsername();
         if (userRepository.existsByUsername(username)) {
@@ -49,14 +52,20 @@ public class UserService {
         if (userRepository.existsByNickname(nickname)) {
             throw new CustomException(ErrorCode.SIGNUP_NICKNAME_DUPLICATE_CHECK);
         }
+
+        //이메일 인증 데이터 저장
+        String userUUID = UUID.randomUUID().toString();
         userRepository.save(
                 User.builder()
                         .username(signupRequestDto.getUsername())
                         .password(passwordEncoder.encode(signupRequestDto.getPassword()))
                         .nickname(signupRequestDto.getNickname())
+                        .emailVerification(false) //
+                        .userUUID(userUUID)
                         .userRole(UserRole.ROLE_USER)
                         .build()
         );
+
         //JWT 토큰 생성
         TokenDto tokenDto = tokenProvider.generateTokenDto(authenticationManagerBuilder.getObject().authenticate(signupRequestDto.toAuthentication()));
 
@@ -66,12 +75,28 @@ public class UserService {
                 .value(tokenDto.getRefreshToken())
                 .build()
         );
+
         // 5. 토큰 반환
         Map<String, Object> data = new HashMap<>();
         data.put("accessToken", tokenDto);
 
-        return data;
+        //이메일 인증 이메일 발송
+        //verificationEmailSenderService.send(signupRequestDto.getUsername(), userUUID);
+        verificationEmailSenderService.send(signupRequestDto.getUsername(), userUUID);
 
+        return data;
+    }
+
+    //이메일 인증 로직
+    @Transactional
+    public void confirmEmail(EmailVerificationRequestDto emailVerificationRequestDto){
+        User user = userRepository.findByUsername(emailVerificationRequestDto.getEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER_INFO));
+        if(user.getUserUUID().equals(emailVerificationRequestDto.getAuthToken())){
+            user.emailVerificationSuccess();
+        }else{
+            throw new RuntimeException();
+        }
     }
 
     @Transactional
@@ -90,6 +115,10 @@ public class UserService {
         User user = userRepository.findByUsername(loginDto.getUsername()).orElseThrow(
                 () -> new CustomException(ErrorCode.LOGIN_NOT_FOUNT_MEMBERID)
         );
+
+        if(!user.isEmailVerification()){
+            throw new CustomException(ErrorCode.NOT_VERIFIED_USER_INFORMATION);
+        }
 
         if (!passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
             throw new CustomException(ErrorCode.LOGIN_PASSWORD_NOT_MATCH);

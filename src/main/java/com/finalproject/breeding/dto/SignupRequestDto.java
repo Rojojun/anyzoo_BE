@@ -1,17 +1,19 @@
 package com.finalproject.breeding.dto;
 
-import com.finalproject.breeding.model.User;
-import com.finalproject.breeding.model.UserRole;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Getter
 public class SignupRequestDto {
+
+    @NotBlank
     private String username;
+    @Size(min = 2, max = 20)
     private String nickname;
+    @NotBlank
     private String password;
     private String img;
 

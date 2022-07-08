@@ -10,4 +10,8 @@ import lombok.Setter;
 public class StatusResponseDto {
     private String msg;
     private Object data;
+
+    public StatusResponseDto(String msg) {
+        this.msg = msg;
+    }
 }

@@ -7,8 +7,6 @@ import com.finalproject.breeding.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -23,6 +21,13 @@ public class UserController {
     public ResponseEntity<Object> signup(@RequestBody SignupRequestDto signupRequestDto) {
         Map<String, Object>data = userService.signup(signupRequestDto);
         return new ResponseEntity<>(new StatusResponseDto("회원가입 되었습니다.", data), HttpStatus.OK);
+    }
+
+    //인증 이메일 발송 진행 api
+    @GetMapping("/confirm-email")
+    public String confirmEmail(@ModelAttribute EmailVerificationRequestDto emailVerificationRequestDto){
+        userService.confirmEmail(emailVerificationRequestDto);
+        return "인증이 완료되었습니다.";
     }
 
     @PostMapping("/user/login")

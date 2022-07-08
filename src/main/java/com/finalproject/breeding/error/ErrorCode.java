@@ -15,6 +15,9 @@ public enum ErrorCode {
     NOT_VALIDCONTENT(HttpStatus.BAD_REQUEST,400,"유효하지 않는 내용입니다."),
     NOT_VALIDURL(HttpStatus.BAD_REQUEST,400,"요효하지 않는 URL 입니다."),
 
+    //유저 인증
+    NOT_VERIFIED_USER_INFORMATION(HttpStatus.INTERNAL_SERVER_ERROR, 500, "인증되지 않은 회원 정보입니다"),
+
     // 회원가입
     SIGNUP_MEMBERID_WRONG_INPUT(HttpStatus.BAD_REQUEST, 400, "아이디 형식을 맞춰주세요"),
     SIGNUP_PASSWORD_WRONG_INPUT(HttpStatus.BAD_REQUEST, 400, "비밀번호 형식을 맞춰주세요"),
