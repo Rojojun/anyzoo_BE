@@ -2,6 +2,7 @@ package com.finalproject.breeding.model.board;
 
 import com.finalproject.breeding.dto.CommunityRequestDto;
 import com.finalproject.breeding.dto.PostRequestDto;
+import com.finalproject.breeding.dto.ReelsRequestDto;
 import com.finalproject.breeding.model.Timestamped;
 import com.finalproject.breeding.model.User;
 import com.finalproject.breeding.model.category.BoardKind;
@@ -21,8 +22,6 @@ public class BoardMain extends Timestamped {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private BoardKind boardKind;
-
-
 
     @Column
     @NotNull
@@ -48,5 +47,11 @@ public class BoardMain extends Timestamped {
         this.content = postRequestDto.getContent();
         this.likeCnt = 0L;
         this.boardKind = BoardKind.POST;
+    }
+
+    public BoardMain(ReelsRequestDto reelsRequestDto) {
+        this.content = reelsRequestDto.getContent();
+        this.likeCnt = 0L;
+        this.boardKind = BoardKind.REELS;
     }
 }

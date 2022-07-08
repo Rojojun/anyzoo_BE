@@ -23,9 +23,11 @@ import java.util.*;
 public class PostService {
     private final PostRepository postRepository;
     private final BoardMainRepository boardMainRepository;
-    public Map<String, Object> registPost(PostRequestDto postRequestDto, User user) {
+    public Map<String, Object> registPost(PostRequestDto postRequestDto,
+                                          User user) {
 
-       Post post = new Post(postRequestDto,boardMainRepository.save(new BoardMain(postRequestDto)),user);
+       Post post = new Post(postRequestDto,boardMainRepository.
+               save(new BoardMain(postRequestDto)),user);
 
         postRepository.save(post);
 

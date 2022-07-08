@@ -1,6 +1,5 @@
 package com.finalproject.breeding.controller;
 
-import com.finalproject.breeding.dto.PostListResponseDto;
 import com.finalproject.breeding.dto.PostRequestDto;
 import com.finalproject.breeding.dto.PostResponseDto;
 import com.finalproject.breeding.error.StatusResponseDto;
