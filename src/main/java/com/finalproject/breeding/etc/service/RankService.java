@@ -1,16 +1,22 @@
 package com.finalproject.breeding.etc.service;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.finalproject.breeding.board.dto.PostResponseDto;
 import com.finalproject.breeding.board.model.Post;
 import com.finalproject.breeding.board.model.category.PostNReelsCategory;
 import com.finalproject.breeding.board.repository.PostRepository;
+import com.finalproject.breeding.etc.model.Timestamped;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -24,21 +30,25 @@ public class RankService {
     @Transactional
     public List<PostResponseDto> getWeekPost(String category) {
 
-        LocalDate date = LocalDate.now().minusDays(7);
+        LocalDate week = LocalDate.now().minusDays(6);
+        LocalTime time = LocalTime.of(0, 0);
+
+        LocalDateTime date = LocalDateTime.of(week, time);
+
         System.out.println(date);
 
         PageRequest pageRequest = PageRequest.of(0, 3);
         switch (category) {
             case "cool":
-                return postRepository.findByPostNReelsCategoryOrderByBoardMainLikeCntDesc(date, PostNReelsCategory.COOL, pageRequest);
+                return postRepository.findPostByPostNReelsCategoryOrderByBoardMainLikeCntDesc(date, PostNReelsCategory.COOL, pageRequest);
             case "cute":
-                return postRepository.findByPostNReelsCategoryOrderByBoardMainLikeCntDesc(date, PostNReelsCategory.CUTE, pageRequest);
+                return postRepository.findPostByPostNReelsCategoryOrderByBoardMainLikeCntDesc(date, PostNReelsCategory.CUTE, pageRequest);
             case "comic":
-                return postRepository.findByPostNReelsCategoryOrderByBoardMainLikeCntDesc(date, PostNReelsCategory.COMIC, pageRequest);
+                return postRepository.findPostByPostNReelsCategoryOrderByBoardMainLikeCntDesc(date, PostNReelsCategory.COMIC, pageRequest);
             case "pretty":
-                return postRepository.findByPostNReelsCategoryOrderByBoardMainLikeCntDesc(date, PostNReelsCategory.PRETTY, pageRequest);
+                return postRepository.findPostByPostNReelsCategoryOrderByBoardMainLikeCntDesc(date, PostNReelsCategory.PRETTY, pageRequest);
             case "all":
-                return postRepository.findByOrderByBoardMainLikeCntDesc(date, pageRequest);
+                return postRepository.findPostByOrderByBoardMainLikeCntDesc(date, pageRequest);
             default:
                 return null;
         }
@@ -47,11 +57,13 @@ public class RankService {
 
     public List<PostResponseDto> getDayPost(){
 
-            LocalDate date = LocalDate.now().minusDays(1);
-            System.out.println(date);
+        LocalDate week = LocalDate.now();
+        LocalTime time = LocalTime.of(0, 0);
+
+        LocalDateTime date = LocalDateTime.of(week, time);
 
             PageRequest pageRequest = PageRequest.of(0, 3);
-            return postRepository.findByOrderByBoardMainLikeCntDesc(date, pageRequest);
+            return postRepository.findPostByOrderByBoardMainLikeCntDesc(date, pageRequest);
         }
 
 }

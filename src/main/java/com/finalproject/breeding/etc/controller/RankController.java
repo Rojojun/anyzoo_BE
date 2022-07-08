@@ -17,11 +17,11 @@ public class RankController {
     private final RankService rankService;
 
 
-    @GetMapping("/api/rank/week/{category}") // 주간랭킹조회(현재날짜기준-7일) category = all, cute, cool, comic
+    @GetMapping("/api/rank/week/{category}") // 주간랭킹조회(현재날짜기준-6일) category = all, cute, cool, comic
     public List<PostResponseDto> getWeekPost(@PathVariable String category){
         return rankService.getWeekPost(category);
     }
 
-    @GetMapping("/api/rank/day")
+    @GetMapping("/api/rank/day") // 일간랭킹 TOP2
     public List<PostResponseDto> getDayPost(){return rankService.getDayPost();}
 }

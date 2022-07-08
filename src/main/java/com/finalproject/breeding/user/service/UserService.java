@@ -55,7 +55,7 @@ public class UserService {
                         .username(signupRequestDto.getUsername())
                         .password(passwordEncoder.encode(signupRequestDto.getPassword()))
                         .nickname(signupRequestDto.getNickname())
-                        .img(signupRequestDto.getImg())
+                        .img(signupRequestDto.getUrl())
                         .userRole(UserRole.ROLE_USER)
                         .build()
         );

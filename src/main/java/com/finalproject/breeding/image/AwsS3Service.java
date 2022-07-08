@@ -149,6 +149,16 @@ public class AwsS3Service {
             throw new AmazonS3Exception("Object " +postImage.getKey()+ " does not exist!");
         }
         amazonS3.deleteObject(bucket, postImage.getKey());
+        postImageRepository.delete(postImage);
     }
 
+    public void removePostImages(Long postId) {
+        List<Long> postImageIdList = postImageRepository.findPostImageIdByPostId(postId);
+        System.out.println(postImageIdList);
+
+        for(Long postImageId : postImageIdList){
+            remove(postImageId);
+        }
+
+    }
 }

@@ -1,10 +1,13 @@
 package com.finalproject.breeding.board.service;
 
 import com.finalproject.breeding.board.dto.CommunityRequestDto;
+import com.finalproject.breeding.board.dto.CommunityResponseDto;
 import com.finalproject.breeding.board.model.BoardMain;
 import com.finalproject.breeding.board.model.Community;
 import com.finalproject.breeding.board.repository.BoardMainRepository;
 import com.finalproject.breeding.board.repository.CommunityRepository;
+import com.finalproject.breeding.error.CustomException;
+import com.finalproject.breeding.error.ErrorCode;
 import com.finalproject.breeding.image.model.CommunityImage;
 import com.finalproject.breeding.user.User;
 import lombok.RequiredArgsConstructor;
@@ -42,5 +45,11 @@ public class CommunityService {
             communityImage.updateToCommunity(community);
         }
     }
+
+    public CommunityResponseDto getCommunityDetail(Long communityId) {
+        Community community = communityRepository.findById(communityId).orElseThrow(()->new CustomException(ErrorCode.POST_NOT_FOUND));
+        return new CommunityResponseDto(community);
+    }
+
 
 }

@@ -1,14 +1,14 @@
 package com.finalproject.breeding.etc.service;
 
+import com.finalproject.breeding.board.model.BoardMain;
+import com.finalproject.breeding.board.repository.BoardMainRepository;
 import com.finalproject.breeding.etc.dto.CommentRequestDto;
 import com.finalproject.breeding.etc.dto.MyDto;
 import com.finalproject.breeding.error.ErrorCode;
-import com.finalproject.breeding.model.Comment;
-import com.finalproject.breeding.model.User;
-import com.finalproject.breeding.model.board.BoardMain;
-import com.finalproject.breeding.repository.BoardMainRepository;
-import com.finalproject.breeding.repository.CommentRepository;
-import com.finalproject.breeding.repository.UserRepository;
+import com.finalproject.breeding.etc.model.Comment;
+import com.finalproject.breeding.etc.repository.CommentRepository;
+import com.finalproject.breeding.user.User;
+import com.finalproject.breeding.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

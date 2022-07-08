@@ -4,6 +4,7 @@ import com.finalproject.breeding.board.dto.PostRequest4EditDto;
 import com.finalproject.breeding.board.dto.PostRequestDto;
 import com.finalproject.breeding.board.dto.PostResponseDto;
 import com.finalproject.breeding.etc.dto.StatusResponseDto;
+import com.finalproject.breeding.image.AwsS3Service;
 import com.finalproject.breeding.user.SecurityUtil;
 import com.finalproject.breeding.user.User;
 import com.finalproject.breeding.board.service.PostService;
@@ -22,6 +23,7 @@ import java.util.Map;
 public class PostController {
     private final PostService postService;
     private final UserService userService;
+    private final AwsS3Service awsS3Service;
 
     @PostMapping("/api/post")
     public ResponseEntity<Object> registPost(@RequestBody PostRequestDto postRequestDto){
@@ -48,6 +50,7 @@ public class PostController {
     @DeleteMapping("/api/post/{id}")
     public ResponseEntity<Object> deletePost(@PathVariable Long id) {
         User user = userService.getUser();
+        awsS3Service.removePostImages(id);
         postService.deletePost(id, user);
         return new ResponseEntity<>(new StatusResponseDto("삭제 되었습니다.", "null"), HttpStatus.OK);
     }

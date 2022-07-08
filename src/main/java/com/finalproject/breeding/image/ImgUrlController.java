@@ -23,12 +23,20 @@ public class ImgUrlController {
     public List<PostImage> uploadPost(@RequestPart(value = "file", required = false)List<MultipartFile> multipartFiles)throws IOException{
         return awsS3Service.uploadPost(multipartFiles,"post");
     }
+
+    @PostMapping("api/post/image/{postId}")
+    public List<PostImage> uploadPost(@RequestPart(value = "file", required = false)List<MultipartFile> multipartFiles,
+                                      @PathVariable Long postId)throws IOException{
+        awsS3Service.removePostImages(postId);
+        return awsS3Service.uploadPost(multipartFiles, "post");
+    }
+
     @PostMapping("/api/community/image")
     public List<CommunityImage> uploadPosts(@RequestPart(value = "file", required = false)List<MultipartFile> multipartFiles)throws IOException{
         return awsS3Service.uploadCommunity(multipartFiles, "community");
     }
 
-    @PostMapping("/api/user/image")
+    @PostMapping("/user/image")
     public UserImage uploadUser(@RequestPart(value = "file", required = false)MultipartFile multipartFile)throws IOException{
         return awsS3Service.uploadUser(multipartFile,"user");
     }

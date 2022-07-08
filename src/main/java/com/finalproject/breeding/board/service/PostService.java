@@ -41,19 +41,6 @@ public class PostService {
         return data;
 
     }
-//    public List<PostListResponseDto> readAllPost(/*String postCategory*/) {
-//        List<Post> postList;
-//        List<PostListResponseDto> postListResponseDtoList = new ArrayList<>();
-//
-//        postList = postRepository.findAll();
-//
-//        for(Post post : postList) {
-//            PostListResponseDto postListResponseDto = new PostListResponseDto(post);
-//            postListResponseDtoList.add(postListResponseDto);
-//        }
-//
-//        return postListResponseDtoList;
-//    }
 
     @Transactional
     public PostResponseDto getPostDetail(Long id) {
@@ -112,8 +99,11 @@ public class PostService {
         if (!Objects.equals(user.getId(), post.getUser().getId())) {
             throw new CustomException(ErrorCode.POST_UPDATE_WRONG_ACCESS);
         }
+        List<PostImage> postImages = requestDto.getPostImages();
+
         post.updatePost(requestDto);
-        postRepository.save(post);
+
+        imageUpdateToPost(postImages, post);
 
         Map<String, Object> data = new HashMap<>();
         data.put("postId", post.getId());
@@ -126,16 +116,5 @@ public class PostService {
             postimage.updateToPost(post);
         }
     }
-//    public List<PostImage> imageSave(List<ImageRequestDto> awsS3) {
-//        List<PostImage> postImages = new ArrayList<>();
-//
-//        if (Optional.ofNullable(awsS3).isPresent()) {
-//            for (ImageRequestDto imageRequestDto : awsS3) {
-//                postImages.add(new PostImage(imageRequestDto));
-//            }
-//        }
-//
-//        return postImageRepository.saveAll(postImages);
-//    }
 
 }

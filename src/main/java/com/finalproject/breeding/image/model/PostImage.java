@@ -12,7 +12,6 @@ import javax.persistence.*;
 @Entity
 public class PostImage {
 
-
     @Id
     @Column(name = "POSTIMAGE_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

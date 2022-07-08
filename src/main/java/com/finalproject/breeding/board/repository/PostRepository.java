@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository <Post, Long> {
@@ -21,11 +22,11 @@ public interface PostRepository extends JpaRepository <Post, Long> {
 
     Slice<PostResponseDto> findPostByOrderByBoardMainLikeCntDesc(PageRequest pageRequest);
 
-    @Query("select p " + "from Post p " + "where p.boardMain.createdAt < :date " +"order by p.boardMain.likeCnt desc " )
-    List<PostResponseDto> findByPostNReelsCategoryOrderByBoardMainLikeCntDesc(LocalDate date, PostNReelsCategory postNReelsCategory, PageRequest pageRequest);
+    @Query("select p " + "from Post p " + "where p.boardMain.createdAt > :date and p.postNReelsCategory = :postNReelsCategory " +"order by p.boardMain.likeCnt desc " )
+    List<PostResponseDto> findPostByPostNReelsCategoryOrderByBoardMainLikeCntDesc(LocalDateTime date, PostNReelsCategory postNReelsCategory, PageRequest pageRequest);
 
-    @Query("select p " + "from Post p " + "where p.boardMain.createdAt < :date " +"order by p.boardMain.likeCnt desc " )
-    List<PostResponseDto> findByOrderByBoardMainLikeCntDesc(LocalDate date, PageRequest pageRequest);
+    @Query("select p " + "from Post p " + "where p.boardMain.createdAt > :date and p.postNReelsCategory = :postNReelsCategory " +"order by p.boardMain.likeCnt desc " )
+    List<PostResponseDto> findPostByOrderByBoardMainLikeCntDesc(LocalDateTime date, PageRequest pageRequest);
 
 
 }
