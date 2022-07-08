@@ -1,7 +1,13 @@
 package com.finalproject.breeding.board.model;
 
 
+<<<<<<< HEAD:src/main/java/com/finalproject/breeding/board/model/Reels.java
 import com.finalproject.breeding.board.model.BoardMain;
+=======
+import com.finalproject.breeding.dto.ReelsRequestDto;
+import com.finalproject.breeding.model.User;
+import com.finalproject.breeding.model.category.PostNReelsCategory;
+>>>>>>> hojun-dev:src/main/java/com/finalproject/breeding/model/board/Reels.java
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,15 +27,39 @@ public class Reels {
     @OneToOne
     private BoardMain boardMain;
 
-   /* @JoinColumn(name = "POSTCATEGORY_ID")
+    @JoinColumn(name = "USER_ID")
     @ManyToOne
-    private PostNReelsCategory postNReelsCategory;*/
+    private User user;
+
+    @JoinColumn
+    @Enumerated(EnumType.STRING)
+    private PostNReelsCategory postNReelsCategory;
 
     @Column
-    @NotNull
     private String video;
 
     @Column
-    @NotNull
     private String titleImg;
+
+    public Reels(ReelsRequestDto reelsRequestDto, BoardMain boardMain, User user) {
+        this.boardMain = boardMain;
+        this.user = user;
+        this.video = reelsRequestDto.getVideo();
+        this.titleImg = reelsRequestDto.getTitleImg();
+
+        switch (reelsRequestDto.getCategoryName()) {
+            case "comic":
+                this.postNReelsCategory = PostNReelsCategory.COMIC;
+                break;
+            case "cool":
+                this.postNReelsCategory = PostNReelsCategory.COOL;
+                break;
+            case "pretty":
+                this.postNReelsCategory = PostNReelsCategory.PRETTY;
+                break;
+            case "cute":
+                this.postNReelsCategory = PostNReelsCategory.CUTE;
+                break;
+        }
+    }
 }
