@@ -11,7 +11,11 @@ import javax.persistence.*;
 @Getter
 @Entity
 @NoArgsConstructor
+<<<<<<< HEAD:src/main/java/com/finalproject/breeding/user/User.java
 public class User extends Timestamped {
+=======
+public class User extends Timestamped{
+>>>>>>> parent of 2b69184... Merge branch 'jihun-dev' into main:src/main/java/com/finalproject/breeding/model/User.java
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;

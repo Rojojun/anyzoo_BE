@@ -8,6 +8,7 @@ import com.finalproject.breeding.user.UserEditDto;
 import com.finalproject.breeding.user.dto.responseDto.TokenDto;
 import com.finalproject.breeding.error.CustomException;
 import com.finalproject.breeding.error.ErrorCode;
+<<<<<<< HEAD:src/main/java/com/finalproject/breeding/user/service/UserService.java
 import com.finalproject.breeding.etc.model.RefreshToken;
 import com.finalproject.breeding.user.User;
 import com.finalproject.breeding.user.UserRole;
@@ -15,6 +16,16 @@ import com.finalproject.breeding.user.repository.RefreshTokenRepository;
 import com.finalproject.breeding.user.repository.UserRepository;
 import com.finalproject.breeding.user.SecurityUtil;
 import com.finalproject.breeding.user.token.TokenProvider;
+=======
+import com.finalproject.breeding.model.RefreshToken;
+import com.finalproject.breeding.model.User;
+import com.finalproject.breeding.model.UserRole;
+import com.finalproject.breeding.repository.RefreshTokenRepository;
+import com.finalproject.breeding.repository.UserRepository;
+import com.finalproject.breeding.security.UserDetailsImpl;
+import com.finalproject.breeding.securityUtil.SecurityUtil;
+import com.finalproject.breeding.token.TokenProvider;
+>>>>>>> parent of 2b69184... Merge branch 'jihun-dev' into main:src/main/java/com/finalproject/breeding/service/UserService.java
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -23,6 +34,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
 import java.util.HashMap;
@@ -55,7 +67,10 @@ public class UserService {
                         .username(signupRequestDto.getUsername())
                         .password(passwordEncoder.encode(signupRequestDto.getPassword()))
                         .nickname(signupRequestDto.getNickname())
+<<<<<<< HEAD:src/main/java/com/finalproject/breeding/user/service/UserService.java
                         .img(signupRequestDto.getUrl())
+=======
+>>>>>>> parent of 2b69184... Merge branch 'jihun-dev' into main:src/main/java/com/finalproject/breeding/service/UserService.java
                         .userRole(UserRole.ROLE_USER)
                         .build()
         );
@@ -70,7 +85,11 @@ public class UserService {
         );
         // 5. 토큰 반환
         Map<String, Object> data = new HashMap<>();
+<<<<<<< HEAD:src/main/java/com/finalproject/breeding/user/service/UserService.java
         data.put("token", tokenDto);
+=======
+        data.put("accessToken", tokenDto);
+>>>>>>> parent of 2b69184... Merge branch 'jihun-dev' into main:src/main/java/com/finalproject/breeding/service/UserService.java
 
         return data;
 
