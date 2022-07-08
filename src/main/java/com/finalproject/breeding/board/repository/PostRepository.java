@@ -1,8 +1,10 @@
 package com.finalproject.breeding.board.repository;
 
 import com.finalproject.breeding.board.dto.PostResponseDto;
+import com.finalproject.breeding.board.model.category.BoardKind;
 import com.finalproject.breeding.board.model.category.PostNReelsCategory;
 import com.finalproject.breeding.board.model.Post;
+import com.finalproject.breeding.user.User;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,6 +13,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface PostRepository extends JpaRepository <Post, Long> {
     //List<Post> findByOrderByLikeCntDesc();
@@ -29,4 +32,7 @@ public interface PostRepository extends JpaRepository <Post, Long> {
     List<PostResponseDto> findPostByOrderByBoardMainLikeCntDesc(LocalDateTime date, PageRequest pageRequest);
 
 
+    Post findByBoardMainId(Long boardMainId);
+
+    Slice<PostResponseDto> findAllByUserAndBoardMainBoardKind(PageRequest pageRequest, User user, BoardKind post);
 }

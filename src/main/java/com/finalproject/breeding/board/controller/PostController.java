@@ -3,6 +3,7 @@ package com.finalproject.breeding.board.controller;
 import com.finalproject.breeding.board.dto.PostRequest4EditDto;
 import com.finalproject.breeding.board.dto.PostRequestDto;
 import com.finalproject.breeding.board.dto.PostResponseDto;
+import com.finalproject.breeding.board.model.Post;
 import com.finalproject.breeding.etc.dto.StatusResponseDto;
 import com.finalproject.breeding.image.AwsS3Service;
 import com.finalproject.breeding.user.SecurityUtil;
@@ -23,7 +24,6 @@ import java.util.Map;
 public class PostController {
     private final PostService postService;
     private final UserService userService;
-    private final AwsS3Service awsS3Service;
 
     @PostMapping("/api/post")
     public ResponseEntity<Object> registPost(@RequestBody PostRequestDto postRequestDto){
@@ -40,27 +40,26 @@ public class PostController {
     }
 
     // 게시글 상세 조회
-    @GetMapping("/api/post/{id}")
-    public PostResponseDto getPostDetail(@PathVariable Long id) {
-        return postService.getPostDetail(id);
+    @GetMapping("/api/post/{boardMainId}")
+    public PostResponseDto getPostDetail(@PathVariable Long boardMainId) {
+        return postService.getPostDetail(boardMainId);
     }
 
 
     //게시글 삭제
-    @DeleteMapping("/api/post/{id}")
-    public ResponseEntity<Object> deletePost(@PathVariable Long id) {
+    @DeleteMapping("/api/post/{boardMainId}")
+    public ResponseEntity<Object> deletePost(@PathVariable Long boardMainId) {
         User user = userService.getUser();
-        awsS3Service.removePostImages(id);
-        postService.deletePost(id, user);
+        postService.deletePost(boardMainId, user);
         return new ResponseEntity<>(new StatusResponseDto("삭제 되었습니다.", "null"), HttpStatus.OK);
     }
 
     // 게시글 수정
-    @PatchMapping("/api/post/{id}")
-    public ResponseEntity<Object> updatePost(@PathVariable Long id,
+    @PatchMapping("/api/post/{boardMainId}")
+    public ResponseEntity<Object> updatePost(@PathVariable Long boardMainId,
                            @RequestBody PostRequest4EditDto requestDto) {
         User user = userService.getUser();
-        Map<String, Object> data = postService.updatePost(id, requestDto, user);
+        Map<String, Object> data = postService.updatePost(boardMainId, requestDto, user);
         return new ResponseEntity<>(new StatusResponseDto("수정 되었습니다.", data), HttpStatus.OK);
     }
 }

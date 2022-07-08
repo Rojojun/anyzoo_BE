@@ -1,8 +1,11 @@
 package com.finalproject.breeding.etc.service;
 
+import com.finalproject.breeding.board.dto.PostResponseDto;
 import com.finalproject.breeding.board.model.BoardMain;
 import com.finalproject.breeding.board.model.category.BoardKind;
 import com.finalproject.breeding.board.repository.BoardMainRepository;
+import com.finalproject.breeding.board.repository.CommunityRepository;
+import com.finalproject.breeding.board.repository.PostRepository;
 import com.finalproject.breeding.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -14,11 +17,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class MyPageService {
 
-//    private final BoardMainRepository boardMainRepository;
-//
-//    public Slice<BoardMain> getMyBoard(Long page, String boardname, User user) {
-//        PageRequest pageRequest = PageRequest.of(Math.toIntExact(page), 4, Sort.by(Sort.Direction.DESC, "createdAt"));
-//
-//        return  boardMainRepository.findByBoardKindAndUser(pageRequest, boardKind, user);
-//    }
+    private final PostRepository postRepository;
+    private final CommunityRepository communityRepository;
+
+
+
+
 }

@@ -25,7 +25,7 @@ public class PostResponseDto {
     private List<PostImage> img;
 
     public PostResponseDto(Post post) {
-        this.postId = post.getId();
+       // this.postId = post.getId();
         this.boardKind = post.getBoardMain().getBoardKind().name();
         this.nickname = post.getUser().getNickname();
         this.userProfileImg = post.getUser().getImg();
@@ -36,4 +36,6 @@ public class PostResponseDto {
         this.dateTime = post.getBoardMain().getCreatedAt();
         this.postCategory = post.getPostNReelsCategory().name();
     }
+
+
 }

@@ -3,6 +3,7 @@ package com.finalproject.breeding.board.service;
 import com.finalproject.breeding.board.dto.PostRequest4EditDto;
 import com.finalproject.breeding.board.dto.PostRequestDto;
 import com.finalproject.breeding.board.dto.PostResponseDto;
+import com.finalproject.breeding.image.AwsS3Service;
 import com.finalproject.breeding.image.model.PostImage;
 import com.finalproject.breeding.board.model.category.PostNReelsCategory;
 import com.finalproject.breeding.error.CustomException;
@@ -26,6 +27,7 @@ import java.util.*;
 public class PostService {
     private final PostRepository postRepository;
     private final BoardMainRepository boardMainRepository;
+    private final AwsS3Service awsS3Service;
     public Map<String, Object> registPost(PostRequestDto postRequestDto, User user) {
 
         List<PostImage> postImages = postRequestDto.getPostImages();
@@ -43,8 +45,8 @@ public class PostService {
     }
 
     @Transactional
-    public PostResponseDto getPostDetail(Long id) {
-        Post post = postRepository.findById(id).orElseThrow(()->new CustomException(ErrorCode.POST_NOT_FOUND));
+    public PostResponseDto getPostDetail(Long boardMainId) {
+        Post post = postRepository.findByBoardMainId(boardMainId);
         return new PostResponseDto(post);
     }
 
@@ -81,24 +83,23 @@ public class PostService {
 
 
     // 삭제하기
-    public void deletePost(Long id, User user) {
-        Post post = postRepository.findById(id)
-                .orElseThrow(()->new CustomException(ErrorCode.POST_NOT_FOUND));
+    public void deletePost(Long boardMainId, User user) {
+        Post post = postRepository.findByBoardMainId(boardMainId);
 
         if (!Objects.equals(user.getId(), post.getUser().getId())) {
             throw new CustomException(ErrorCode.POST_DELETE_WRONG_ACCESS);
         }
-
-        postRepository.deleteById(id);
+        awsS3Service.removePostImages(post.getId());
+        postRepository.delete(post);
     }
 
     @Transactional
-    public Map<String, Object> updatePost(Long id, PostRequest4EditDto requestDto, User user) {
-        Post post = postRepository.findById(id)
-                .orElseThrow(()->new CustomException(ErrorCode.POST_NOT_FOUND));
+    public Map<String, Object> updatePost(Long boardMainId, PostRequest4EditDto requestDto, User user) {
+        Post post = postRepository.findByBoardMainId(boardMainId);
         if (!Objects.equals(user.getId(), post.getUser().getId())) {
             throw new CustomException(ErrorCode.POST_UPDATE_WRONG_ACCESS);
         }
+
         List<PostImage> postImages = requestDto.getPostImages();
 
         post.updatePost(requestDto);
