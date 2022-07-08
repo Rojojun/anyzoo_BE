@@ -1,12 +1,10 @@
-package com.finalproject.breeding.controller;
+package com.finalproject.breeding.board.controller;
 
-import com.amazonaws.Response;
-import com.finalproject.breeding.dto.ReelsRequestDto;
-import com.finalproject.breeding.error.StatusResponseDto;
-import com.finalproject.breeding.model.User;
-import com.finalproject.breeding.model.board.Reels;
-import com.finalproject.breeding.service.ReelsService;
-import com.finalproject.breeding.service.UserService;
+import com.finalproject.breeding.board.dto.ReelsRequestDto;
+import com.finalproject.breeding.etc.dto.StatusResponseDto;
+import com.finalproject.breeding.board.service.ReelsService;
+import com.finalproject.breeding.user.User;
+import com.finalproject.breeding.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

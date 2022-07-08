@@ -1,7 +1,6 @@
-package com.finalproject.breeding.repository;
+package com.finalproject.breeding.board.repository;
 
-import com.finalproject.breeding.model.board.Reels;
-import com.finalproject.breeding.model.category.PostNReelsCategory;
+import com.finalproject.breeding.board.model.Reels;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;

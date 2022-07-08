@@ -1,18 +1,10 @@
 package com.finalproject.breeding.board.model;
 
-<<<<<<< HEAD:src/main/java/com/finalproject/breeding/board/model/BoardMain.java
 import com.finalproject.breeding.board.dto.CommunityRequestDto;
 import com.finalproject.breeding.board.dto.PostRequestDto;
+import com.finalproject.breeding.board.dto.ReelsRequestDto;
 import com.finalproject.breeding.etc.model.Timestamped;
 import com.finalproject.breeding.board.model.category.BoardKind;
-=======
-import com.finalproject.breeding.dto.CommunityRequestDto;
-import com.finalproject.breeding.dto.PostRequestDto;
-import com.finalproject.breeding.dto.ReelsRequestDto;
-import com.finalproject.breeding.model.Timestamped;
-import com.finalproject.breeding.model.User;
-import com.finalproject.breeding.model.category.BoardKind;
->>>>>>> hojun-dev:src/main/java/com/finalproject/breeding/model/board/BoardMain.java
 import com.sun.istack.NotNull;
 import lombok.*;
 
@@ -57,16 +49,15 @@ public class BoardMain extends Timestamped {
         this.boardKind = BoardKind.POST;
     }
 
-<<<<<<< HEAD:src/main/java/com/finalproject/breeding/board/model/BoardMain.java
-    public BoardMain(CommunityRequestDto communityRequestDto){
+    public BoardMain(CommunityRequestDto communityRequestDto) {
         this.content = communityRequestDto.getContent();
         this.likeCnt = 0L;
         this.boardKind = BoardKind.COMMUNITY;
-=======
+    }
+
     public BoardMain(ReelsRequestDto reelsRequestDto) {
         this.content = reelsRequestDto.getContent();
         this.likeCnt = 0L;
         this.boardKind = BoardKind.REELS;
->>>>>>> hojun-dev:src/main/java/com/finalproject/breeding/model/board/BoardMain.java
     }
 }

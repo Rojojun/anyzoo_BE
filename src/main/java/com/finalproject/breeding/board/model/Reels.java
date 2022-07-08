@@ -1,14 +1,10 @@
 package com.finalproject.breeding.board.model;
 
 
-<<<<<<< HEAD:src/main/java/com/finalproject/breeding/board/model/Reels.java
+import com.finalproject.breeding.board.dto.ReelsRequestDto;
 import com.finalproject.breeding.board.model.BoardMain;
-=======
-import com.finalproject.breeding.dto.ReelsRequestDto;
-import com.finalproject.breeding.model.User;
-import com.finalproject.breeding.model.category.PostNReelsCategory;
->>>>>>> hojun-dev:src/main/java/com/finalproject/breeding/model/board/Reels.java
-import com.sun.istack.NotNull;
+import com.finalproject.breeding.board.model.category.PostNReelsCategory;
+import com.finalproject.breeding.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

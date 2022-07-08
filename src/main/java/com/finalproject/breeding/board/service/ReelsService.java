@@ -1,12 +1,12 @@
-package com.finalproject.breeding.service;
+package com.finalproject.breeding.board.service;
 
-import com.finalproject.breeding.dto.ReelsRequestDto;
-import com.finalproject.breeding.model.User;
-import com.finalproject.breeding.model.board.BoardMain;
-import com.finalproject.breeding.model.board.Reels;
-import com.finalproject.breeding.repository.BoardMainRepository;
-import com.finalproject.breeding.repository.ReelsRepository;
-import com.finalproject.breeding.repository.UserRepository;
+import com.finalproject.breeding.board.dto.ReelsRequestDto;
+import com.finalproject.breeding.board.model.BoardMain;
+import com.finalproject.breeding.board.model.Reels;
+import com.finalproject.breeding.board.repository.BoardMainRepository;
+import com.finalproject.breeding.board.repository.ReelsRepository;
+import com.finalproject.breeding.user.User;
+import com.finalproject.breeding.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
