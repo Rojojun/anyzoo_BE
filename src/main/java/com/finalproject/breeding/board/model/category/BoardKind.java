@@ -4,6 +4,6 @@ public enum BoardKind {
     POST,
     REELS,
     COMMUNITY,
-    WITHPOST
+    Together
 
 }

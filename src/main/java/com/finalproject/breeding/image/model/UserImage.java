@@ -1,6 +1,8 @@
 package com.finalproject.breeding.image.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.finalproject.breeding.board.model.Post;
+import com.finalproject.breeding.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,13 +13,12 @@ import javax.persistence.*;
 @Entity
 public class UserImage {
 
-
     @Id
     @Column(name = "USERIMAGE_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = true, name = "USER_ID")
+    @Column(name = "USER_ID")
     @JsonIgnore
     private Long userId;
 
@@ -31,5 +32,8 @@ public class UserImage {
     public UserImage(String key, String path) {
         this.url = path;
         this.key = key;
+    }
+    public void updateToUser(User user){
+        this.userId = user.getId();
     }
 }

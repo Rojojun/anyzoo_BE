@@ -17,7 +17,7 @@ public class PostImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = true, name = "POST_ID")
+    @Column(name = "POST_ID")
     @JsonIgnore
     private Long postId;
 

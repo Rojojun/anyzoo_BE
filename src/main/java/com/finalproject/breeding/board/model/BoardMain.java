@@ -3,6 +3,7 @@ package com.finalproject.breeding.board.model;
 import com.finalproject.breeding.board.dto.CommunityRequestDto;
 import com.finalproject.breeding.board.dto.PostRequestDto;
 import com.finalproject.breeding.board.dto.ReelsRequestDto;
+import com.finalproject.breeding.board.dto.TogetherRequestDto;
 import com.finalproject.breeding.etc.model.Timestamped;
 import com.finalproject.breeding.board.model.category.BoardKind;
 import com.sun.istack.NotNull;
@@ -59,5 +60,10 @@ public class BoardMain extends Timestamped {
         this.content = reelsRequestDto.getContent();
         this.likeCnt = 0L;
         this.boardKind = BoardKind.REELS;
+    }
+    public BoardMain(TogetherRequestDto togetherRequestDto){
+        this.content = togetherRequestDto.getContent();
+        this.likeCnt = 0L;
+        this.boardKind = BoardKind.Together;
     }
 }
