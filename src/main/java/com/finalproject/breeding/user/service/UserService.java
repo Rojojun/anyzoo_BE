@@ -104,7 +104,6 @@ public class UserService {
         User user = userRepository.findByUsername(loginDto.getUsername()).orElseThrow(
                 () -> new CustomException(ErrorCode.LOGIN_NOT_FOUNT_MEMBERID)
         );
-        String username = user.getUsername();
 
         if (!passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
             throw new CustomException(ErrorCode.LOGIN_PASSWORD_NOT_MATCH);
