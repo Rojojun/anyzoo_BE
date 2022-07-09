@@ -58,7 +58,7 @@ public class AwsS3Service {
         List<PostImage> postImages = new ArrayList<>();
 
        for (MultipartFile multipartFile : multipartFiles){
-           File file = convertMultipartFileToFile(multipartFile).orElseThrow(()->new IllegalArgumentException("MultipartFile -> File convert fail"));
+           File file = convertMultipartFileToFile(multipartFile).orElseThrow(()->new CustomException(ErrorCode.IMAGE_UPLOAD_ERROR));
            String key = randomFileName(file, dirName);
            String path = putS3(file, key);
            removeFile(file);
@@ -85,7 +85,7 @@ public class AwsS3Service {
 
     public UserImage uploadUser(MultipartFile multipartFile, String dirName) throws IOException, java.io.IOException {
         File file = convertMultipartFileToFile(multipartFile)
-                .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File convert fail"));
+                .orElseThrow(() -> new CustomException(ErrorCode.IMAGE_UPLOAD_ERROR));
 
         String key = randomFileName(file, dirName);
         String path = putS3(file, key);

@@ -30,7 +30,7 @@ public class User extends Timestamped{
     private String nickname;
 
     @OneToOne
-    @JoinColumn
+    @JoinColumn(name = "USERIMAGE_ID")
     private UserImage userImage;
     @Column
     @NotNull
@@ -57,8 +57,8 @@ public class User extends Timestamped{
         this.password = password;
         this.nickname = nickname;
         this.userImage = userImage;
-        this.exp = 0L;
         this.userRole = userRole;
+        this.exp = 0L;
         this.tier = 0;
         this.follower = 0L;
         this.following = 0L;
