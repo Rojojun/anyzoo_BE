@@ -1,5 +1,7 @@
 package com.finalproject.breeding.user.service;
 
+import com.finalproject.breeding.image.model.UserImage;
+import com.finalproject.breeding.image.repository.UserImageRepository;
 import com.finalproject.breeding.user.UserValidator;
 import com.finalproject.breeding.user.dto.requestDto.LoginDto;
 import com.finalproject.breeding.user.dto.requestDto.SignupRequestDto;
@@ -36,9 +38,11 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final UserImageRepository userImageRepository;
 
     @Transactional
-    public Map<String, Object> signup(SignupRequestDto signupRequestDto) {
+    public TokenDto signup(SignupRequestDto signupRequestDto) {
+        UserImage userImage = signupRequestDto.getUserImage();
         // 회원 아이디 중복 확인
         String username = signupRequestDto.getUsername();
         if (userRepository.existsByUsername(username)) {
@@ -50,15 +54,16 @@ public class UserService {
         if (userRepository.existsByNickname(nickname)) {
             throw new CustomException(ErrorCode.SIGNUP_NICKNAME_DUPLICATE_CHECK);
         }
-        userRepository.save(
-                User.builder()
-                        .username(signupRequestDto.getUsername())
-                        .password(passwordEncoder.encode(signupRequestDto.getPassword()))
-                        .nickname(signupRequestDto.getNickname())
-                        .img(signupRequestDto.getUrl())
-                        .userRole(UserRole.ROLE_USER)
-                        .build()
-        );
+        userImage.updateToUser(
+                userRepository.save(
+                        User.builder()
+                            .username(signupRequestDto.getUsername())
+                            .password(passwordEncoder.encode(signupRequestDto.getPassword()))
+                            .nickname(signupRequestDto.getNickname())
+                            .userImage(userImage)
+                            .userRole(UserRole.ROLE_USER)
+                            .build()));
+
         //JWT 토큰 생성
         TokenDto tokenDto = tokenProvider.generateTokenDto(authenticationManagerBuilder.getObject().authenticate(signupRequestDto.toAuthentication()));
 
@@ -68,12 +73,7 @@ public class UserService {
                 .value(tokenDto.getRefreshToken())
                 .build()
         );
-        // 5. 토큰 반환
-        Map<String, Object> data = new HashMap<>();
-        data.put("token", tokenDto);
-
-        return data;
-
+        return tokenDto;
     }
 
     @Transactional
