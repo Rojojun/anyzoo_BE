@@ -3,11 +3,14 @@ package com.finalproject.breeding.board.service;
 import com.finalproject.breeding.board.dto.PostRequest4EditDto;
 import com.finalproject.breeding.board.dto.PostRequestDto;
 import com.finalproject.breeding.board.dto.PostResponseDto;
+import com.finalproject.breeding.etc.service.TierService;
 import com.finalproject.breeding.image.AwsS3Service;
+import com.finalproject.breeding.image.ImageRequestDto;
 import com.finalproject.breeding.image.model.PostImage;
 import com.finalproject.breeding.board.model.category.PostNReelsCategory;
 import com.finalproject.breeding.error.CustomException;
 import com.finalproject.breeding.error.ErrorCode;
+import com.finalproject.breeding.image.repository.PostImageRepository;
 import com.finalproject.breeding.user.User;
 import com.finalproject.breeding.board.model.BoardMain;
 import com.finalproject.breeding.board.model.Post;
@@ -27,15 +30,17 @@ import java.util.*;
 public class PostService {
     private final PostRepository postRepository;
     private final BoardMainRepository boardMainRepository;
+    private final PostImageRepository postImageRepository;
     private final AwsS3Service awsS3Service;
+    private final TierService tierService;
     public Map<String, Object> registPost(PostRequestDto postRequestDto, User user) {
-
         List<PostImage> postImages = postRequestDto.getPostImages();
 
         Post post = new Post(postRequestDto,boardMainRepository.save(new BoardMain(postRequestDto)),user, postImages);
 
         imageUpdateToPost(postImages, postRepository.save(post));
         //postRepository.save(post);
+        tierService.upTenExp(user);
 
         Map<String, Object> data = new HashMap<>();
         data.put("postId", post.getId());
@@ -53,7 +58,7 @@ public class PostService {
 
     @Transactional
     public Slice<PostResponseDto> readCategoryPost(Long page, String category) {
-        PageRequest pageRequest = PageRequest.of(Math.toIntExact(page), 4, Sort.by(Sort.Direction.DESC, "boardMain.createdAt"));
+        PageRequest pageRequest = PageRequest.of(Math.toIntExact(page), 5, Sort.by(Sort.Direction.DESC, "boardMain.createdAt"));
         switch (category) {
             case "cool":
                 return postRepository.findPostByPostNReelsCategory(pageRequest, PostNReelsCategory.COOL);

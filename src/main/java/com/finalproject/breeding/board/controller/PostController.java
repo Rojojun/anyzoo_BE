@@ -51,7 +51,7 @@ public class PostController {
     public ResponseEntity<Object> deletePost(@PathVariable Long boardMainId) {
         User user = userService.getUser();
         postService.deletePost(boardMainId, user);
-        return new ResponseEntity<>(new StatusResponseDto("삭제 되었습니다.", "null"), HttpStatus.OK);
+        return new ResponseEntity<>(new StatusResponseDto("삭제 되었습니다.", ""), HttpStatus.OK);
     }
 
     // 게시글 수정

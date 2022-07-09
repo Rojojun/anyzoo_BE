@@ -31,7 +31,7 @@ public class CommunityResponseDto {
         this.communityId = community.getId();
         this.boardKind = community.getBoardMain().getBoardKind().name();
         this.nickname = community.getUser().getNickname();
-        this.userProfileImg = community.getUser().getImg();
+        this.userProfileImg = community.getUser().getUserImage().getUrl();
         this.img = community.getCommunityImages();
         this.boardMainId = community.getBoardMain().getId();
         this.contents = community.getBoardMain().getContent();

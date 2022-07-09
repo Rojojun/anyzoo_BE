@@ -4,6 +4,7 @@ import com.finalproject.breeding.board.dto.PostResponseDto;
 import com.finalproject.breeding.board.model.category.BoardKind;
 import com.finalproject.breeding.board.model.category.PostNReelsCategory;
 import com.finalproject.breeding.board.model.Post;
+import com.finalproject.breeding.etc.dto.MyPagePostResponseDto;
 import com.finalproject.breeding.user.User;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
@@ -34,5 +35,6 @@ public interface PostRepository extends JpaRepository <Post, Long> {
 
     Post findByBoardMainId(Long boardMainId);
 
-    Slice<PostResponseDto> findAllByUserAndBoardMainBoardKind(PageRequest pageRequest, User user, BoardKind post);
+
+    Slice<MyPagePostResponseDto> findByUserNicknameOrderByBoardMainCreatedAtDesc(PageRequest pageRequest, String nickname);
 }

@@ -24,8 +24,8 @@ public class UserController {
 
     @PostMapping("/user/signup")
     public ResponseEntity<Object> signup(@RequestBody SignupRequestDto signupRequestDto) {
-        Map<String, Object>data = userService.signup(signupRequestDto);
-        return new ResponseEntity<>(new StatusResponseDto("회원가입이 되었습니다.", data), HttpStatus.OK);
+
+        return new ResponseEntity<>(new StatusResponseDto("회원가입이 되었습니다.", userService.signup(signupRequestDto)), HttpStatus.OK);
     }
 
     @PostMapping("/user/login")
@@ -54,11 +54,10 @@ public class UserController {
         return new ResponseEntity<>(new StatusResponseDto("토큰이 재발급 되었습니다.", tokenDto), HttpStatus.OK);
     }
 
-    @GetMapping("/user/userInfo")
+    @GetMapping("/api/user/userInfo")
     @ResponseBody
     public UserInfo Session() {
-       User user = userService.getUser();
-       return new UserInfo(user.getUsername(), user.getNickname(), user.getTier(), user.getExp(), user.getImg());
+       return new UserInfo(userService.getUser());
     }
 
     //@ExceptionHandler(Exception.class)

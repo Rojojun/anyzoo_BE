@@ -32,7 +32,7 @@ public class ImgUrlController {
     }
 
     @PostMapping("/api/community/image")
-    public List<CommunityImage> uploadPosts(@RequestPart(value = "file", required = false)List<MultipartFile> multipartFiles)throws IOException{
+    public List<CommunityImage> uploadCommunity(@RequestPart(value = "file", required = false)List<MultipartFile> multipartFiles)throws IOException{
         return awsS3Service.uploadCommunity(multipartFiles, "community");
     }
 
