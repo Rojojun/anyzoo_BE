@@ -23,6 +23,7 @@ import java.nio.charset.Charset;
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
+
     private final BoardMainRepository boardMainRepository;
     private final UserRepository userRepository;
 
@@ -34,14 +35,17 @@ public class CommentService {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        User user = userRepository.findByUsername(username).orElseThrow(
-                ()-> new NullPointerException("유저가 존재하지 않습니다."));
-
         BoardMain boardMain = boardMainRepository.findById(boardMainId).orElseThrow(
-                ()-> new NullPointerException("게시글이 존재하지 않습니다."));
+                () -> new NullPointerException("게시글이 존재하지 않습니다."));
 
-        Comment comment = new Comment(requestDto,boardMain,user);
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new NullPointerException("유저가 존재하지 않습니다."));
+
+        Comment comment = new Comment(requestDto, boardMain, user);
+
         commentRepository.save(comment);
+        boardMain.plusCommentCnt(boardMain);
+
 
         dto.setStatus(ErrorCode.OK);
         dto.setData("boardMainId :"+boardMainId);

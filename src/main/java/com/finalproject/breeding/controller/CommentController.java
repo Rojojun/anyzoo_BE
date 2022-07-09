@@ -4,6 +4,8 @@ import com.finalproject.breeding.dto.CommentRequestDto;
 import com.finalproject.breeding.dto.MyDto;
 import com.finalproject.breeding.error.ErrorCode;
 import com.finalproject.breeding.model.Comment;
+import com.finalproject.breeding.model.board.BoardMain;
+import com.finalproject.breeding.repository.BoardMainRepository;
 import com.finalproject.breeding.repository.CommentMapping;
 import com.finalproject.breeding.repository.CommentRepository;
 import com.finalproject.breeding.securityUtil.SecurityUtil;
@@ -26,6 +28,8 @@ public class CommentController {
 
     private final CommentRepository commentRepository;
 
+    private final BoardMainRepository boardMainRepository;
+
     private final CommentService commentService;
 
 
@@ -40,8 +44,11 @@ public class CommentController {
     }
 
     //댓글 삭제
-    @DeleteMapping("/api/comment/edit/{commentId}")
-    public ResponseEntity<MyDto> deleteComment(@PathVariable Long commentId){
+    @DeleteMapping("/api/comment/edit/{boardMainId}/{commentId}")
+    public ResponseEntity<MyDto> deleteComment(@PathVariable Long commentId, @PathVariable Long boardMainId){
+
+        BoardMain boardMain = boardMainRepository.findById(boardMainId).orElseThrow(
+                () -> new NullPointerException("게시글이 존재하지 않습니다."));
 
         MyDto dto = new MyDto();
         HttpHeaders header = new HttpHeaders();
@@ -52,7 +59,10 @@ public class CommentController {
         String userId1 =a.get().getUser().getUsername();
 
         if (Objects.equals(userId, userId1)) {   //댓글의 닉네임와 일치한다면
+
+            boardMain.minusCommentCnt(boardMain);
             commentRepository.deleteById(commentId);
+
             dto.setStatus(ErrorCode.OK);
             dto.setData("commentId :"+commentId);
             dto.setMessage("댓글 삭제!");
@@ -103,8 +113,10 @@ public class CommentController {
     //댓글 수 불러오기
     @GetMapping("/api/comment/count/{boardMainId}")
     public Long getCommnetCount(@PathVariable Long boardMainId){
-        Long count= (long) commentRepository.findAllByBoardMain_Id(boardMainId).size();
-        return count;
+        BoardMain boardMain = boardMainRepository.findById(boardMainId).orElseThrow(
+                () -> new NullPointerException("게시글이 존재하지 않습니다."));
+        return boardMain.getCommentCnt();
+
     }
 
 

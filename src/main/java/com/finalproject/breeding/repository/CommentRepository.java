@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<CommentMapping>findAllByBoardMain_Id(Long boardMainId);
 
+
 }
