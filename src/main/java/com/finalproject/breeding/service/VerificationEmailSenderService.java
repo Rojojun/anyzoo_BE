@@ -3,13 +3,10 @@ package com.finalproject.breeding.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
-import javax.mail.Message;
-import javax.mail.internet.MimeMessage;
 
 @Service
 @EnableAsync
@@ -32,7 +29,7 @@ public class VerificationEmailSenderService {
 //
 //        //simpleMailMessage.setText("http://localhost:8090/confirm-email?email="+email+"&authToken="+authToken);
 //        simpleMailMessage.setText(msg);
-        simpleMailMessage.setText("http://localhost:8090/confirm-email?email="+email+"&authToken="+authToken);
+        simpleMailMessage.setText("http://localhost:8090/user/confirm/emailVerification?email="+email+"&authToken="+authToken);
 
 
         javaMailSender.send(simpleMailMessage);

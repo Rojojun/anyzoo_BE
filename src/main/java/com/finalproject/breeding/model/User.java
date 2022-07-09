@@ -1,5 +1,6 @@
 package com.finalproject.breeding.model;
 
+import com.finalproject.breeding.dto.NewPasswordDto;
 import com.finalproject.breeding.dto.UserEditDto;
 import com.sun.istack.NotNull;
 import lombok.Builder;
@@ -37,10 +38,10 @@ public class User extends Timestamped{
 
     //이메일 인증 여부
     @Column
-    private boolean emailVerification;
+    private boolean verification;
 
-    @Column
-    private String userUUID;
+    @Column(nullable = false)
+    private String phoneNumber;
 
     @Column
     @NotNull
@@ -55,7 +56,7 @@ public class User extends Timestamped{
     private int tier;
 
     @Builder
-    public User(String username, String password, String nickname, String img, UserRole userRole, Boolean emailVerification, String userUUID){
+    public User(String username, String password, String nickname, String img, UserRole userRole, Boolean verification, String phoneNumber){
         this.username = username;
         this.password = password;
         this.nickname = nickname;
@@ -63,8 +64,8 @@ public class User extends Timestamped{
         this.exp = 0L;
         this.userRole = userRole;
         this.tier = 0;
-        this.emailVerification = emailVerification;
-        this.userUUID = userUUID;
+        this.verification = verification;
+        this.phoneNumber = phoneNumber;
     }
 
     public void edit(UserEditDto userEditDto){
@@ -73,9 +74,8 @@ public class User extends Timestamped{
         this.img = userEditDto.getImg();
     }
 
-    //이메일 인증 여부 메소드
-    public void emailVerificationSuccess(){
-        this.emailVerification = true;
+    public void changePassword(String newPassword){
+        this.password = newPassword;
     }
 
     //--------exp--------

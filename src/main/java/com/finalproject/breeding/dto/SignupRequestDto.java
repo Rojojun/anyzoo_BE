@@ -15,6 +15,8 @@ public class SignupRequestDto {
     private String nickname;
     @NotBlank
     private String password;
+    @NotBlank
+    private String phoneNumber;
     private String img;
 
     public UsernamePasswordAuthenticationToken toAuthentication(){
