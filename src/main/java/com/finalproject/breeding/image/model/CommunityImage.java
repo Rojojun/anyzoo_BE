@@ -18,7 +18,7 @@ public class CommunityImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = true, name = "COMMUNITY_ID")
+    @Column(name = "COMMUNITY_ID")
     @JsonIgnore
     private Long communityId;
 
