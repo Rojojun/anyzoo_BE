@@ -42,7 +42,8 @@ public class UserService {
 
     @Transactional
     public Map<String, Object> signup(SignupRequestDto signupRequestDto) {
-        UserImage userImage = signupRequestDto.getUserImage();
+
+
         // 회원 아이디 중복 확인
         String username = signupRequestDto.getUsername();
         if (userRepository.existsByUsername(username)) {
@@ -55,24 +56,22 @@ public class UserService {
             throw new CustomException(ErrorCode.SIGNUP_NICKNAME_DUPLICATE_CHECK);
         }
 
-        userRepository.save(
+        UserImage userImage;
+        if (signupRequestDto.getUserImage()!=null){
+            userImage = signupRequestDto.getUserImage();
+        } else {
+            userImageRepository.save(userImage = new UserImage());
+        }
+        userImage.updateToUser(userRepository.save(
                 User.builder()
                         .username(signupRequestDto.getUsername())
                         .password(passwordEncoder.encode(signupRequestDto.getPassword()))
                         .nickname(signupRequestDto.getNickname())
-                        .userImage(signupRequestDto.getUserImage())
+                        .userImage(userImage)
                         .userRole(UserRole.ROLE_USER)
-                        .build()
-        );
-        userImage.updateToUser(
-                userRepository.save(
-                        User.builder()
-                            .username(signupRequestDto.getUsername())
-                            .password(passwordEncoder.encode(signupRequestDto.getPassword()))
-                            .nickname(signupRequestDto.getNickname())
-                            .userImage(userImage)
-                            .userRole(UserRole.ROLE_USER)
-                            .build()));
+                        .build()));
+
+
         //JWT 토큰 생성
         TokenDto tokenDto = tokenProvider.generateTokenDto(authenticationManagerBuilder.getObject().authenticate(signupRequestDto.toAuthentication()));
 
@@ -173,4 +172,5 @@ public class UserService {
                 () -> new UsernameNotFoundException("존재하지 않는 유저입니다")
         );
     }
+
 }
