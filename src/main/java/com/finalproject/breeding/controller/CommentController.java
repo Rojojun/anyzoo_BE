@@ -11,12 +11,14 @@ import com.finalproject.breeding.repository.CommentRepository;
 import com.finalproject.breeding.securityUtil.SecurityUtil;
 import com.finalproject.breeding.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Objects;
@@ -105,9 +107,9 @@ public class CommentController {
 
     //댓글 불러오기
     @GetMapping("/api/comment/{boardMainId}")
-    public List<CommentMapping> getAllCommnet(@PathVariable Long boardMainId){
-        List<CommentMapping> comments= commentRepository.findAllByBoardMain_Id(boardMainId);
-        return comments;
+    public Slice<CommentMapping> getAllCommnet(@PathVariable Long boardMainId, HttpServletRequest httpServletRequest){
+        Long page = Long.parseLong(httpServletRequest.getParameter("page"));
+        return commentService.getAllCommnet(boardMainId, page);
     }
 
     //댓글 수 불러오기

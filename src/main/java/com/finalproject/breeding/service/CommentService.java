@@ -7,9 +7,13 @@ import com.finalproject.breeding.model.Comment;
 import com.finalproject.breeding.model.User;
 import com.finalproject.breeding.model.board.BoardMain;
 import com.finalproject.breeding.repository.BoardMainRepository;
+import com.finalproject.breeding.repository.CommentMapping;
 import com.finalproject.breeding.repository.CommentRepository;
 import com.finalproject.breeding.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.Charset;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -53,6 +58,13 @@ public class CommentService {
         return new ResponseEntity<>(dto, header, HttpStatus.OK);
 
 
+    }
+
+    //댓글 불러오기
+    @Transactional
+    public Slice<CommentMapping> getAllCommnet(Long boardMainId, Long page) {
+        PageRequest pageRequest = PageRequest.of(Math.toIntExact(page), 4, Sort.by(Sort.Direction.DESC, "Id"));
+        return commentRepository.findByBoardMainId(pageRequest, boardMainId);
     }
 
     //댓글 수정
