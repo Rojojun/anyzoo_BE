@@ -1,7 +1,10 @@
 package com.finalproject.breeding.user.service;
 
+import com.finalproject.breeding.dto.EmailVerificationRequestDto;
+import com.finalproject.breeding.dto.NewPasswordDto;
 import com.finalproject.breeding.image.model.UserImage;
 import com.finalproject.breeding.image.repository.UserImageRepository;
+import com.finalproject.breeding.service.VerificationEmailSenderService;
 import com.finalproject.breeding.user.UserValidator;
 import com.finalproject.breeding.user.dto.requestDto.LoginDto;
 import com.finalproject.breeding.user.dto.requestDto.SignupRequestDto;
@@ -10,7 +13,6 @@ import com.finalproject.breeding.user.UserEditDto;
 import com.finalproject.breeding.user.dto.responseDto.TokenDto;
 import com.finalproject.breeding.error.CustomException;
 import com.finalproject.breeding.error.ErrorCode;
-<<<<<<< HEAD:src/main/java/com/finalproject/breeding/user/service/UserService.java
 import com.finalproject.breeding.etc.model.RefreshToken;
 import com.finalproject.breeding.user.User;
 import com.finalproject.breeding.user.UserRole;
@@ -18,15 +20,6 @@ import com.finalproject.breeding.user.repository.RefreshTokenRepository;
 import com.finalproject.breeding.user.repository.UserRepository;
 import com.finalproject.breeding.user.SecurityUtil;
 import com.finalproject.breeding.user.token.TokenProvider;
-=======
-import com.finalproject.breeding.model.RefreshToken;
-import com.finalproject.breeding.model.User;
-import com.finalproject.breeding.model.UserRole;
-import com.finalproject.breeding.repository.RefreshTokenRepository;
-import com.finalproject.breeding.repository.UserRepository;
-import com.finalproject.breeding.securityUtil.SecurityUtil;
-import com.finalproject.breeding.token.TokenProvider;
->>>>>>> jihun-dev:src/main/java/com/finalproject/breeding/service/UserService.java
 import lombok.RequiredArgsConstructor;
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
@@ -39,10 +32,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-<<<<<<< HEAD:src/main/java/com/finalproject/breeding/user/service/UserService.java
-=======
 import org.springframework.transaction.annotation.Transactional;
->>>>>>> jihun-dev:src/main/java/com/finalproject/breeding/service/UserService.java
 
 import java.util.*;
 
@@ -160,10 +150,6 @@ public class UserService {
     @Transactional
     public Map<String, Object> signup(SignupRequestDto signupRequestDto) {
 
-<<<<<<< HEAD:src/main/java/com/finalproject/breeding/user/service/UserService.java
-
-=======
->>>>>>> jihun-dev:src/main/java/com/finalproject/breeding/service/UserService.java
         // 회원 아이디 중복 확인
         String username = signupRequestDto.getUsername();
         if (userRepository.existsByUsername(username)) {
@@ -176,7 +162,14 @@ public class UserService {
             throw new CustomException(ErrorCode.SIGNUP_NICKNAME_DUPLICATE_CHECK);
         }
 
-<<<<<<< HEAD:src/main/java/com/finalproject/breeding/user/service/UserService.java
+        // 폰번호 중복 확인
+        String phoneNumber = signupRequestDto.getPhoneNumber();
+        if(userRepository.existsByPhoneNumber(phoneNumber)){
+            throw new CustomException(ErrorCode.SIGNUP_PHONENUMBER_DUPLICATE_CHECK);
+        }
+
+        // 유저 이미지 등록
+
         UserImage userImage;
         if (signupRequestDto.getUserImage()==null){
             userImageRepository.save(userImage = new UserImage());
@@ -184,31 +177,16 @@ public class UserService {
             userImage = signupRequestDto.getUserImage();
         }
         userImage.updateToUser(userRepository.save(
-=======
-        // 폰번호 중복 확인
-        String phoneNumber = signupRequestDto.getPhoneNumber();
-        if(userRepository.existsByPhoneNumber(phoneNumber)){
-            throw new CustomException(ErrorCode.SIGNUP_PHONENUMBER_DUPLICATE_CHECK);
-        }
-
-        userRepository.save(
->>>>>>> jihun-dev:src/main/java/com/finalproject/breeding/service/UserService.java
                 User.builder()
                         .username(signupRequestDto.getUsername())
                         .password(passwordEncoder.encode(signupRequestDto.getPassword()))
                         .nickname(signupRequestDto.getNickname())
-<<<<<<< HEAD:src/main/java/com/finalproject/breeding/user/service/UserService.java
                         .userImage(userImage)
-                        .userRole(UserRole.ROLE_USER)
-                        .build()));
-
-=======
                         .verification(true)
                         .phoneNumber(signupRequestDto.getPhoneNumber())
                         .userRole(UserRole.ROLE_USER)
                         .build()
-        );
->>>>>>> jihun-dev:src/main/java/com/finalproject/breeding/service/UserService.java
+        ));
 
         //JWT 토큰 생성
         TokenDto tokenDto = tokenProvider.generateTokenDto(authenticationManagerBuilder.getObject().authenticate(signupRequestDto.toAuthentication()));
@@ -224,17 +202,6 @@ public class UserService {
         Map<String, Object> data = new HashMap<>();
         data.put("token", tokenDto);
         return data;
-<<<<<<< HEAD:src/main/java/com/finalproject/breeding/user/service/UserService.java
-    }
-
-    @Transactional
-    public void edit(UserEditDto userEditDto) {
-        User user = userRepository
-                .findByUsername(SecurityUtil.getCurrentUsername())
-                .orElseThrow(() ->new CustomException(ErrorCode.NOT_FOUND_USER_INFO));
-        user.edit(userEditDto);
-=======
->>>>>>> jihun-dev:src/main/java/com/finalproject/breeding/service/UserService.java
     }
 
     @Transactional

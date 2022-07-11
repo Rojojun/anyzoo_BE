@@ -12,11 +12,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByUsername(String username);
 
     boolean existsByNickname(String nickname);
-<<<<<<< HEAD:src/main/java/com/finalproject/breeding/user/repository/UserRepository.java
-
     Optional<User> findByNickname(String nickname);
-=======
     boolean existsByPhoneNumber(String phoneNumber);
-
->>>>>>> jihun-dev:src/main/java/com/finalproject/breeding/repository/UserRepository.java
 }

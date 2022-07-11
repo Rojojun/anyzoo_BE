@@ -1,5 +1,7 @@
 package com.finalproject.breeding.user;
 
+import com.finalproject.breeding.dto.EmailVerificationRequestDto;
+import com.finalproject.breeding.dto.NewPasswordDto;
 import com.finalproject.breeding.user.dto.requestDto.LoginDto;
 import com.finalproject.breeding.user.dto.requestDto.SignupRequestDto;
 import com.finalproject.breeding.user.dto.requestDto.TokenRequestDto;
@@ -105,13 +107,8 @@ public class UserController {
         return new ResponseEntity<>(new StatusResponseDto("토큰이 재발급 되었습니다.", tokenDto), HttpStatus.OK);
     }
 
-<<<<<<< HEAD:src/main/java/com/finalproject/breeding/user/UserController.java
-    @GetMapping("/api/user/userInfo")
-=======
-
     //----------------------------유저 정보 조회-------------------------------
-    @GetMapping("/user/userInfo")
->>>>>>> jihun-dev:src/main/java/com/finalproject/breeding/controller/UserController.java
+    @GetMapping("/api/user/userInfo")
     @ResponseBody
     public UserInfo Session() {
        return new UserInfo(userService.getUser());

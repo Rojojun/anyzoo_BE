@@ -1,12 +1,8 @@
 package com.finalproject.breeding.user;
 
-<<<<<<< HEAD:src/main/java/com/finalproject/breeding/user/User.java
 import com.finalproject.breeding.etc.model.Timestamped;
 import com.finalproject.breeding.image.model.UserImage;
-=======
 import com.finalproject.breeding.dto.NewPasswordDto;
-import com.finalproject.breeding.dto.UserEditDto;
->>>>>>> jihun-dev:src/main/java/com/finalproject/breeding/model/User.java
 import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -67,11 +63,7 @@ public class User extends Timestamped{
 
 
     @Builder
-<<<<<<< HEAD:src/main/java/com/finalproject/breeding/user/User.java
-    public User(String username, String password, String nickname, UserImage userImage, UserRole userRole){
-=======
-    public User(String username, String password, String nickname, String img, UserRole userRole, Boolean verification, String phoneNumber){
->>>>>>> jihun-dev:src/main/java/com/finalproject/breeding/model/User.java
+    public User(String username, String password, String nickname, UserRole userRole, Boolean verification, String phoneNumber, UserImage userImage){
         this.username = username;
         this.password = password;
         this.nickname = nickname;
@@ -79,13 +71,10 @@ public class User extends Timestamped{
         this.userRole = userRole;
         this.exp = 0L;
         this.tier = 0;
-<<<<<<< HEAD:src/main/java/com/finalproject/breeding/user/User.java
         this.follower = 0L;
         this.following = 0L;
-=======
         this.verification = verification;
         this.phoneNumber = phoneNumber;
->>>>>>> jihun-dev:src/main/java/com/finalproject/breeding/model/User.java
     }
 
     public void edit(UserEditDto userEditDto){

@@ -19,10 +19,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-<<<<<<< HEAD
-import org.springframework.web.filter.CorsFilter;
-=======
->>>>>>> jihun-dev
+
 
 @Configuration
 @EnableWebSecurity
@@ -30,11 +27,8 @@ import org.springframework.web.filter.CorsFilter;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-<<<<<<< HEAD
     //    private final CorsFilter corsFilter;
-=======
     //private final CorsFilter corsFilter;
->>>>>>> jihun-dev
     private final TokenProvider tokenProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
@@ -81,13 +75,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 로그인, 회원가입 API 는 토큰이 없는 상태에서 요청이 들어오기 때문에 permitAll 설정
                 .and()
                 .authorizeRequests()
-<<<<<<< HEAD
                 .antMatchers("/user/*").permitAll()
                 .antMatchers("/swagger-ui.html").permitAll()
-=======
-                .antMatchers("/user/**").permitAll()
                 .antMatchers("/confirm-email").permitAll()
->>>>>>> jihun-dev
                 .anyRequest().authenticated()   // 나머지 API 는 전부 인증 필요
 
                 // JwtFilter 를 addFilterBefore 로 등록했던 JwtSecurityConfig 클래스를 적용
@@ -107,21 +97,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        source.registerCorsConfiguration("/user/**", config);
 //        return new CorsFilter(source);
 //    }
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedMethod("*");
-        configuration.addAllowedHeader("*");
-        configuration.addAllowedOriginPattern("*"); // 배포 전 모두 허용
-        configuration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
-
-
-
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
