@@ -10,7 +10,7 @@ public class SignupRequestDto {
     private String username;
     private String nickname;
     private String password;
-    private UserImage userImage;
+    private Long userImageId;
 
     public UsernamePasswordAuthenticationToken toAuthentication(){
         return new UsernamePasswordAuthenticationToken(username, password);
