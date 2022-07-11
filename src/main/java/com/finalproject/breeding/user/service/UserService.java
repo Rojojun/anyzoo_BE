@@ -171,10 +171,10 @@ public class UserService {
         // 유저 이미지 등록
 
         UserImage userImage;
-        if (signupRequestDto.getUserImage()==null){
+        if (signupRequestDto.getUserImageId()==null){
             userImageRepository.save(userImage = new UserImage());
         } else {
-            userImage = signupRequestDto.getUserImage();
+            userImage = userImageRepository.findById(signupRequestDto.getUserImageId()).orElseThrow(()->new IllegalArgumentException("해당 ID가 없습니다."));
         }
         userImage.updateToUser(userRepository.save(
                 User.builder()
