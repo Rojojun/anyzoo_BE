@@ -178,10 +178,10 @@ public class UserService {
 
 <<<<<<< HEAD:src/main/java/com/finalproject/breeding/user/service/UserService.java
         UserImage userImage;
-        if (signupRequestDto.getUserImage()!=null){
-            userImage = signupRequestDto.getUserImage();
-        } else {
+        if (signupRequestDto.getUserImage()==null){
             userImageRepository.save(userImage = new UserImage());
+        } else {
+            userImage = signupRequestDto.getUserImage();
         }
         userImage.updateToUser(userRepository.save(
 =======
