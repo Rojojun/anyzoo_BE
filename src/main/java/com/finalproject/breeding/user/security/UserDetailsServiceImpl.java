@@ -21,7 +21,5 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 () -> new UsernameNotFoundException(username + "이 존재하지 않습니다")
         );
         return new UserDetailsImpl(user);
-
     }
-
 }
