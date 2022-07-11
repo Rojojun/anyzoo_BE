@@ -33,7 +33,7 @@ public class UserImage {
         this.key = key;
     }
     public UserImage(){
-        this.url = "https://anyzoo-photo-bucket.s3.ap-northeast-2.amazonaws.com/user/45deb63e-1432-4a41-8637-74314093895a%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C.png";
+        this.url = "https://anyzoo-photo-bucket.s3.ap-northeast-2.amazonaws.com/user/53c5b426-5032-41af-86b7-49e654ffa3e6KakaoTalk_20220708_151849969.jpg";
     }
     public void updateToUser(User user){
         this.userId = user.getId();
