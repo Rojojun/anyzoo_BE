@@ -57,10 +57,10 @@ public class UserService {
         }
 
         UserImage userImage;
-        if (signupRequestDto.getUserImage()==null){
-            userImageRepository.save(userImage = new UserImage());
-        } else {
+        if (signupRequestDto.getUserImage()!=null){
             userImage = signupRequestDto.getUserImage();
+        } else {
+            userImageRepository.save(userImage = new UserImage());
         }
         userImage.updateToUser(userRepository.save(
                 User.builder()
