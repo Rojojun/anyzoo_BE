@@ -10,6 +10,7 @@ import com.finalproject.breeding.user.UserEditDto;
 import com.finalproject.breeding.user.dto.responseDto.TokenDto;
 import com.finalproject.breeding.error.CustomException;
 import com.finalproject.breeding.error.ErrorCode;
+<<<<<<< HEAD:src/main/java/com/finalproject/breeding/user/service/UserService.java
 import com.finalproject.breeding.etc.model.RefreshToken;
 import com.finalproject.breeding.user.User;
 import com.finalproject.breeding.user.UserRole;
@@ -17,7 +18,20 @@ import com.finalproject.breeding.user.repository.RefreshTokenRepository;
 import com.finalproject.breeding.user.repository.UserRepository;
 import com.finalproject.breeding.user.SecurityUtil;
 import com.finalproject.breeding.user.token.TokenProvider;
+=======
+import com.finalproject.breeding.model.RefreshToken;
+import com.finalproject.breeding.model.User;
+import com.finalproject.breeding.model.UserRole;
+import com.finalproject.breeding.repository.RefreshTokenRepository;
+import com.finalproject.breeding.repository.UserRepository;
+import com.finalproject.breeding.securityUtil.SecurityUtil;
+import com.finalproject.breeding.token.TokenProvider;
+>>>>>>> jihun-dev:src/main/java/com/finalproject/breeding/service/UserService.java
 import lombok.RequiredArgsConstructor;
+import net.nurigo.java_sdk.api.Message;
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
+import org.apache.commons.lang.StringUtils;
+import org.json.simple.JSONObject;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -25,10 +39,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+<<<<<<< HEAD:src/main/java/com/finalproject/breeding/user/service/UserService.java
+=======
+import org.springframework.transaction.annotation.Transactional;
+>>>>>>> jihun-dev:src/main/java/com/finalproject/breeding/service/UserService.java
 
-import javax.transaction.Transactional;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -40,10 +56,114 @@ public class UserService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final UserImageRepository userImageRepository;
 
+    //이메일 인증 발송 의존성 추가가
+    private final VerificationEmailSenderService verificationEmailSenderService;
+
+    //잠시동안 저장할 유저 핸드폰 번호와 인증번호
+    public static HashMap<String,String> phoneVerificationDB = new HashMap<>();
+
+    //잠시동안 저장할 유저 이메일과 이메일 authToken
+    public static HashMap<String,String> emailVerificationDB = new HashMap<>();
+
+
+    //----------------------------유저 정보 중복 관련-------------------------------
+    //이메일 중복확인
+    @Transactional(readOnly = true)
+    public boolean checkUsernameDuplication(String username){
+        return userRepository.existsByUsername(username);
+    }
+
+    //닉네임 중복확인
+    @Transactional(readOnly = true)
+    public boolean checkNicknameDuplication(String nickname){
+        return userRepository.existsByNickname(nickname);
+    }
+
+    //폰번호 중복확인
+    @Transactional(readOnly = true)
+    public boolean checkPhoneNumberDuplication(String phoneNumber){
+        return userRepository.existsByPhoneNumber(phoneNumber);
+    }
+
+
+    //----------------------------유저 인증 관련-------------------------------
+    //폰번호 문자인증번호 발송
+    public void certifiedPhoneNumber(String phoneNumber){
+        String api_key = "NCS1HI0WXQRNU4EA";
+        String api_secret = "0SNTCCSSJJSUPIAOTBTTF0ILPH8QNOYG";
+        Message coolsms = new Message(api_key, api_secret);
+
+        Random rand = new Random();
+        String numStr = "";
+        for(int i = 0; i < 4; i++){
+            String ran = Integer.toString(rand.nextInt(10));
+            numStr += ran;
+        }
+
+        System.out.println("수신자 번호: " + phoneNumber);
+        System.out.println("인증 번호: " + numStr);
+        phoneVerificationDB.put(phoneNumber, numStr);
+
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("to", phoneNumber); //수신전화번호
+        params.put("from", "01083231544"); //발신전화번호
+        params.put("type", "SMS");
+        params.put("text", "anyZoo 휴대폰인증 테스트 메세지 : 인증번호는" + "[" + numStr + "]" + "입니다.");
+        params.put("app_version", "test app 1.2");
+
+        try{
+            JSONObject obj = coolsms.send(params);
+            System.out.println(obj.toString());
+        }catch (CoolsmsException e){
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    //폰번호 문자인증번호 확인 메소드
+    public boolean compareConfirmNumber(String phoneNumber, String numStr){
+        String tests = phoneVerificationDB.get(phoneNumber);
+        if(Optional.ofNullable(tests).isPresent()){
+            if(tests.equals(numStr)){
+                phoneVerificationDB.remove(phoneNumber);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //이메일 인증 링크 발송
+    @Transactional
+    public void sendEmailVerificationLink(String email){
+        //이메일 인증 UUID 생성
+        String userUUID = UUID.randomUUID().toString();
+        //유저의 이메일과 UUID 저장
+        emailVerificationDB.put(email, userUUID);
+        //이메일 인증 이메일 발송
+        verificationEmailSenderService.send(email, userUUID);
+    }
+
+    //이메일 인증 확인 메서드
+    @Transactional
+    public boolean confirmEmail(EmailVerificationRequestDto emailVerificationRequestDto){
+        String authToken = emailVerificationDB.get(emailVerificationRequestDto.getEmail());
+        if(Optional.ofNullable(authToken).isPresent()){
+            if(authToken.equals(emailVerificationRequestDto.getAuthToken())){
+                emailVerificationDB.remove(emailVerificationRequestDto.getEmail());
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    //----------------------------유저 로그인/가입 관련-------------------------------
     @Transactional
     public Map<String, Object> signup(SignupRequestDto signupRequestDto) {
 
+<<<<<<< HEAD:src/main/java/com/finalproject/breeding/user/service/UserService.java
 
+=======
+>>>>>>> jihun-dev:src/main/java/com/finalproject/breeding/service/UserService.java
         // 회원 아이디 중복 확인
         String username = signupRequestDto.getUsername();
         if (userRepository.existsByUsername(username)) {
@@ -56,6 +176,7 @@ public class UserService {
             throw new CustomException(ErrorCode.SIGNUP_NICKNAME_DUPLICATE_CHECK);
         }
 
+<<<<<<< HEAD:src/main/java/com/finalproject/breeding/user/service/UserService.java
         UserImage userImage;
         if (signupRequestDto.getUserImage()!=null){
             userImage = signupRequestDto.getUserImage();
@@ -63,14 +184,31 @@ public class UserService {
             userImageRepository.save(userImage = new UserImage());
         }
         userImage.updateToUser(userRepository.save(
+=======
+        // 폰번호 중복 확인
+        String phoneNumber = signupRequestDto.getPhoneNumber();
+        if(userRepository.existsByPhoneNumber(phoneNumber)){
+            throw new CustomException(ErrorCode.SIGNUP_PHONENUMBER_DUPLICATE_CHECK);
+        }
+
+        userRepository.save(
+>>>>>>> jihun-dev:src/main/java/com/finalproject/breeding/service/UserService.java
                 User.builder()
                         .username(signupRequestDto.getUsername())
                         .password(passwordEncoder.encode(signupRequestDto.getPassword()))
                         .nickname(signupRequestDto.getNickname())
+<<<<<<< HEAD:src/main/java/com/finalproject/breeding/user/service/UserService.java
                         .userImage(userImage)
                         .userRole(UserRole.ROLE_USER)
                         .build()));
 
+=======
+                        .verification(true)
+                        .phoneNumber(signupRequestDto.getPhoneNumber())
+                        .userRole(UserRole.ROLE_USER)
+                        .build()
+        );
+>>>>>>> jihun-dev:src/main/java/com/finalproject/breeding/service/UserService.java
 
         //JWT 토큰 생성
         TokenDto tokenDto = tokenProvider.generateTokenDto(authenticationManagerBuilder.getObject().authenticate(signupRequestDto.toAuthentication()));
@@ -81,10 +219,12 @@ public class UserService {
                 .value(tokenDto.getRefreshToken())
                 .build()
         );
+
         // 5. 토큰 반환
         Map<String, Object> data = new HashMap<>();
         data.put("token", tokenDto);
         return data;
+<<<<<<< HEAD:src/main/java/com/finalproject/breeding/user/service/UserService.java
     }
 
     @Transactional
@@ -93,6 +233,8 @@ public class UserService {
                 .findByUsername(SecurityUtil.getCurrentUsername())
                 .orElseThrow(() ->new CustomException(ErrorCode.NOT_FOUND_USER_INFO));
         user.edit(userEditDto);
+=======
+>>>>>>> jihun-dev:src/main/java/com/finalproject/breeding/service/UserService.java
     }
 
     @Transactional
@@ -103,6 +245,11 @@ public class UserService {
         User user = userRepository.findByUsername(loginDto.getUsername()).orElseThrow(
                 () -> new CustomException(ErrorCode.LOGIN_NOT_FOUNT_MEMBERID)
         );
+
+        //이메일 인증 계정 확인 알고리즘
+        if(!user.isVerification()){
+            throw new CustomException(ErrorCode.NOT_VERIFIED_USER_INFORMATION);
+        }
 
         if (!passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
             throw new CustomException(ErrorCode.LOGIN_PASSWORD_NOT_MATCH);
@@ -129,6 +276,40 @@ public class UserService {
         data.put("token", tokenDto);
 
         return data;
+    }
+
+
+    //----------------------------유저 정보 수정 관련-------------------------------
+    //잃어버린 비밀번호 변경
+    @Transactional
+    public void changePassword(NewPasswordDto newPasswordDto){
+        User user = userRepository
+                .findByUsername(newPasswordDto.getUsername())
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER_INFO));
+        String newPassword = passwordEncoder.encode(newPasswordDto.getNewPassword());
+        user.changePassword(newPassword);
+    }
+
+    //잃어버린 Username(email) 찾기
+    @Transactional
+    public String findLostEmail(String phoneNumber){
+        User user = userRepository
+                .findByPhoneNumber(phoneNumber)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER_INFO));
+        String[] usernameSplit = user.getUsername().split("@");
+            if(usernameSplit[0].length() <= 2){
+                return user.getUsername().charAt(0) + "*****@" + usernameSplit[1];
+            }else{
+                return user.getUsername().substring(0, 2) + "****@" + usernameSplit[1];
+            }
+    }
+
+    @Transactional
+    public void edit(UserEditDto userEditDto) {
+        User user = userRepository
+                .findByUsername(SecurityUtil.getCurrentUsername())
+                .orElseThrow(() ->new CustomException(ErrorCode.NOT_FOUND_USER_INFO));
+        user.edit(userEditDto);
     }
 
     @Transactional
@@ -166,6 +347,8 @@ public class UserService {
         return tokenDto;
     }
 
+
+    //----------------------------유저 조회 관련-------------------------------
     public User getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return userRepository.findByUsername(authentication.getName()).orElseThrow(

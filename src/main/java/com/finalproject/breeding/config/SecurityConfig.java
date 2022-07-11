@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,14 +19,22 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+<<<<<<< HEAD
 import org.springframework.web.filter.CorsFilter;
+=======
+>>>>>>> jihun-dev
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+<<<<<<< HEAD
     //    private final CorsFilter corsFilter;
+=======
+    //private final CorsFilter corsFilter;
+>>>>>>> jihun-dev
     private final TokenProvider tokenProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
@@ -44,6 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http
+                .cors().configurationSource(corsConfigurationSource());
         // CSRF 설정 Disable
         http.cors().configurationSource(corsConfigurationSource());
         http.csrf().disable()
@@ -70,14 +81,46 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 로그인, 회원가입 API 는 토큰이 없는 상태에서 요청이 들어오기 때문에 permitAll 설정
                 .and()
                 .authorizeRequests()
+<<<<<<< HEAD
                 .antMatchers("/user/*").permitAll()
                 .antMatchers("/swagger-ui.html").permitAll()
+=======
+                .antMatchers("/user/**").permitAll()
+                .antMatchers("/confirm-email").permitAll()
+>>>>>>> jihun-dev
                 .anyRequest().authenticated()   // 나머지 API 는 전부 인증 필요
 
                 // JwtFilter 를 addFilterBefore 로 등록했던 JwtSecurityConfig 클래스를 적용
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));
     }
+
+    //Cors filter 웹시큐리티에 추가
+//    @Bean
+//    public CorsFilter corsFilter(){
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        CorsConfiguration config = new CorsConfiguration();
+//        config.setAllowCredentials(true);// 내서버가 응답을 할때 json을 자바스크립트에서 처리할 수 있게 할지를 설정하는 것
+//        config.addAllowedOrigin("*");// 모든 ip에 응답을 허용 해줌
+//        config.addAllowedHeader("*");// 모든 header에 응답을 허용 해줌
+//        config.addAllowedMethod("*");// 모든 post, get, put, delete, patch 요청 허용
+//        source.registerCorsConfiguration("/user/**", config);
+//        return new CorsFilter(source);
+//    }
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedMethod("*");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedOriginPattern("*"); // 배포 전 모두 허용
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
