@@ -1,6 +1,7 @@
 package com.finalproject.breeding.board.model;
 
 import com.finalproject.breeding.board.dto.TogetherRequestDto;
+import com.finalproject.breeding.board.model.category.PostNReelsCategory;
 import com.finalproject.breeding.board.model.category.TogetherCategory;
 import com.finalproject.breeding.user.User;
 import lombok.Getter;
@@ -57,7 +58,21 @@ public class Together {
         this.title = togetherRequestDto.getTitle();
         this.date = date;
         //this.room = room;
-        this.limitPeople = togetherRequestDto.getLimitPeople();;
+        this.limitPeople = togetherRequestDto.getLimitPeople();
+        switch (togetherRequestDto.getCategoryName()) {
+            case "walk":
+                this.togetherCategory = TogetherCategory.WALK;
+                break;
+            case "buy":
+                this.togetherCategory = TogetherCategory.BUY;
+                break;
+            case "cafe":
+                this.togetherCategory = TogetherCategory.CAFE;
+                break;
+            case "etc":
+                this.togetherCategory = TogetherCategory.ETC;
+                break;
+        }
     }
 
 

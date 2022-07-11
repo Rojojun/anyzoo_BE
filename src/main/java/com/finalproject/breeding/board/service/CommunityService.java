@@ -15,6 +15,7 @@ import com.finalproject.breeding.image.model.CommunityImage;
 import com.finalproject.breeding.image.model.PostImage;
 import com.finalproject.breeding.image.repository.CommunityImageRepository;
 import com.finalproject.breeding.user.User;
+import com.finalproject.breeding.user.UserValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
@@ -58,8 +59,8 @@ public class CommunityService {
     }
 
 
-    public Slice<CommunityResponseDto> readCommunity(Long page, String category) {
-        PageRequest pageRequest = PageRequest.of(Math.toIntExact(page), 5);
+    public Slice<CommunityResponseDto> readCommunity(int page, String category) {
+        PageRequest pageRequest = PageRequest.of(page, 5);
         switch (category) {
             case "qna":
                 return communityRepository.findByCommunityCategoryOrderByBoardMainCreatedAtDesc(pageRequest, CommunityCategory.QNA);
@@ -76,18 +77,14 @@ public class CommunityService {
 
     public void deleteCommunity(User user, Long boardMainId) {
         Community community = communityRepository.findCommunityByBoardMainId(boardMainId);
-        if (!Objects.equals(user.getId(), community.getUser().getId())) {
-            throw new CustomException(ErrorCode.POST_DELETE_WRONG_ACCESS);
-        }
+        UserValidator.validateDelete4User(user, community.getUser().getId());
         //사진삭제 추가해야함!
         communityRepository.delete(community);
     }
 
     public Map<String, Object> updateCommunity(Long boardMainId, CommunityRequestDto communityRequestDto, User user) {
         Community community = communityRepository.findCommunityByBoardMainId(boardMainId);
-        if (!Objects.equals(user.getId(), community.getUser().getId())) {
-            throw new CustomException(ErrorCode.POST_DELETE_WRONG_ACCESS);
-        }
+        UserValidator.validateUpdate4User(user, community.getUser().getId());
         community.getBoardMain().update(communityRequestDto);
         community.update(communityRequestDto, community.getBoardMain());
 

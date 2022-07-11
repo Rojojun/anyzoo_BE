@@ -35,7 +35,7 @@ public class PostController {
     // 카테고리로 게시글 조회하기 (all,cute,cool,pretty,comic, allLike, cuteLike, coolLike, prettyLike, comicLike)
     @GetMapping("/api/post/category/{category}")
     public Slice<PostResponseDto> readAllPost(HttpServletRequest httpServletRequest, @PathVariable String category) {
-        Long page = Long.parseLong(httpServletRequest.getParameter("page"));
+        int page = Integer.parseInt(httpServletRequest.getParameter("page"));
         return postService.readCategoryPost(page, category);
     }
 

@@ -97,7 +97,7 @@ public enum ErrorCode {
     EMAIL_WRONG_PATTERN(HttpStatus.BAD_REQUEST, 400, "이메일 형식을 맞춰주세요"),
 
     //Room
-
+    ALREADY_PEOPLE_SET_FULL(HttpStatus.BAD_REQUEST, 400, "해당 모집글의 정원이 다 찼습니다"),
     ALREADY_EXISTS_CHAT_ROOM(HttpStatus.BAD_REQUEST,400,"채팅방이 이미 존재합니다."),
     NOT_EXIST_ROOM(HttpStatus.NOT_FOUND,404,"채팅방이 존재하지 않습니다."),
 

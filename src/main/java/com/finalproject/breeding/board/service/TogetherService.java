@@ -6,6 +6,8 @@ import com.finalproject.breeding.board.model.Room;
 import com.finalproject.breeding.board.model.Together;
 import com.finalproject.breeding.board.repository.BoardMainRepository;
 import com.finalproject.breeding.board.repository.TogetherRepository;
+import com.finalproject.breeding.error.CustomException;
+import com.finalproject.breeding.error.ErrorCode;
 import com.finalproject.breeding.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,6 +39,22 @@ public class TogetherService {
         Map<String, Object> data = new HashMap<>();
         data.put("togetherId", together.getId());
         data.put("boardMainId", together.getBoardMain().getId());
+        return data;
+    }
+
+    public Map<String, Object> joinTogether(Long boardMainId, User user) {
+        Together together = togetherRepository.findByBoardMainId(boardMainId);
+        if (together.isStatus()){
+
+            together.joinTogether(together);
+        }else {
+            throw new CustomException(ErrorCode.ALREADY_PEOPLE_SET_FULL);
+        }
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("togetherId", together.getId());
+        data.put("boardMainId", together.getBoardMain().getId());
+        //data.put("roomId", )
         return data;
     }
 }

@@ -16,6 +16,7 @@ import com.finalproject.breeding.board.model.BoardMain;
 import com.finalproject.breeding.board.model.Post;
 import com.finalproject.breeding.board.repository.BoardMainRepository;
 import com.finalproject.breeding.board.repository.PostRepository;
+import com.finalproject.breeding.user.UserValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
@@ -57,8 +58,8 @@ public class PostService {
 
 
     @Transactional
-    public Slice<PostResponseDto> readCategoryPost(Long page, String category) {
-        PageRequest pageRequest = PageRequest.of(Math.toIntExact(page), 5, Sort.by(Sort.Direction.DESC, "boardMain.createdAt"));
+    public Slice<PostResponseDto> readCategoryPost(int page, String category) {
+        PageRequest pageRequest = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "boardMain.createdAt"));
         switch (category) {
             case "cool":
                 return postRepository.findPostByPostNReelsCategory(pageRequest, PostNReelsCategory.COOL);
@@ -90,10 +91,7 @@ public class PostService {
     // 삭제하기
     public void deletePost(Long boardMainId, User user) {
         Post post = postRepository.findByBoardMainId(boardMainId);
-
-        if (!Objects.equals(user.getId(), post.getUser().getId())) {
-            throw new CustomException(ErrorCode.POST_DELETE_WRONG_ACCESS);
-        }
+        UserValidator.validateDelete4User(user, post.getUser().getId());   //로그인유저ID와 작성글의 유저ID 체크
         awsS3Service.removePostImages(post.getId());
         postRepository.delete(post);
     }
@@ -101,9 +99,7 @@ public class PostService {
     @Transactional
     public Map<String, Object> updatePost(Long boardMainId, PostRequest4EditDto requestDto, User user) {
         Post post = postRepository.findByBoardMainId(boardMainId);
-        if (!Objects.equals(user.getId(), post.getUser().getId())) {
-            throw new CustomException(ErrorCode.POST_UPDATE_WRONG_ACCESS);
-        }
+        UserValidator.validateUpdate4User(user, post.getUser().getId()); //로그인유저ID와 작성글의 유저ID 체크
 
         List<PostImage> postImages = requestDto.getPostImages();
 
