@@ -57,10 +57,10 @@ public class UserService {
         }
 
         UserImage userImage;
-        if (signupRequestDto.getUserImageId()==null){
+        if (signupRequestDto.getUserImage()==null){
             userImageRepository.save(userImage = new UserImage());
         } else {
-            userImage = userImageRepository.findById(signupRequestDto.getUserImageId()).orElseThrow(()->new NullPointerException("에러"));
+            userImage = userImageRepository.findById(signupRequestDto.getUserImage()).orElseThrow(()->new NullPointerException("에러"));
         }
         userImage.updateToUser(userRepository.save(
                 User.builder()
