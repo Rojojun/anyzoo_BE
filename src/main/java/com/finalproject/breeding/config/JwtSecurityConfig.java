@@ -1,7 +1,7 @@
 package com.finalproject.breeding.config;
 
-import com.finalproject.breeding.token.JwtFilter;
-import com.finalproject.breeding.token.TokenProvider;
+import com.finalproject.breeding.user.token.JwtFilter;
+import com.finalproject.breeding.user.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

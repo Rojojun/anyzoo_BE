@@ -1,10 +1,9 @@
 package com.finalproject.breeding.dto;
 
-import com.finalproject.breeding.repository.CommentMapping;
+import com.finalproject.breeding.etc.dto.CommentMapping;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.domain.Slice;
 
 import java.util.List;
 
