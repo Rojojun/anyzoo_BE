@@ -1,8 +1,13 @@
 package com.finalproject.breeding.repository;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.awt.print.Pageable;
 import java.time.LocalDateTime;
 
 public interface CommentMapping {
+
+
     Long getId();
 
     Long getUserId();
@@ -14,6 +19,12 @@ public interface CommentMapping {
     String getUserImg();
 
     LocalDateTime getCreatedAt();
+
+
+
+
+
+
 
 
 

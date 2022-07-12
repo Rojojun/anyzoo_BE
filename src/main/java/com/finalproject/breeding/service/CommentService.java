@@ -1,6 +1,7 @@
 package com.finalproject.breeding.service;
 
 import com.finalproject.breeding.dto.CommentRequestDto;
+import com.finalproject.breeding.dto.CommentResponseDto;
 import com.finalproject.breeding.dto.MyDto;
 import com.finalproject.breeding.error.ErrorCode;
 import com.finalproject.breeding.model.Comment;
@@ -11,6 +12,7 @@ import com.finalproject.breeding.repository.CommentMapping;
 import com.finalproject.breeding.repository.CommentRepository;
 import com.finalproject.breeding.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -62,9 +65,12 @@ public class CommentService {
 
     //댓글 불러오기
     @Transactional
-    public Slice<CommentMapping> getAllCommnet(Long boardMainId, Long page) {
-        PageRequest pageRequest = PageRequest.of(Math.toIntExact(page), 4, Sort.by(Sort.Direction.DESC, "Id"));
-        return commentRepository.findByBoardMainId(pageRequest, boardMainId);
+    public CommentResponseDto getAllCommnet(Long boardMainId, Long page) {
+        PageRequest pageRequest = PageRequest.of(Math.toIntExact(page), 10, Sort.by(Sort.Direction.DESC, "Id"));
+
+        Slice<CommentMapping> comments = commentRepository.findByBoardMainId(pageRequest, boardMainId);
+        CommentResponseDto commentResponseDto = new CommentResponseDto(comments.getContent(), comments.isLast());
+        return commentResponseDto;
     }
 
     //댓글 수정

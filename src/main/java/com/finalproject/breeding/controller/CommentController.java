@@ -1,6 +1,7 @@
 package com.finalproject.breeding.controller;
 
 import com.finalproject.breeding.dto.CommentRequestDto;
+import com.finalproject.breeding.dto.CommentResponseDto;
 import com.finalproject.breeding.dto.MyDto;
 import com.finalproject.breeding.error.ErrorCode;
 import com.finalproject.breeding.model.Comment;
@@ -107,9 +108,10 @@ public class CommentController {
 
     //댓글 불러오기
     @GetMapping("/api/comment/{boardMainId}")
-    public Slice<CommentMapping> getAllCommnet(@PathVariable Long boardMainId, HttpServletRequest httpServletRequest){
+    public CommentResponseDto getAllCommnet(@PathVariable Long boardMainId, HttpServletRequest httpServletRequest){
         Long page = Long.parseLong(httpServletRequest.getParameter("page"));
         return commentService.getAllCommnet(boardMainId, page);
+
     }
 
     //댓글 수 불러오기

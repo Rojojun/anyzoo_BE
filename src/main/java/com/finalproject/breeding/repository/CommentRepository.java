@@ -12,4 +12,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     Slice<CommentMapping> findByBoardMainId(PageRequest pageRequest, Long boardMainId);
 
 
+
 }
