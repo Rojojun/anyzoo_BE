@@ -1,6 +1,7 @@
 package com.finalproject.breeding.etc.controller;
 
-<<<<<<< HEAD:src/main/java/com/finalproject/breeding/etc/controller/CommentController.java
+import com.finalproject.breeding.board.model.BoardMain;
+import com.finalproject.breeding.board.repository.BoardMainRepository;
 import com.finalproject.breeding.etc.dto.CommentRequestDto;
 import com.finalproject.breeding.etc.dto.MyDto;
 import com.finalproject.breeding.error.ErrorCode;
@@ -8,19 +9,7 @@ import com.finalproject.breeding.etc.model.Comment;
 import com.finalproject.breeding.etc.repository.CommentRepository;
 import com.finalproject.breeding.etc.service.CommentService;
 import com.finalproject.breeding.user.SecurityUtil;
-=======
-import com.finalproject.breeding.dto.CommentRequestDto;
 import com.finalproject.breeding.dto.CommentResponseDto;
-import com.finalproject.breeding.dto.MyDto;
-import com.finalproject.breeding.error.ErrorCode;
-import com.finalproject.breeding.model.Comment;
-import com.finalproject.breeding.model.board.BoardMain;
-import com.finalproject.breeding.repository.BoardMainRepository;
-import com.finalproject.breeding.repository.CommentMapping;
-import com.finalproject.breeding.repository.CommentRepository;
-import com.finalproject.breeding.securityUtil.SecurityUtil;
-import com.finalproject.breeding.service.CommentService;
->>>>>>> dohun-dev-1st-scope:src/main/java/com/finalproject/breeding/controller/CommentController.java
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpHeaders;
@@ -28,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
 import java.util.List;

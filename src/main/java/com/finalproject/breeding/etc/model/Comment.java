@@ -32,13 +32,8 @@ public class Comment extends Timestamped {
     @NotNull
     private String comment;
 
-<<<<<<< HEAD:src/main/java/com/finalproject/breeding/etc/model/Comment.java
     public Comment(CommentRequestDto requestDto, BoardMain boardMain, User user){
-=======
 
-
-    public Comment(CommentRequestDto requestDto,BoardMain boardMain, User user){
->>>>>>> dohun-dev-1st-scope:src/main/java/com/finalproject/breeding/model/Comment.java
         this.comment = requestDto.getComment();
         this.boardMain = boardMain;
         this.user = user;

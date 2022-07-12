@@ -1,12 +1,9 @@
 package com.finalproject.breeding.etc.repository;
 
-<<<<<<< HEAD:src/main/java/com/finalproject/breeding/etc/repository/CommentRepository.java
 import com.finalproject.breeding.etc.model.Comment;
-=======
-import com.finalproject.breeding.model.Comment;
+import com.finalproject.breeding.repository.CommentMapping;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
->>>>>>> dohun-dev-1st-scope:src/main/java/com/finalproject/breeding/repository/CommentRepository.java
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

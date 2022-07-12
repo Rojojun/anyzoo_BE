@@ -1,28 +1,16 @@
 package com.finalproject.breeding.etc.service;
 
-<<<<<<< HEAD:src/main/java/com/finalproject/breeding/etc/service/CommentService.java
 import com.finalproject.breeding.board.model.BoardMain;
 import com.finalproject.breeding.board.repository.BoardMainRepository;
+import com.finalproject.breeding.dto.CommentResponseDto;
 import com.finalproject.breeding.etc.dto.CommentRequestDto;
 import com.finalproject.breeding.etc.dto.MyDto;
 import com.finalproject.breeding.error.ErrorCode;
 import com.finalproject.breeding.etc.model.Comment;
 import com.finalproject.breeding.etc.repository.CommentRepository;
+import com.finalproject.breeding.repository.CommentMapping;
 import com.finalproject.breeding.user.User;
 import com.finalproject.breeding.user.repository.UserRepository;
-=======
-import com.finalproject.breeding.dto.CommentRequestDto;
-import com.finalproject.breeding.dto.CommentResponseDto;
-import com.finalproject.breeding.dto.MyDto;
-import com.finalproject.breeding.error.ErrorCode;
-import com.finalproject.breeding.model.Comment;
-import com.finalproject.breeding.model.User;
-import com.finalproject.breeding.model.board.BoardMain;
-import com.finalproject.breeding.repository.BoardMainRepository;
-import com.finalproject.breeding.repository.CommentMapping;
-import com.finalproject.breeding.repository.CommentRepository;
-import com.finalproject.breeding.repository.UserRepository;
->>>>>>> dohun-dev-1st-scope:src/main/java/com/finalproject/breeding/service/CommentService.java
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
