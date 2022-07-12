@@ -15,7 +15,8 @@ public class SignupRequestDto {
     private String nickname;
     @NotBlank
     private String password;
-    private UserImage userImage;
+
+    private Long userImage;
     @NotBlank
     private String phoneNumber;
 

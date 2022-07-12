@@ -174,7 +174,7 @@ public class UserService {
         if (signupRequestDto.getUserImage()==null){
             userImageRepository.save(userImage = new UserImage());
         } else {
-            userImage = signupRequestDto.getUserImage();
+            userImage = userImageRepository.findById(signupRequestDto.getUserImage()).orElseThrow(()->new NullPointerException("에러"));
         }
         userImage.updateToUser(userRepository.save(
                 User.builder()
