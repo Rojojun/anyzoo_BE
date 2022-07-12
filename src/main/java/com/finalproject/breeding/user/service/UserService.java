@@ -176,6 +176,7 @@ public class UserService {
             userImageRepository.save(userImage = new UserImage());
         } else {
             userImage = userImageRepository.findById(signupRequestDto.getUserImage()).orElseThrow(()->new CustomException(ErrorCode.Image_NOT_FOUND));
+
         }
         userImage.updateToUser(userRepository.save(
                 User.builder()
