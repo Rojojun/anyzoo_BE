@@ -4,12 +4,14 @@ import com.finalproject.breeding.board.dto.CommunityRequestDto;
 import com.finalproject.breeding.board.dto.CommunityResponseDto;
 import com.finalproject.breeding.board.model.BoardMain;
 import com.finalproject.breeding.board.model.Community;
+import com.finalproject.breeding.board.model.Post;
 import com.finalproject.breeding.board.model.category.CommunityCategory;
 import com.finalproject.breeding.board.model.category.PostNReelsCategory;
 import com.finalproject.breeding.board.repository.BoardMainRepository;
 import com.finalproject.breeding.board.repository.CommunityRepository;
 import com.finalproject.breeding.error.CustomException;
 import com.finalproject.breeding.error.ErrorCode;
+import com.finalproject.breeding.image.AwsS3Service;
 import com.finalproject.breeding.image.ImageRequestDto;
 import com.finalproject.breeding.image.model.CommunityImage;
 import com.finalproject.breeding.image.model.PostImage;
@@ -31,6 +33,7 @@ public class CommunityService {
     private final CommunityRepository communityRepository;
     private final BoardMainRepository boardMainRepository;
     private final CommunityImageRepository communityImageRepository;
+    private final AwsS3Service awsS3Service;
 
 
     public Map<String, Object> registCommunity(CommunityRequestDto communityRequestDto, User user) {
@@ -78,15 +81,24 @@ public class CommunityService {
     public void deleteCommunity(User user, Long boardMainId) {
         Community community = communityRepository.findCommunityByBoardMainId(boardMainId);
         UserValidator.validateDelete4User(user, community.getUser().getId());
-        //사진삭제 추가해야함!
+        awsS3Service.removeCommunityImages(community.getId());
         communityRepository.delete(community);
     }
 
     public Map<String, Object> updateCommunity(Long boardMainId, CommunityRequestDto communityRequestDto, User user) {
         Community community = communityRepository.findCommunityByBoardMainId(boardMainId);
         UserValidator.validateUpdate4User(user, community.getUser().getId());
-        community.getBoardMain().update(communityRequestDto);
-        community.update(communityRequestDto, community.getBoardMain());
+        community.getBoardMain().updateCommunity(communityRequestDto);
+
+
+        if (communityRequestDto.getCommunityImages()==null){
+            community.updateTitle(communityRequestDto);
+        }else {
+            awsS3Service.removeCommunityImages(community.getId());
+            List<CommunityImage> communityImages = communityRequestDto.getCommunityImages();
+            community.update(communityRequestDto);
+            imageUpdateToCommunity(communityImages, community);
+        }
 
         Map<String, Object> data = new HashMap<>();
         data.put("communityId", community.getId());

@@ -57,7 +57,7 @@ public class PostController {
     // 게시글 수정
     @PatchMapping("/api/post/{boardMainId}")
     public ResponseEntity<Object> updatePost(@PathVariable Long boardMainId,
-                           @RequestBody PostRequest4EditDto requestDto) {
+                           @RequestBody PostRequestDto requestDto) {
         User user = userService.getUser();
         Map<String, Object> data = postService.updatePost(boardMainId, requestDto, user);
         return new ResponseEntity<>(new StatusResponseDto("수정 되었습니다.", data), HttpStatus.OK);

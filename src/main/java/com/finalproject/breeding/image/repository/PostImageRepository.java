@@ -10,8 +10,9 @@ import java.util.List;
 public interface PostImageRepository extends JpaRepository<PostImage, Long > {
 
 
-    List<Long> findPostImageIdByPostId(Long postId);
 
     @Query("select p "+ "from PostImage p "+ "where p.url = :url ")
     PostImage findPostImageByUrl(String url);
+
+    List<PostImage> findPostImageByPostId(Long postId);
 }

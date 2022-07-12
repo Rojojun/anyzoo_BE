@@ -16,6 +16,7 @@ import com.finalproject.breeding.error.ErrorCode;
 import com.finalproject.breeding.etc.model.RefreshToken;
 import com.finalproject.breeding.user.User;
 import com.finalproject.breeding.user.UserRole;
+import com.finalproject.breeding.user.dto.responseDto.UserInfo;
 import com.finalproject.breeding.user.repository.RefreshTokenRepository;
 import com.finalproject.breeding.user.repository.UserRepository;
 import com.finalproject.breeding.user.SecurityUtil;
@@ -174,7 +175,7 @@ public class UserService {
         if (signupRequestDto.getUserImage()==null){
             userImageRepository.save(userImage = new UserImage());
         } else {
-            userImage = signupRequestDto.getUserImage();
+            userImage = userImageRepository.findById(signupRequestDto.getUserImage()).orElseThrow(()->new CustomException(ErrorCode.Image_NOT_FOUND));
         }
         userImage.updateToUser(userRepository.save(
                 User.builder()
@@ -272,11 +273,23 @@ public class UserService {
     }
 
     @Transactional
-    public void edit(UserEditDto userEditDto) {
-        User user = userRepository
-                .findByUsername(SecurityUtil.getCurrentUsername())
-                .orElseThrow(() ->new CustomException(ErrorCode.NOT_FOUND_USER_INFO));
+    public Map<String, Object> edit(UserEditDto userEditDto) {
+        User user = getUser();
+        userImageRepository.delete(user.getUserImage()); //유저가 기존에 저장한 프로필사진 삭제
+
+        UserImage userImage;
+        if (userEditDto.getUserImage()==null){
+            userImageRepository.save(userImage = new UserImage());
+        } else {
+            userImage = userImageRepository.findById(userEditDto.getUserImage()).orElseThrow(()->new CustomException(ErrorCode.Image_NOT_FOUND));
+        }
+        userImage.updateToUser(user);
+
         user.edit(userEditDto);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("nickname", new UserInfo(user));
+        return data;
     }
 
     @Transactional

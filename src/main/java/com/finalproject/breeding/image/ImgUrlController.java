@@ -41,10 +41,10 @@ public class ImgUrlController {
         return awsS3Service.uploadUser(multipartFile,"user");
     }
 
-    @DeleteMapping("/api/image/{id}")
-    public ResponseEntity<Object> remove(@PathVariable Long id){
-        awsS3Service.remove(id);
-        return new ResponseEntity<>(new StatusResponseDto("삭제 되었습니다.", ""), HttpStatus.OK);
-    }
+//    @DeleteMapping("/api/image/{postId}")
+//    public ResponseEntity<Object> remove(@PathVariable Long id){
+//        awsS3Service.remove(id);
+//        return new ResponseEntity<>(new StatusResponseDto("삭제 되었습니다.", ""), HttpStatus.OK);
+//    }
 
 }

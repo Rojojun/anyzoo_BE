@@ -83,11 +83,11 @@ public class UserController {
 
 
     //----------------------------유저 정보 수정 관련-------------------------------
-    //@PatchMapping("/user/edit")
-    //public ResponseEntity<UserResponseDto> edit(@RequestBody UserEditDto userEditDto){
-    //    userService.edit(userEditDto);
-    //    return ResponseEntity.ok(new UserResponseDto("수정 완료 됬다"));
-    //}
+    @PatchMapping("/user/edit")
+    public ResponseEntity<Object> edit(@RequestBody UserEditDto userEditDto){
+        Map<String, Object> data = userService.edit(userEditDto);
+        return new ResponseEntity<>(new StatusResponseDto("수정 되었습니다..", data), HttpStatus.OK);
+    }
 
     //잃어버린 비밀번호 변경
     @PostMapping("/user/make/newPassword")

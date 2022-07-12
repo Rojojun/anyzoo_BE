@@ -39,7 +39,7 @@ public class PostService {
 
         Post post = new Post(postRequestDto,boardMainRepository.save(new BoardMain(postRequestDto)),user, postImages);
 
-        imageUpdateToPost(postImages, postRepository.save(post));
+        imageUpdateToPost(postImages, postRepository.save(post));  //포스트와 포스트이미지 연관관계 맺어주기
         //postRepository.save(post);
         tierService.upTenExp(user);
 
@@ -97,15 +97,16 @@ public class PostService {
     }
 
     @Transactional
-    public Map<String, Object> updatePost(Long boardMainId, PostRequest4EditDto requestDto, User user) {
+    public Map<String, Object> updatePost(Long boardMainId, PostRequestDto requestDto, User user) {
         Post post = postRepository.findByBoardMainId(boardMainId);
         UserValidator.validateUpdate4User(user, post.getUser().getId()); //로그인유저ID와 작성글의 유저ID 체크
-
-        List<PostImage> postImages = requestDto.getPostImages();
-
-        post.updatePost(requestDto);
-
-        imageUpdateToPost(postImages, post);
+        post.getBoardMain().updatePost(requestDto);
+        if (requestDto.getPostImages()!=null){
+            awsS3Service.removePostImages(post.getId());
+            List<PostImage> postImages = requestDto.getPostImages();
+            post.updatePost(requestDto);
+            imageUpdateToPost(postImages, post); //포스트와 포스트이미지 연관관계 맺어주기
+        }
 
         Map<String, Object> data = new HashMap<>();
         data.put("postId", post.getId());

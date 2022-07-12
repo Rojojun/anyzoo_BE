@@ -127,23 +127,30 @@ public class AwsS3Service {
         return Optional.empty();
     }
 
-    public void remove(Long id) {
-        PostImage postImage = postImageRepository.findById(id).orElseThrow(()->new CustomException(ErrorCode.Image_NOT_FOUND));
-        if (!amazonS3.doesObjectExist(bucket, postImage.getKey())) {
-            throw new AmazonS3Exception("Object " +postImage.getKey()+ " does not exist!");
+    public void remove(String key) {
+        if (!amazonS3.doesObjectExist(bucket, key)) {
+            throw new AmazonS3Exception("Object " +key+ " does not exist!");
         }
-        //DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(bucket,"static/"+postImage.getKey());
-        amazonS3.deleteObject(bucket, postImage.getKey());
-        postImageRepository.delete(postImage);
+        amazonS3.deleteObject(bucket, key);
     }
 
     public void removePostImages(Long postId) {
-        List<Long> postImageIdList = postImageRepository.findPostImageIdByPostId(postId);
-        System.out.println(postImageIdList);
-
-        for(Long postImageId : postImageIdList){
-            remove(postImageId);
+        List<PostImage> postImages = postImageRepository.findPostImageByPostId(postId);
+        for(PostImage postImage : postImages){
+            remove(postImage.getKey());
+            postImageRepository.delete(postImage);
         }
-
+    }
+    public void removeCommunityImages(Long communityId) {
+        List<CommunityImage> communityImages = communityImageRepository.findByCommunityId(communityId);
+        for(CommunityImage communityImage : communityImages){
+            remove(communityImage.getKey());
+            communityImageRepository.delete(communityImage);
+        }
+    }
+    public void removeUserImage(Long userId){
+        UserImage userImage = userImageRepository.findByUserId(userId);
+        remove(userImage.getKey());
+        userImageRepository.delete(userImage);
     }
 }

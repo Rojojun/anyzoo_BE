@@ -62,8 +62,12 @@ public class Community {
 
 
 
-    public void update(CommunityRequestDto communityRequestDto, BoardMain boardMain) {
+    public void update(CommunityRequestDto communityRequestDto) {
         this.title = communityRequestDto.getTitle();
-        this.boardMain = boardMain;
+        this.communityImages = communityRequestDto.getCommunityImages();
+    }
+
+    public void updateTitle(CommunityRequestDto communityRequestDto) {
+        this.title = communityRequestDto.getTitle();
     }
 }

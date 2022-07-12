@@ -33,8 +33,11 @@ public class BoardMain extends Timestamped {
     private String content;
 
 
-    public void update(CommunityRequestDto communityRequestDto) {
+    public void updateCommunity(CommunityRequestDto communityRequestDto) {
         this.content = communityRequestDto.getContent();
+    }
+    public void updatePost(PostRequestDto postRequestDto) {
+        this.content = postRequestDto.getContent();
     }
 
     public void plusLikeCnt(BoardMain boardMain){
