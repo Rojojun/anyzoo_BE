@@ -8,11 +8,10 @@ import com.finalproject.breeding.etc.dto.MyDto;
 import com.finalproject.breeding.error.ErrorCode;
 import com.finalproject.breeding.etc.model.Comment;
 import com.finalproject.breeding.etc.repository.CommentRepository;
-import com.finalproject.breeding.repository.CommentMapping;
+import com.finalproject.breeding.etc.dto.CommentMapping;
 import com.finalproject.breeding.user.User;
 import com.finalproject.breeding.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
@@ -24,8 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

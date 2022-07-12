@@ -1,4 +1,4 @@
-package com.finalproject.breeding.repository;
+package com.finalproject.breeding.etc.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
