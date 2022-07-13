@@ -20,6 +20,7 @@ public class PostResponseDto {
     private String postCategory;
     private String contents;
     private Long likeCnt;
+    private Long commentCnt;
     private LocalDateTime dateTime;
     private String nickname;
     private String userProfileImg;
@@ -35,6 +36,7 @@ public class PostResponseDto {
         this.boardMainId = post.getBoardMain().getId();
         this.contents = post.getBoardMain().getContent();
         this.likeCnt = post.getBoardMain().getLikeCnt();
+        this.commentCnt = post.getBoardMain().getCommentCnt();
         this.dateTime = post.getBoardMain().getCreatedAt();
         this.postCategory = post.getPostNReelsCategory().name();
 //        this.image = new ArrayList<>();
