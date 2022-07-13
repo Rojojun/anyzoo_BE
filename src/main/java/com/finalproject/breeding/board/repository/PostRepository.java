@@ -37,4 +37,6 @@ public interface PostRepository extends JpaRepository <Post, Long> {
 
 
     Slice<MyPagePostResponseDto> findByUserNicknameOrderByBoardMainCreatedAtDesc(PageRequest pageRequest, String nickname);
+
+
 }

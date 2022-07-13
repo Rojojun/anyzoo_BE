@@ -2,6 +2,7 @@ package com.finalproject.breeding.etc.controller;
 
 
 import com.finalproject.breeding.board.model.BoardMain;
+import com.finalproject.breeding.board.repository.BoardMainRepository;
 import com.finalproject.breeding.dto.CommentResponseDto;
 import com.finalproject.breeding.error.ErrorCode;
 import com.finalproject.breeding.etc.dto.CommentRequestDto;
@@ -32,19 +33,26 @@ public class ReplyController {
     private final ReplyService replyService;
     private final ReplyRepository replyRepository;
 
+    private final BoardMainRepository boardMainRepository;
+
 
 
     //대댓글 작성
-    @PostMapping("/api/reply/{CommentId}")
+    @PostMapping("/api/reply/{boardMainId}/{CommentId}")
     public ResponseEntity<MyDto> createReply(@RequestBody ReplyRequestDto requestDto,
+                                             @PathVariable Long boardMainId,
                                              @PathVariable Long CommentId
     ){String username = SecurityUtil.getCurrentUsername(); //현제 로그인한 유저 pk
-        return replyService.createReply(requestDto, CommentId, username);
+        return replyService.createReply(requestDto,boardMainId, CommentId, username);
     }
 
     //대댓글 삭제
-    @DeleteMapping("/api/reply/edit/{replyId}")
-    public ResponseEntity<MyDto> deleteComment(@PathVariable Long replyId){
+    @DeleteMapping("/api/reply/edit/{boardMainId}/{replyId}")
+    public ResponseEntity<MyDto> deleteComment(@PathVariable Long replyId,@PathVariable Long boardMainId){
+
+        BoardMain boardMain = boardMainRepository.findById(boardMainId).orElseThrow(
+                () -> new NullPointerException("게시글이 존재하지 않습니다."));
+
 
         MyDto dto = new MyDto();
         HttpHeaders header = new HttpHeaders();
@@ -56,8 +64,8 @@ public class ReplyController {
 
         if (Objects.equals(userId, userId1)) {   //댓글의 닉네임와 일치한다면
 
+            boardMain.minusCommentCnt(boardMain);
             replyRepository.deleteById(replyId);
-
             dto.setStatus(ErrorCode.OK);
             dto.setData("replyId :"+replyId);
             dto.setMessage("댓글 삭제!");
