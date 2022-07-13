@@ -42,11 +42,11 @@ public class FfmpegTest {
             .setStrict(FFmpegBuilder.Strict.EXPERIMENTAL) // Allow FFmpeg to use experimental specs
             .done();
 
-    FFmpegExecutor executor = new FFmpegExecutor(ffmpeg, ffprobe);
+/*    FFmpegExecutor executor = new FFmpegExecutor(ffmpegPath, ffprobePath);
 
 // Run a one-pass encode
 executor.createJob(builder).run();
 
 // Or run a two-pass encode (which is better quality at the cost of being slower)
-executor.createTwoPassJob(builder).run();
+executor.createTwoPassJob(builder).run();*/
 }
