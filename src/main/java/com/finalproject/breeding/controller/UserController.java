@@ -4,6 +4,7 @@ import com.finalproject.breeding.dto.*;
 import com.finalproject.breeding.error.StatusResponseDto;
 import com.finalproject.breeding.model.User;
 import com.finalproject.breeding.service.UserService;
+import com.finalproject.breeding.token.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -74,7 +75,13 @@ public class UserController {
         return new ResponseEntity<>(new StatusResponseDto("로그인 되었습니다.", data), HttpStatus.OK);
     }
 
-    //oauth 통신할 api 추가하면 됨.
+
+
+    //Google oauth 통신할 api
+    @PostMapping("/user/socialLogin")
+    public ResponseEntity<UserResponseDto> socialLogin(@RequestHeader("code") String code){
+        return ResponseEntity.ok(new UserResponseDto(userService.socialLogin(code), "로그인 되었습니다"));
+    }
 
 
     //----------------------------유저 정보 수정 관련-------------------------------
@@ -96,12 +103,6 @@ public class UserController {
         return userService.findLostEmail(phoneNumber);
     }
 
-    @PostMapping("/user/reissue")
-    public ResponseEntity<Object> reissue(@RequestBody TokenRequestDto tokenRequestDto) {
-        TokenDto tokenDto = userService.reissue(tokenRequestDto);
-        return new ResponseEntity<>(new StatusResponseDto("토큰이 재발급 되었습니다.", tokenDto), HttpStatus.OK);
-    }
-
 
     //----------------------------유저 정보 조회-------------------------------
     @GetMapping("/user/userInfo")
@@ -116,5 +117,12 @@ public class UserController {
     //public UserResponseDto notFound(Exception e) {
     //    return new UserResponseDto(e.getMessage());
     //}
+
+    //토큰 재발급
+    @PostMapping("/user/reissue")
+    public ResponseEntity<Object> reissue(@RequestBody TokenRequestDto tokenRequestDto) {
+        TokenDto tokenDto = userService.reissue(tokenRequestDto);
+        return new ResponseEntity<>(new StatusResponseDto("토큰이 재발급 되었습니다.", tokenDto), HttpStatus.OK);
+    }
 
 }
