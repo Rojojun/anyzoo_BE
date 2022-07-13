@@ -16,8 +16,6 @@ public interface CommentMapping {
 
     String getUserNickname();
 
-    String getUserImg();
-
     LocalDateTime getCreatedAt();
 
 

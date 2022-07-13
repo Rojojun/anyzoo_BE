@@ -6,6 +6,7 @@ import com.finalproject.breeding.dto.CommentResponseDto;
 import com.finalproject.breeding.error.ErrorCode;
 import com.finalproject.breeding.etc.dto.CommentRequestDto;
 import com.finalproject.breeding.etc.dto.MyDto;
+import com.finalproject.breeding.etc.dto.ReplyMapping;
 import com.finalproject.breeding.etc.dto.ReplyRequestDto;
 import com.finalproject.breeding.etc.model.Comment;
 import com.finalproject.breeding.etc.model.Reply;
@@ -99,8 +100,9 @@ public class ReplyController {
 
     //대댓글 불러오기
     @GetMapping("/api/reply/{commentId}")
-    public List<Reply> getAllReply(@PathVariable Long commentId){
-        return replyRepository.findByCommentId(commentId);
+    public List<ReplyMapping> getAllReply(@PathVariable Long commentId){
+        List<ReplyMapping> replies =  replyRepository.findByCommentId(commentId);
+        return replies;
 
     }
 
