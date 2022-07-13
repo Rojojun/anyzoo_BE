@@ -4,7 +4,6 @@ import com.finalproject.breeding.dto.*;
 import com.finalproject.breeding.error.StatusResponseDto;
 import com.finalproject.breeding.model.User;
 import com.finalproject.breeding.service.UserService;
-import com.finalproject.breeding.token.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,15 +37,17 @@ public class UserController {
 
     //----------------------------유저 인증 관련-------------------------------
     //인증: 문자인증번호 전송
-    @GetMapping("/user/send/phoneVerification")
-    public void sendSMS(String phoneNumber){
-        userService.certifiedPhoneNumber(phoneNumber);
+
+    @GetMapping("/user/send/phoneVerification/{phoneNumber}")
+    public ResponseEntity<String> sendSMS(@PathVariable String phoneNumber){
+        userService.certifyPhoneNumber(phoneNumber);
+        return new ResponseEntity<>("인증번호를 발송했습니다", HttpStatus.OK);
     }
 
     //인증: 문자인증번호 확인
     @PostMapping("/user/confirm/phoneVerification")
-    public boolean compareConfirmNumbers(String phoneNumber, String numStr){
-        return userService.compareConfirmNumber(phoneNumber, numStr);
+    public boolean compareConfirmNumbers(@RequestBody PhoneVerificationDto phoneVerificationDto){
+        return userService.compareConfirmNumber(phoneVerificationDto.getPhoneNumber(), phoneVerificationDto.getNumbStr());
     }
 
     //인증: 이메일 인증 링크 전송
@@ -99,8 +100,8 @@ public class UserController {
 
     //잃어버린 Username(email) 폰번호로 찾기
     @GetMapping("/user/find/lostEmail")
-    public String findLostEmail(String phoneNumber){
-        return userService.findLostEmail(phoneNumber);
+    public String findLostEmail(@RequestBody PhoneVerificationDto phoneVerificationDto){
+        return userService.findLostEmail(phoneVerificationDto.getPhoneNumber());
     }
 
 

@@ -72,7 +72,7 @@ public class UserService {
 
     //----------------------------유저 인증 관련-------------------------------
     //폰번호 문자인증번호 발송
-    public void certifiedPhoneNumber(String phoneNumber){
+    public void certifyPhoneNumber(String phoneNumber){
         String api_key = "NCS1HI0WXQRNU4EA";
         String api_secret = "0SNTCCSSJJSUPIAOTBTTF0ILPH8QNOYG";
         Message coolsms = new Message(api_key, api_secret);

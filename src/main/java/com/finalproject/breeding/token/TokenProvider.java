@@ -33,8 +33,8 @@ public class TokenProvider {
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_TYPE = "bearer";
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;            // 30분
-    private static final long ACCESS_TOKEN_EXPIRE_TIME2 = 1000 * 10;            // 10초
-    private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
+    private static final long ACCESS_TOKEN_EXPIRE_TIME2 = 1000L * 60 * 60 * 24 * 30;            // 30일
+    private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 24 * 30;  // 30일
 
     private final Key key;
 
@@ -46,7 +46,7 @@ public class TokenProvider {
     //소셜 로그인
     public SocialTokenDto socialLoginTokenCreate(UserRequestDto userRequestDto){
         long now = (new Date()).getTime();
-        Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
+        Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME2);
         String accessToken = Jwts.builder()
                 .setSubject(userRequestDto.getUsername())       // payload "sub": "name"
                 .claim(AUTHORITIES_KEY, UserRole.ROLE_USER)        // payload "auth": "ROLE_USER"
