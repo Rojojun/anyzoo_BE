@@ -3,6 +3,7 @@ package com.finalproject.breeding.etc.service;
 
 import com.finalproject.breeding.error.ErrorCode;
 
+import com.finalproject.breeding.etc.dto.CommentRequestDto;
 import com.finalproject.breeding.etc.dto.MyDto;
 import com.finalproject.breeding.etc.dto.ReplyRequestDto;
 import com.finalproject.breeding.etc.model.Comment;
@@ -50,7 +51,16 @@ public class ReplyService {
         dto.setData("CommentId :"+CommentId);
         dto.setMessage("대댓글 등록!");
         return new ResponseEntity<>(dto, header, HttpStatus.OK);
+    }
 
+    //대댓글 수정
+    @Transactional
+    public void patchReply(ReplyRequestDto requestDto, Long id) {
+        Reply reply = replyRepository.findById(id).orElseThrow(
+                ()-> new NullPointerException("댓글이 존재하지 않습니다."));
+
+
+        reply.patchReply(requestDto);
 
     }
 

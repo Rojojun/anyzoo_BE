@@ -1,6 +1,7 @@
 package com.finalproject.breeding.etc.model;
 
 
+import com.finalproject.breeding.etc.dto.CommentRequestDto;
 import com.finalproject.breeding.etc.dto.ReplyRequestDto;
 import com.finalproject.breeding.user.User;
 import com.sun.istack.NotNull;
@@ -35,5 +36,8 @@ public class Reply {
         this.reply = requestDto.getReply();
         this.comment = comment;
         this.user = user;
+    }
+    public void patchReply(ReplyRequestDto requestDto){
+        this.reply = requestDto.getReply();
     }
 }
