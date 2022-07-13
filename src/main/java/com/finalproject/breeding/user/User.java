@@ -3,6 +3,11 @@ package com.finalproject.breeding.user;
 import com.finalproject.breeding.etc.model.Timestamped;
 import com.finalproject.breeding.image.model.UserImage;
 import com.finalproject.breeding.dto.NewPasswordDto;
+<<<<<<< HEAD:src/main/java/com/finalproject/breeding/user/User.java
+=======
+import com.finalproject.breeding.dto.SocialLoginRequestDto;
+import com.finalproject.breeding.dto.UserEditDto;
+>>>>>>> jihun-dev:src/main/java/com/finalproject/breeding/model/User.java
 import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -44,7 +49,7 @@ public class User extends Timestamped{
     @Column
     private boolean verification;
 
-    @Column(nullable = false)
+    @Column//(nullable = false)
     private String phoneNumber;
 
     @Column
@@ -75,6 +80,11 @@ public class User extends Timestamped{
         this.following = 0L;
         this.verification = verification;
         this.phoneNumber = phoneNumber;
+    }
+
+    public User(SocialLoginRequestDto socialLoginRequestDto){
+        this.username = socialLoginRequestDto.getEmail();
+        this.nickname = "googleUser";
     }
 
     public void edit(UserEditDto userEditDto){

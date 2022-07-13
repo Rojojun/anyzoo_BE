@@ -13,6 +13,7 @@ import com.finalproject.breeding.user.UserEditDto;
 import com.finalproject.breeding.user.dto.responseDto.TokenDto;
 import com.finalproject.breeding.error.CustomException;
 import com.finalproject.breeding.error.ErrorCode;
+<<<<<<< HEAD:src/main/java/com/finalproject/breeding/user/service/UserService.java
 import com.finalproject.breeding.etc.model.RefreshToken;
 import com.finalproject.breeding.user.User;
 import com.finalproject.breeding.user.UserRole;
@@ -20,6 +21,17 @@ import com.finalproject.breeding.user.dto.responseDto.UserInfo;
 import com.finalproject.breeding.user.repository.RefreshTokenRepository;
 import com.finalproject.breeding.user.repository.UserRepository;
 import com.finalproject.breeding.user.token.TokenProvider;
+=======
+import com.finalproject.breeding.model.RefreshToken;
+import com.finalproject.breeding.model.User;
+import com.finalproject.breeding.model.UserRole;
+import com.finalproject.breeding.repository.RefreshTokenRepository;
+import com.finalproject.breeding.repository.UserRepository;
+import com.finalproject.breeding.securityUtil.SecurityUtil;
+import com.finalproject.breeding.socialUtil.GoogleRestTemplate;
+import com.finalproject.breeding.token.JwtException;
+import com.finalproject.breeding.token.TokenProvider;
+>>>>>>> jihun-dev:src/main/java/com/finalproject/breeding/service/UserService.java
 import lombok.RequiredArgsConstructor;
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
@@ -54,6 +66,9 @@ public class UserService {
     //잠시동안 저장할 유저 이메일과 이메일 authToken
     public static HashMap<String,String> emailVerificationDB = new HashMap<>();
 
+    //Google Social Login
+    private final GoogleRestTemplate googleRestTemplate;
+
 
     //----------------------------유저 정보 중복 관련-------------------------------
     //이메일 중복확인
@@ -77,7 +92,7 @@ public class UserService {
 
     //----------------------------유저 인증 관련-------------------------------
     //폰번호 문자인증번호 발송
-    public void certifiedPhoneNumber(String phoneNumber){
+    public void certifyPhoneNumber(String phoneNumber){
         String api_key = "NCS1HI0WXQRNU4EA";
         String api_secret = "0SNTCCSSJJSUPIAOTBTTF0ILPH8QNOYG";
         Message coolsms = new Message(api_key, api_secret);
@@ -245,6 +260,37 @@ public class UserService {
         return data;
     }
 
+    //Google 로그인
+    public SocialTokenDto socialLogin(String code){
+        SocialLoginRequestDto socialLoginRequestDto = googleRestTemplate.googleUserInfoByAccessToken(googleRestTemplate.findAccessTokenByCode(code).getAccess_token());
+        User user = userRepository.findByUsername(socialLoginRequestDto.getEmail())
+                .orElseGet(() -> userRepository.save(new User(socialLoginRequestDto)));
+        return createToken(new UserRequestDto(user));
+    }
+
+    public SocialTokenDto createToken(UserRequestDto userRequestDto){
+        SocialTokenDto tokenDto = tokenProvider.socialLoginTokenCreate(userRequestDto);
+
+        tokenDto.setUsername(userRequestDto.getUsername());
+
+        User user = userRepository.findByUsername(userRequestDto.getUsername()).orElse(null);
+        assert user != null;
+        tokenDto.setNickname(user.getNickname());
+
+        // 4. RefreshToken 저장
+        RefreshToken refreshToken = RefreshToken.builder()
+                .key(userRequestDto.getUsername())
+                .value(tokenDto.getRefreshToken())
+                .build();
+
+        refreshTokenRepository.save(refreshToken);
+
+        // 5. 토큰 발급
+        return tokenDto;
+    }
+
+
+
 
     //----------------------------유저 정보 수정 관련-------------------------------
     //잃어버린 비밀번호 변경
@@ -292,7 +338,7 @@ public class UserService {
     }
 
     @Transactional
-    public TokenDto reissue(TokenRequestDto tokenRequestDto) {
+    public TokenDto reissue(TokenRequestDto tokenRequestDto){
         // 토큰값 제대로 받았는지 확인
         UserValidator.validateRefreshTokenReissue(tokenRequestDto);
 

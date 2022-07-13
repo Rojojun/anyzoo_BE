@@ -42,15 +42,17 @@ public class UserController {
 
     //----------------------------유저 인증 관련-------------------------------
     //인증: 문자인증번호 전송
-    @GetMapping("/user/send/phoneVerification")
-    public void sendSMS(String phoneNumber){
-        userService.certifiedPhoneNumber(phoneNumber);
+
+    @GetMapping("/user/send/phoneVerification/{phoneNumber}")
+    public ResponseEntity<String> sendSMS(@PathVariable String phoneNumber){
+        userService.certifyPhoneNumber(phoneNumber);
+        return new ResponseEntity<>("인증번호를 발송했습니다", HttpStatus.OK);
     }
 
     //인증: 문자인증번호 확인
     @PostMapping("/user/confirm/phoneVerification")
-    public boolean compareConfirmNumbers(String phoneNumber, String numStr){
-        return userService.compareConfirmNumber(phoneNumber, numStr);
+    public boolean compareConfirmNumbers(@RequestBody PhoneVerificationDto phoneVerificationDto){
+        return userService.compareConfirmNumber(phoneVerificationDto.getPhoneNumber(), phoneVerificationDto.getNumbStr());
     }
 
     //인증: 이메일 인증 링크 전송
@@ -79,7 +81,13 @@ public class UserController {
         return new ResponseEntity<>(new StatusResponseDto("로그인이 되었습니다.", data), HttpStatus.OK);
     }
 
-    //oauth 통신할 api 추가하면 됨.
+
+
+    //Google oauth 통신할 api
+    @PostMapping("/user/socialLogin")
+    public ResponseEntity<UserResponseDto> socialLogin(@RequestHeader("code") String code){
+        return ResponseEntity.ok(new UserResponseDto(userService.socialLogin(code), "로그인 되었습니다"));
+    }
 
 
     //----------------------------유저 정보 수정 관련-------------------------------
@@ -97,14 +105,8 @@ public class UserController {
 
     //잃어버린 Username(email) 폰번호로 찾기
     @GetMapping("/user/find/lostEmail")
-    public String findLostEmail(String phoneNumber){
-        return userService.findLostEmail(phoneNumber);
-    }
-
-    @PostMapping("/user/reissue")
-    public ResponseEntity<Object> reissue(@RequestBody TokenRequestDto tokenRequestDto) {
-        TokenDto tokenDto = userService.reissue(tokenRequestDto);
-        return new ResponseEntity<>(new StatusResponseDto("토큰이 재발급 되었습니다.", tokenDto), HttpStatus.OK);
+    public String findLostEmail(@RequestBody PhoneVerificationDto phoneVerificationDto){
+        return userService.findLostEmail(phoneVerificationDto.getPhoneNumber());
     }
 
     //----------------------------유저 정보 조회-------------------------------
@@ -119,5 +121,12 @@ public class UserController {
     //public UserResponseDto notFound(Exception e) {
     //    return new UserResponseDto(e.getMessage());
     //}
+
+    //토큰 재발급
+    @PostMapping("/user/reissue")
+    public ResponseEntity<Object> reissue(@RequestBody TokenRequestDto tokenRequestDto) {
+        TokenDto tokenDto = userService.reissue(tokenRequestDto);
+        return new ResponseEntity<>(new StatusResponseDto("토큰이 재발급 되었습니다.", tokenDto), HttpStatus.OK);
+    }
 
 }
