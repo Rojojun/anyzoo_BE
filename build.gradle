@@ -34,8 +34,18 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     //implementation 'org.springframwork.security:spring-security-test:5.1.6.Release'
     //implementation group: 'org.springframework.security', name: 'spring-security-test', version: '5.1.6.RELEASE'
+
     // websocket 의존성, freemarker, vue, stomp, sockjs
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.springframework.boot:spring-boot-starter-freemarker'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    implementation 'org.webjars.bower.sockjs-client:1.1.2'
+    implementation 'org.webjars.stomp-websocket:2.3.3-1'
+
+
     //JWT
     //implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
     implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'

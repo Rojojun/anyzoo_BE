@@ -28,8 +28,15 @@ public class MyPageController {
     private final UserService userService;
 
 
-    @GetMapping("/api/mypage/{userId}")
-    public Slice<MyPagePostResponseDto> getMyPagePost(HttpServletRequest httpServletRequest, @PathVariable String nickname){
+    @GetMapping("/api/mypage")
+    public Slice<MyPagePostResponseDto> getMyPagePost(HttpServletRequest httpServletRequest){
+        User user = userService.getUser();
+        int page = Integer.parseInt(httpServletRequest.getParameter("page"));
+        return myPageService.getMyPagePost(user.getNickname(), page);
+    }
+
+    @GetMapping("/api/userpage/{nickname}")
+    public Slice<MyPagePostResponseDto> getuserPost(HttpServletRequest httpServletRequest, @PathVariable String nickname){
         int page = Integer.parseInt(httpServletRequest.getParameter("page"));
         return myPageService.getMyPagePost(nickname, page);
     }
