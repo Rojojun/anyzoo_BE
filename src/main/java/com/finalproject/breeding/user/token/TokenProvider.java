@@ -1,17 +1,12 @@
 package com.finalproject.breeding.user.token;
 
-<<<<<<< HEAD:src/main/java/com/finalproject/breeding/user/token/TokenProvider.java
+import com.finalproject.breeding.user.UserRole;
 import com.finalproject.breeding.user.dto.responseDto.TokenDto;
-=======
 import com.finalproject.breeding.dto.SocialTokenDto;
-import com.finalproject.breeding.dto.TokenDto;
 import com.finalproject.breeding.dto.UserRequestDto;
 import com.finalproject.breeding.error.CustomException;
 import com.finalproject.breeding.error.ErrorCode;
-import com.finalproject.breeding.model.UserRole;
->>>>>>> jihun-dev:src/main/java/com/finalproject/breeding/token/TokenProvider.java
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;

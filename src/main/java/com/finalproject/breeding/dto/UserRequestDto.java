@@ -1,7 +1,7 @@
 package com.finalproject.breeding.dto;
 
-import com.finalproject.breeding.model.User;
-import com.finalproject.breeding.model.UserRole;
+import com.finalproject.breeding.user.User;
+import com.finalproject.breeding.user.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

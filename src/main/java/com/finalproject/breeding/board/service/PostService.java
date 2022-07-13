@@ -59,7 +59,7 @@ public class PostService {
 
     @Transactional
     public Slice<PostResponseDto> readCategoryPost(int page, String category) {
-        PageRequest pageRequest = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "boardMain.createdAt"));
+        PageRequest pageRequest = PageRequest.of(page, 3, Sort.by(Sort.Direction.DESC, "boardMain.createdAt"));
         switch (category) {
             case "cool":
                 return postRepository.findPostByPostNReelsCategory(pageRequest, PostNReelsCategory.COOL);

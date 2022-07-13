@@ -1,7 +1,6 @@
 package com.finalproject.breeding.user.service;
 
-import com.finalproject.breeding.dto.EmailVerificationRequestDto;
-import com.finalproject.breeding.dto.NewPasswordDto;
+import com.finalproject.breeding.dto.*;
 import com.finalproject.breeding.image.model.UserImage;
 import com.finalproject.breeding.image.repository.UserImageRepository;
 import com.finalproject.breeding.service.VerificationEmailSenderService;
@@ -13,7 +12,6 @@ import com.finalproject.breeding.user.UserEditDto;
 import com.finalproject.breeding.user.dto.responseDto.TokenDto;
 import com.finalproject.breeding.error.CustomException;
 import com.finalproject.breeding.error.ErrorCode;
-<<<<<<< HEAD:src/main/java/com/finalproject/breeding/user/service/UserService.java
 import com.finalproject.breeding.etc.model.RefreshToken;
 import com.finalproject.breeding.user.User;
 import com.finalproject.breeding.user.UserRole;
@@ -21,17 +19,7 @@ import com.finalproject.breeding.user.dto.responseDto.UserInfo;
 import com.finalproject.breeding.user.repository.RefreshTokenRepository;
 import com.finalproject.breeding.user.repository.UserRepository;
 import com.finalproject.breeding.user.token.TokenProvider;
-=======
-import com.finalproject.breeding.model.RefreshToken;
-import com.finalproject.breeding.model.User;
-import com.finalproject.breeding.model.UserRole;
-import com.finalproject.breeding.repository.RefreshTokenRepository;
-import com.finalproject.breeding.repository.UserRepository;
-import com.finalproject.breeding.securityUtil.SecurityUtil;
 import com.finalproject.breeding.socialUtil.GoogleRestTemplate;
-import com.finalproject.breeding.token.JwtException;
-import com.finalproject.breeding.token.TokenProvider;
->>>>>>> jihun-dev:src/main/java/com/finalproject/breeding/service/UserService.java
 import lombok.RequiredArgsConstructor;
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;

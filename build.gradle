@@ -32,14 +32,9 @@ dependencies {
 
     //security
     implementation 'org.springframework.boot:spring-boot-starter-security'
-<<<<<<< HEAD
-    //implementation 'org.springframwork.security:spring-security-test:5.1.6.Release'
-    //implementation group: 'org.springframework.security', name: 'spring-security-test', version: '5.1.6.RELEASE'
-    // websocket 의존성, freemarker, vue, stomp, sockjs
+
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
-=======
     implementation 'org.springframework.boot:spring-boot-starter-validation'
->>>>>>> jihun-dev
     //JWT
     //implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
     implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
@@ -50,15 +45,14 @@ dependencies {
 
     //휴대폰 인증
     implementation group: 'net.nurigo', name: 'javaSDK', version: '2.2'
-<<<<<<< HEAD
+
 
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-oauth2-client', version: '2.4.3'
 
-=======
->>>>>>> jihun-dev
+
     //이메일인증
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 

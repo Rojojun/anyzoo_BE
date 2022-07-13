@@ -77,11 +77,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/user/**").permitAll()
-<<<<<<< HEAD
                 .antMatchers("/swagger-ui.html").permitAll()
                 .antMatchers("/confirm-email").permitAll()
-=======
->>>>>>> jihun-dev
                 .anyRequest().authenticated()   // 나머지 API 는 전부 인증 필요
 
                 // JwtFilter 를 addFilterBefore 로 등록했던 JwtSecurityConfig 클래스를 적용
