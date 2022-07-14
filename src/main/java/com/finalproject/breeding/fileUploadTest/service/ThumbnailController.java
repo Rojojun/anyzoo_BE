@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 public class ThumbnailController {
 
     private final ThumbnailService thumbnailService;
+    private final ConvertVedioService convertVedioService;
     //private final Logger logger = (Logger) LoggerFactory.getLogger(ThumbnailController.class);
 
     // thumbnail 페이지 이동
@@ -39,5 +40,16 @@ public class ThumbnailController {
 
         HashMap<String, Object> resultMap = thumbnailService.exportThumbnail(file);
         return resultMap;
+    }
+
+    @RequestMapping(value="/file/convert", method=RequestMethod.POST)
+    public @ResponseBody void convertVideo(@RequestParam("video") MultipartFile multipartFile) throws Exception {
+        //logger.info("Request url : /thumbnail/export");
+
+        // MultipartFile -> File
+        File file = new File(multipartFile.getOriginalFilename());
+        multipartFile.transferTo(file);
+
+        File noevoFile = convertVedioService.videoEncode(file);
     }
 }

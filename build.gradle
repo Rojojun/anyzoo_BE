@@ -61,6 +61,12 @@ dependencies {
     // ffmpeg 의존성 추가
     implementation group: 'net.bramp.ffmpeg', name: 'ffmpeg', version: '0.7.0'
 
+    // 썸네일 추출을 위한 JCodec
+    implementation group: 'org.jcodec', name: 'jcodec-javase', version: '0.2.3'
+    implementation group: 'org.jcodec', name: 'jcodec', version: '0.2.3'
+
+    // 썸네일 Extract
+    implementation group: 'org.bytedeco', name: 'javacv-platform', version: '1.5.7'
 }
 
 tasks.named('test') {
