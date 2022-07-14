@@ -6,5 +6,5 @@ import lombok.Getter;
 public class PhoneVerificationDto {
 
     private String phoneNumber;
-    private String numbStr;
+    private String numStr;
 }
