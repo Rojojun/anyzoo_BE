@@ -104,12 +104,14 @@ public class UserService {
     }
 
     //폰번호 문자인증번호 확인 메소드
-    public boolean compareConfirmNumber(String phoneNumber, String numStr){
-        String tests = phoneVerificationDB.get(phoneNumber);
+    public boolean compareConfirmNumber(PhoneVerificationDto phoneVerificationDto){
+        String tests = phoneVerificationDB.get(phoneVerificationDto.getPhoneNumber());
         if(Optional.ofNullable(tests).isPresent()){
-            if(tests.equals(numStr)){
-                phoneVerificationDB.remove(phoneNumber);
+            if(tests.equals(phoneVerificationDto.getNumStr())){
+                phoneVerificationDB.remove(phoneVerificationDto.getPhoneNumber());
                 return true;
+            }else{
+                return false;
             }
         }
         return false;

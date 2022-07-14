@@ -47,7 +47,7 @@ public class UserController {
     //인증: 문자인증번호 확인
     @PostMapping("/user/confirm/phoneVerification")
     public boolean compareConfirmNumbers(@RequestBody PhoneVerificationDto phoneVerificationDto){
-        return userService.compareConfirmNumber(phoneVerificationDto.getPhoneNumber(), phoneVerificationDto.getNumbStr());
+        return userService.compareConfirmNumber(phoneVerificationDto);
     }
 
     //인증: 이메일 인증 링크 전송
