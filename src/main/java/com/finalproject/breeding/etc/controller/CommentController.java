@@ -37,6 +37,7 @@ public class CommentController {
 
     private final ReplyRepository replyRepository;
 
+    private final PostRepository postRepository;
 
 
     //댓글 작성
@@ -128,6 +129,7 @@ public class CommentController {
     public CommentResponseDto getAllCommnet(@PathVariable Long boardMainId, HttpServletRequest httpServletRequest){
         Long page = Long.parseLong(httpServletRequest.getParameter("page"));
         return commentService.getAllCommnet(boardMainId, page);
+
     }
 
     //댓글 수 불러오기
