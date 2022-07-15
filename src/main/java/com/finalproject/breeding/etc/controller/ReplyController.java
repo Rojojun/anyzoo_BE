@@ -68,7 +68,7 @@ public class ReplyController {
             replyRepository.deleteById(replyId);
             dto.setStatus(ErrorCode.OK);
             dto.setData("replyId :"+replyId);
-            dto.setMessage("댓글 삭제!");
+            dto.setMessage("대댓글 삭제!");
             return new ResponseEntity<>(dto, header, HttpStatus.OK);
         }else{
             dto.setStatus(ErrorCode.COMMENT_WRONG_INPUT);
