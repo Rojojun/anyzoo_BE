@@ -16,6 +16,7 @@ import com.finalproject.breeding.board.model.BoardMain;
 import com.finalproject.breeding.board.model.Post;
 import com.finalproject.breeding.board.repository.BoardMainRepository;
 import com.finalproject.breeding.board.repository.PostRepository;
+import com.finalproject.breeding.user.UserValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
@@ -38,7 +39,7 @@ public class PostService {
 
         Post post = new Post(postRequestDto,boardMainRepository.save(new BoardMain(postRequestDto)),user, postImages);
 
-        imageUpdateToPost(postImages, postRepository.save(post));
+        imageUpdateToPost(postImages, postRepository.save(post));  //포스트와 포스트이미지 연관관계 맺어주기
         //postRepository.save(post);
         tierService.upTenExp(user);
 
@@ -57,8 +58,8 @@ public class PostService {
 
 
     @Transactional
-    public Slice<PostResponseDto> readCategoryPost(Long page, String category) {
-        PageRequest pageRequest = PageRequest.of(Math.toIntExact(page), 5, Sort.by(Sort.Direction.DESC, "boardMain.createdAt"));
+    public Slice<PostResponseDto> readCategoryPost(int page, String category) {
+        PageRequest pageRequest = PageRequest.of(page, 3, Sort.by(Sort.Direction.DESC, "boardMain.createdAt"));
         switch (category) {
             case "cool":
                 return postRepository.findPostByPostNReelsCategory(pageRequest, PostNReelsCategory.COOL);
@@ -90,26 +91,22 @@ public class PostService {
     // 삭제하기
     public void deletePost(Long boardMainId, User user) {
         Post post = postRepository.findByBoardMainId(boardMainId);
-
-        if (!Objects.equals(user.getId(), post.getUser().getId())) {
-            throw new CustomException(ErrorCode.POST_DELETE_WRONG_ACCESS);
-        }
+        UserValidator.validateDelete4User(user, post.getUser().getId());   //로그인유저ID와 작성글의 유저ID 체크
         awsS3Service.removePostImages(post.getId());
         postRepository.delete(post);
     }
 
     @Transactional
-    public Map<String, Object> updatePost(Long boardMainId, PostRequest4EditDto requestDto, User user) {
+    public Map<String, Object> updatePost(Long boardMainId, PostRequestDto requestDto, User user) {
         Post post = postRepository.findByBoardMainId(boardMainId);
-        if (!Objects.equals(user.getId(), post.getUser().getId())) {
-            throw new CustomException(ErrorCode.POST_UPDATE_WRONG_ACCESS);
+        UserValidator.validateUpdate4User(user, post.getUser().getId()); //로그인유저ID와 작성글의 유저ID 체크
+        post.getBoardMain().updatePost(requestDto);
+        if (requestDto.getPostImages()!=null){
+            awsS3Service.removePostImages(post.getId());
+            List<PostImage> postImages = requestDto.getPostImages();
+            post.updatePost(requestDto);
+            imageUpdateToPost(postImages, post); //포스트와 포스트이미지 연관관계 맺어주기
         }
-
-        List<PostImage> postImages = requestDto.getPostImages();
-
-        post.updatePost(requestDto);
-
-        imageUpdateToPost(postImages, post);
 
         Map<String, Object> data = new HashMap<>();
         data.put("postId", post.getId());

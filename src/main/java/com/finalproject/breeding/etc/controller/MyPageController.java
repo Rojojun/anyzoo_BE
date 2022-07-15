@@ -30,9 +30,14 @@ public class MyPageController {
 
     @GetMapping("/api/mypage/{userId}")
     public Slice<MyPagePostResponseDto> getMyPagePost(HttpServletRequest httpServletRequest, @PathVariable String nickname){
-        Long page = Long.parseLong(httpServletRequest.getParameter("page"));
+        int page = Integer.parseInt(httpServletRequest.getParameter("page"));
         return myPageService.getMyPagePost(nickname, page);
     }
+
+//    @GetMapping("/api/mypage/heart")
+//    public Slice<MyPagePostResponseDto> getMyPageHeart(HttpServletRequest httpServletRequest){
+//
+//    }
 
     @PostMapping("/api/follow/{nickname}")
     public ResponseEntity<Object> followUnFollow(@PathVariable String nickname){

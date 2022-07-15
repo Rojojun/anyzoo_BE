@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 public class UserEditDto {
     String nickname;
     String password;
-    String img;
+    Long userImage;
 }

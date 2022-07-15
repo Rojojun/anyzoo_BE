@@ -64,7 +64,7 @@ public class Post {
     }
 
 
-    public void updatePost(PostRequest4EditDto requestDto) {
-
+    public void updatePost(PostRequestDto requestDto) {
+        this.postImage = requestDto.getPostImages();
     }
 }

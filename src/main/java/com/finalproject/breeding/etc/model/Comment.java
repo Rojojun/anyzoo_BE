@@ -33,6 +33,7 @@ public class Comment extends Timestamped {
     private String comment;
 
     public Comment(CommentRequestDto requestDto, BoardMain boardMain, User user){
+
         this.comment = requestDto.getComment();
         this.boardMain = boardMain;
         this.user = user;

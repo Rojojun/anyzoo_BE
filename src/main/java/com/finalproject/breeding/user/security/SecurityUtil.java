@@ -1,4 +1,4 @@
-package com.finalproject.breeding.user;
+package com.finalproject.breeding.user.security;
 
 import com.finalproject.breeding.error.CustomException;
 import com.finalproject.breeding.error.ErrorCode;

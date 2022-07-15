@@ -1,6 +1,7 @@
 package com.finalproject.breeding.user;
 
 
+import com.finalproject.breeding.board.model.Post;
 import com.finalproject.breeding.user.dto.requestDto.LoginDto;
 import com.finalproject.breeding.user.dto.requestDto.SignupRequestDto;
 import com.finalproject.breeding.user.dto.requestDto.TokenRequestDto;
@@ -54,13 +55,20 @@ public class UserValidator {
             throw new CustomException(ErrorCode.REFRESH_TOKEN_REISSUE_WRONG_INPUT);
         }
     }
-    public static void validateBoardMainAndUser(User user, Community community) {
+    public static void validateUpdate4User(User user, Long id) {
 
         Long userId = user.getId();
-        Long communityUserId = community.getUser().getId();
 
-        if (!userId.equals(communityUserId)) {
+        if (!userId.equals(id)) {
             throw new CustomException(ErrorCode.POST_UPDATE_WRONG_ACCESS);
+        }
+    }
+    public static void validateDelete4User(User user, Long id) {
+
+        Long userId = user.getId();
+
+        if (!userId.equals(id)) {
+            throw new CustomException(ErrorCode.POST_DELETE_WRONG_ACCESS);
         }
     }
 

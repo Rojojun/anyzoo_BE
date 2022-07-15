@@ -30,11 +30,18 @@ public class BoardMain extends Timestamped {
 
     @Column
     @NotNull
+    private Long commentCnt;
+
+    @Column
+    @NotNull
     private String content;
 
 
-    public void update(CommunityRequestDto communityRequestDto) {
+    public void updateCommunity(CommunityRequestDto communityRequestDto) {
         this.content = communityRequestDto.getContent();
+    }
+    public void updatePost(PostRequestDto postRequestDto) {
+        this.content = postRequestDto.getContent();
     }
 
     public void plusLikeCnt(BoardMain boardMain){
@@ -44,9 +51,17 @@ public class BoardMain extends Timestamped {
         this.likeCnt = boardMain.getLikeCnt()-1L;
     }
 
+    public void plusCommentCnt(BoardMain boardMain){
+        this.commentCnt = boardMain.getCommentCnt()+1L;
+    }
+    public void minusCommentCnt(BoardMain boardMain){
+        this.commentCnt = boardMain.getCommentCnt()-1L;
+    }
+
     public BoardMain(PostRequestDto postRequestDto) {
         this.content = postRequestDto.getContent();
         this.likeCnt = 0L;
+        this.commentCnt = 0L;
         this.boardKind = BoardKind.POST;
     }
 

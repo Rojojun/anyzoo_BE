@@ -15,6 +15,9 @@ public enum ErrorCode {
     NOT_VALIDCONTENT(HttpStatus.BAD_REQUEST,400,"유효하지 않는 내용입니다."),
     NOT_VALIDURL(HttpStatus.BAD_REQUEST,400,"요효하지 않는 URL 입니다."),
 
+    //유저 인증
+    NOT_VERIFIED_USER_INFORMATION(HttpStatus.INTERNAL_SERVER_ERROR, 500, "인증되지 않은 회원 정보입니다"),
+
     // 회원가입
     SIGNUP_MEMBERID_WRONG_INPUT(HttpStatus.BAD_REQUEST, 400, "아이디 형식을 맞춰주세요"),
     SIGNUP_PASSWORD_WRONG_INPUT(HttpStatus.BAD_REQUEST, 400, "비밀번호 형식을 맞춰주세요"),
@@ -22,6 +25,7 @@ public enum ErrorCode {
     SIGNUP_NICKNAME_WRONG_INPUT(HttpStatus.BAD_REQUEST, 400, "닉네임 형식을 맞춰주세요"),
     SIGNUP_MEMBERID_DUPLICATE_CHECK(HttpStatus.BAD_REQUEST, 400, "아이디 중복확인을 해주세요"),
     SIGNUP_NICKNAME_DUPLICATE_CHECK(HttpStatus.BAD_REQUEST, 400, "닉네임 중복확인을 해주세요"),
+    SIGNUP_PHONENUMBER_DUPLICATE_CHECK(HttpStatus.BAD_REQUEST, 400, "이미 등록되어 있는 번호 입니다"),
     SIGNUP_MAJOR_WRONG_INPUT(HttpStatus.BAD_REQUEST, 400, "분야를 선택해주세요"),
     SIGNUP_USERID_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "userId가 존재하지 않습니다"),
 
@@ -34,6 +38,8 @@ public enum ErrorCode {
     JWT_TOKEN_WRONG_SIGNATURE(HttpStatus.UNAUTHORIZED, 401, "잘못된 JWT 서명입니다"),
     JWT_TOKEN_NOT_SUPPORTED(HttpStatus.UNAUTHORIZED, 401, "지원되지 않는 JWT 토큰입니다."),
     JWT_TOKEN_WRONG_FORM(HttpStatus.UNAUTHORIZED, 401, "JWT 토큰이 잘못되었습니다."),
+    JWT_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, 401, "TokenExpiredError"),
+
 
     REFRESH_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, 401, "로그인이 만료되었습니다. 재로그인 하세요."),
     REFRESH_TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "Refresh Token이 존재하지 않습니다. 로그인 해주세요"),
@@ -97,7 +103,7 @@ public enum ErrorCode {
     EMAIL_WRONG_PATTERN(HttpStatus.BAD_REQUEST, 400, "이메일 형식을 맞춰주세요"),
 
     //Room
-
+    ALREADY_PEOPLE_SET_FULL(HttpStatus.BAD_REQUEST, 400, "해당 모집글의 정원이 다 찼습니다"),
     ALREADY_EXISTS_CHAT_ROOM(HttpStatus.BAD_REQUEST,400,"채팅방이 이미 존재합니다."),
     NOT_EXIST_ROOM(HttpStatus.NOT_FOUND,404,"채팅방이 존재하지 않습니다."),
 
