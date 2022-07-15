@@ -29,7 +29,7 @@ public interface PostRepository extends JpaRepository <Post, Long> {
     @Query("select p " + "from Post p " + "where p.boardMain.createdAt > :date and p.postNReelsCategory = :postNReelsCategory " +"order by p.boardMain.likeCnt desc " )
     List<PostResponseDto> findPostByPostNReelsCategoryOrderByBoardMainLikeCntDesc(LocalDateTime date, PostNReelsCategory postNReelsCategory, PageRequest pageRequest);
 
-
+    @Query("select p " + "from Post p " + "where p.boardMain.createdAt > :date " + "order by p.boardMain.likeCnt desc " )
     List<PostResponseDto> findPostByOrderByBoardMainLikeCntDesc(LocalDateTime date, PageRequest pageRequest);
 
 
