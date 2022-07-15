@@ -11,7 +11,7 @@ public interface CommentMapping {
     Long getUserId();
     String getComment();
     String getUserNickname();
-    String getUserImage();
+    UserImage getUserUserImage();
     LocalDateTime getCreatedAt();
 
 
