@@ -62,7 +62,7 @@ public class RankService {
 
         LocalDateTime date = LocalDateTime.of(week, time);
 
-            PageRequest pageRequest = PageRequest.of(0, 3);
+            PageRequest pageRequest = PageRequest.of(0, 2);
             return postRepository.findPostByOrderByBoardMainLikeCntDesc(date, pageRequest);
         }
 
