@@ -15,9 +15,9 @@ public class AwsS3 {
     }
 
     @Builder
-    public AwsS3(String key, String path) {
-        this.key = key;
-        this.path = path;
+    public AwsS3(PostImage postImage) {
+        this.key = postImage.getKey();
+        this.path = postImage.getUrl();
     }
 
 }

@@ -41,7 +41,7 @@ public class CommunityController {
     // 전체 게시글 조회하기 (all, free, review, qna)
     @GetMapping("/api/community/category/{category}")
     public Slice<CommunityResponseDto> readAllCommunity(HttpServletRequest httpServletRequest, @PathVariable String category) {
-        Long page = Long.parseLong(httpServletRequest.getParameter("page"));
+        int page = Integer.parseInt(httpServletRequest.getParameter("page"));
         return communityService.readCommunity(page, category);
     }
 

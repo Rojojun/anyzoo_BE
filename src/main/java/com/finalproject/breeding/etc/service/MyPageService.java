@@ -33,8 +33,8 @@ public class MyPageService {
     private final FollowRepository followRepository;
 
 
-    public Slice<MyPagePostResponseDto> getMyPagePost(String nickname, Long page) {
-        PageRequest pageRequest = PageRequest.of(Math.toIntExact(page), 12);
+    public Slice<MyPagePostResponseDto> getMyPagePost(String nickname, int page) {
+        PageRequest pageRequest = PageRequest.of(page, 12);
         return postRepository.findByUserNicknameOrderByBoardMainCreatedAtDesc(pageRequest, nickname);
     }
 

@@ -2,9 +2,7 @@ package com.finalproject.breeding.board.model.category;
 
 public enum TogetherCategory {
     WALK,
-    ANIMAL,
+    CAFE,
     ETC,
-    BUY,
-    SPORTS,
-    WITHBUY
+    BUY
 }

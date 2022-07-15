@@ -3,9 +3,11 @@ package com.finalproject.breeding.image;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.finalproject.breeding.error.CustomException;
 import com.finalproject.breeding.error.ErrorCode;
+import com.finalproject.breeding.image.model.AwsS3;
 import com.finalproject.breeding.image.model.CommunityImage;
 import com.finalproject.breeding.image.model.PostImage;
 import com.finalproject.breeding.image.model.UserImage;
@@ -16,6 +18,7 @@ import io.jsonwebtoken.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -79,7 +82,6 @@ public class AwsS3Service {
             removeFile(file);
             communityImages.add(communityImageRepository.save(new CommunityImage(key,path)));
         }
-
         return communityImages;
     }
 
@@ -93,24 +95,7 @@ public class AwsS3Service {
 
         return userImageRepository.save(new UserImage(key, path));
 
-//        return AwsS3
-//                .builder()
-//                .key(key)
-//                .path(path)
-//                .build();
     }
-
-//    private AwsS3 upload(File file, String dirName) {
-//        String key = randomFileName(file, dirName);
-//        String path = putS3(file, key);
-//        removeFile(file);
-//
-//        return AwsS3
-//                .builder()
-//                .key(key)
-//                .path(path)
-//                .build();
-//    }
 
     private String randomFileName(File file, String dirName) {
         return dirName + "/" + UUID.randomUUID() + file.getName();
@@ -142,23 +127,30 @@ public class AwsS3Service {
         return Optional.empty();
     }
 
-    public void remove(Long id) {
-        PostImage postImage = postImageRepository.findById(id).orElseThrow(()->new CustomException(ErrorCode.Image_NOT_FOUND));
-
-        if (!amazonS3.doesObjectExist(bucket, postImage.getKey())) {
-            throw new AmazonS3Exception("Object " +postImage.getKey()+ " does not exist!");
+    public void remove(String key) {
+        if (!amazonS3.doesObjectExist(bucket, key)) {
+            throw new AmazonS3Exception("Object " +key+ " does not exist!");
         }
-        amazonS3.deleteObject(bucket, postImage.getKey());
-        postImageRepository.delete(postImage);
+        amazonS3.deleteObject(bucket, key);
     }
 
     public void removePostImages(Long postId) {
-        List<Long> postImageIdList = postImageRepository.findPostImageIdByPostId(postId);
-        System.out.println(postImageIdList);
-
-        for(Long postImageId : postImageIdList){
-            remove(postImageId);
+        List<PostImage> postImages = postImageRepository.findPostImageByPostId(postId);
+        for(PostImage postImage : postImages){
+            remove(postImage.getKey());
+            postImageRepository.delete(postImage);
         }
-
+    }
+    public void removeCommunityImages(Long communityId) {
+        List<CommunityImage> communityImages = communityImageRepository.findByCommunityId(communityId);
+        for(CommunityImage communityImage : communityImages){
+            remove(communityImage.getKey());
+            communityImageRepository.delete(communityImage);
+        }
+    }
+    public void removeUserImage(Long userId){
+        UserImage userImage = userImageRepository.findByUserId(userId);
+        remove(userImage.getKey());
+        userImageRepository.delete(userImage);
     }
 }

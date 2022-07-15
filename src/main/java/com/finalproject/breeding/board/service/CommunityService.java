@@ -4,17 +4,20 @@ import com.finalproject.breeding.board.dto.CommunityRequestDto;
 import com.finalproject.breeding.board.dto.CommunityResponseDto;
 import com.finalproject.breeding.board.model.BoardMain;
 import com.finalproject.breeding.board.model.Community;
+import com.finalproject.breeding.board.model.Post;
 import com.finalproject.breeding.board.model.category.CommunityCategory;
 import com.finalproject.breeding.board.model.category.PostNReelsCategory;
 import com.finalproject.breeding.board.repository.BoardMainRepository;
 import com.finalproject.breeding.board.repository.CommunityRepository;
 import com.finalproject.breeding.error.CustomException;
 import com.finalproject.breeding.error.ErrorCode;
+import com.finalproject.breeding.image.AwsS3Service;
 import com.finalproject.breeding.image.ImageRequestDto;
 import com.finalproject.breeding.image.model.CommunityImage;
 import com.finalproject.breeding.image.model.PostImage;
 import com.finalproject.breeding.image.repository.CommunityImageRepository;
 import com.finalproject.breeding.user.User;
+import com.finalproject.breeding.user.UserValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
@@ -30,6 +33,7 @@ public class CommunityService {
     private final CommunityRepository communityRepository;
     private final BoardMainRepository boardMainRepository;
     private final CommunityImageRepository communityImageRepository;
+    private final AwsS3Service awsS3Service;
 
 
     public Map<String, Object> registCommunity(CommunityRequestDto communityRequestDto, User user) {
@@ -58,8 +62,8 @@ public class CommunityService {
     }
 
 
-    public Slice<CommunityResponseDto> readCommunity(Long page, String category) {
-        PageRequest pageRequest = PageRequest.of(Math.toIntExact(page), 5);
+    public Slice<CommunityResponseDto> readCommunity(int page, String category) {
+        PageRequest pageRequest = PageRequest.of(page, 5);
         switch (category) {
             case "qna":
                 return communityRepository.findByCommunityCategoryOrderByBoardMainCreatedAtDesc(pageRequest, CommunityCategory.QNA);
@@ -76,20 +80,25 @@ public class CommunityService {
 
     public void deleteCommunity(User user, Long boardMainId) {
         Community community = communityRepository.findCommunityByBoardMainId(boardMainId);
-        if (!Objects.equals(user.getId(), community.getUser().getId())) {
-            throw new CustomException(ErrorCode.POST_DELETE_WRONG_ACCESS);
-        }
-        //사진삭제 추가해야함!
+        UserValidator.validateDelete4User(user, community.getUser().getId());
+        awsS3Service.removeCommunityImages(community.getId());
         communityRepository.delete(community);
     }
 
     public Map<String, Object> updateCommunity(Long boardMainId, CommunityRequestDto communityRequestDto, User user) {
         Community community = communityRepository.findCommunityByBoardMainId(boardMainId);
-        if (!Objects.equals(user.getId(), community.getUser().getId())) {
-            throw new CustomException(ErrorCode.POST_DELETE_WRONG_ACCESS);
+        UserValidator.validateUpdate4User(user, community.getUser().getId());
+        community.getBoardMain().updateCommunity(communityRequestDto);
+
+
+        if (communityRequestDto.getCommunityImages()==null){
+            community.updateTitle(communityRequestDto);
+        }else {
+            awsS3Service.removeCommunityImages(community.getId());
+            List<CommunityImage> communityImages = communityRequestDto.getCommunityImages();
+            community.update(communityRequestDto);
+            imageUpdateToCommunity(communityImages, community);
         }
-        community.getBoardMain().update(communityRequestDto);
-        community.update(communityRequestDto, community.getBoardMain());
 
         Map<String, Object> data = new HashMap<>();
         data.put("communityId", community.getId());

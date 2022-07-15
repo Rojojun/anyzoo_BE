@@ -5,5 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserImageRepository extends JpaRepository<UserImage, Long> {
     UserImage findByUrl(String url);
-    
+
+    UserImage findByUserId(Long userId);
 }

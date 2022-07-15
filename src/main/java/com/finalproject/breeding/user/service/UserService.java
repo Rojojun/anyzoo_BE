@@ -1,7 +1,6 @@
 package com.finalproject.breeding.user.service;
 
-import com.finalproject.breeding.dto.EmailVerificationRequestDto;
-import com.finalproject.breeding.dto.NewPasswordDto;
+import com.finalproject.breeding.dto.*;
 import com.finalproject.breeding.image.model.UserImage;
 import com.finalproject.breeding.image.repository.UserImageRepository;
 import com.finalproject.breeding.service.VerificationEmailSenderService;
@@ -16,14 +15,14 @@ import com.finalproject.breeding.error.ErrorCode;
 import com.finalproject.breeding.etc.model.RefreshToken;
 import com.finalproject.breeding.user.User;
 import com.finalproject.breeding.user.UserRole;
+import com.finalproject.breeding.user.dto.responseDto.UserInfo;
 import com.finalproject.breeding.user.repository.RefreshTokenRepository;
 import com.finalproject.breeding.user.repository.UserRepository;
-import com.finalproject.breeding.user.SecurityUtil;
 import com.finalproject.breeding.user.token.TokenProvider;
+import com.finalproject.breeding.socialUtil.GoogleRestTemplate;
 import lombok.RequiredArgsConstructor;
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
-import org.apache.commons.lang.StringUtils;
 import org.json.simple.JSONObject;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -55,6 +54,9 @@ public class UserService {
     //잠시동안 저장할 유저 이메일과 이메일 authToken
     public static HashMap<String,String> emailVerificationDB = new HashMap<>();
 
+    //Google Social Login
+    private final GoogleRestTemplate googleRestTemplate;
+
 
     //----------------------------유저 정보 중복 관련-------------------------------
     //이메일 중복확인
@@ -78,7 +80,7 @@ public class UserService {
 
     //----------------------------유저 인증 관련-------------------------------
     //폰번호 문자인증번호 발송
-    public void certifiedPhoneNumber(String phoneNumber){
+    public void certifyPhoneNumber(String phoneNumber){
         String api_key = "NCS1HI0WXQRNU4EA";
         String api_secret = "0SNTCCSSJJSUPIAOTBTTF0ILPH8QNOYG";
         Message coolsms = new Message(api_key, api_secret);
@@ -110,12 +112,14 @@ public class UserService {
     }
 
     //폰번호 문자인증번호 확인 메소드
-    public boolean compareConfirmNumber(String phoneNumber, String numStr){
-        String tests = phoneVerificationDB.get(phoneNumber);
+    public boolean compareConfirmNumber(PhoneVerificationDto phoneVerificationDto){
+        String tests = phoneVerificationDB.get(phoneVerificationDto.getPhoneNumber());
         if(Optional.ofNullable(tests).isPresent()){
-            if(tests.equals(numStr)){
-                phoneVerificationDB.remove(phoneNumber);
+            if(tests.equals(phoneVerificationDto.getNumStr())){
+                phoneVerificationDB.remove(phoneVerificationDto.getPhoneNumber());
                 return true;
+            }else{
+                return false;
             }
         }
         return false;
@@ -174,7 +178,8 @@ public class UserService {
         if (signupRequestDto.getUserImage()==null){
             userImageRepository.save(userImage = new UserImage());
         } else {
-            userImage = userImageRepository.findById(signupRequestDto.getUserImage()).orElseThrow(()->new NullPointerException("에러"));
+            userImage = userImageRepository.findById(signupRequestDto.getUserImage()).orElseThrow(()->new CustomException(ErrorCode.Image_NOT_FOUND));
+
         }
         userImage.updateToUser(userRepository.save(
                 User.builder()
@@ -245,6 +250,37 @@ public class UserService {
         return data;
     }
 
+    //Google 로그인
+    public SocialTokenDto socialLogin(String code){
+        SocialLoginRequestDto socialLoginRequestDto = googleRestTemplate.googleUserInfoByAccessToken(googleRestTemplate.findAccessTokenByCode(code).getAccess_token());
+        User user = userRepository.findByUsername(socialLoginRequestDto.getEmail())
+                .orElseGet(() -> userRepository.save(new User(socialLoginRequestDto)));
+        return createToken(new UserRequestDto(user));
+    }
+
+    public SocialTokenDto createToken(UserRequestDto userRequestDto){
+        SocialTokenDto tokenDto = tokenProvider.socialLoginTokenCreate(userRequestDto);
+
+        tokenDto.setUsername(userRequestDto.getUsername());
+
+        User user = userRepository.findByUsername(userRequestDto.getUsername()).orElse(null);
+        assert user != null;
+        tokenDto.setNickname(user.getNickname());
+
+        // 4. RefreshToken 저장
+        RefreshToken refreshToken = RefreshToken.builder()
+                .key(userRequestDto.getUsername())
+                .value(tokenDto.getRefreshToken())
+                .build();
+
+        refreshTokenRepository.save(refreshToken);
+
+        // 5. 토큰 발급
+        return tokenDto;
+    }
+
+
+
 
     //----------------------------유저 정보 수정 관련-------------------------------
     //잃어버린 비밀번호 변경
@@ -272,15 +308,27 @@ public class UserService {
     }
 
     @Transactional
-    public void edit(UserEditDto userEditDto) {
-        User user = userRepository
-                .findByUsername(SecurityUtil.getCurrentUsername())
-                .orElseThrow(() ->new CustomException(ErrorCode.NOT_FOUND_USER_INFO));
+    public Map<String, Object> edit(UserEditDto userEditDto) {
+        User user = getUser();
+        userImageRepository.delete(user.getUserImage()); //유저가 기존에 저장한 프로필사진 삭제
+
+        UserImage userImage;
+        if (userEditDto.getUserImage()==null){
+            userImageRepository.save(userImage = new UserImage());
+        } else {
+            userImage = userImageRepository.findById(userEditDto.getUserImage()).orElseThrow(()->new CustomException(ErrorCode.Image_NOT_FOUND));
+        }
+        userImage.updateToUser(user);
+
         user.edit(userEditDto);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("nickname", new UserInfo(user));
+        return data;
     }
 
     @Transactional
-    public TokenDto reissue(TokenRequestDto tokenRequestDto) {
+    public TokenDto reissue(TokenRequestDto tokenRequestDto){
         // 토큰값 제대로 받았는지 확인
         UserValidator.validateRefreshTokenReissue(tokenRequestDto);
 

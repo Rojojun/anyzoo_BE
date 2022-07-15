@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -20,12 +19,10 @@ public class PostResponseDto {
     private String postCategory;
     private String contents;
     private Long likeCnt;
-    private Long commentCnt;
     private LocalDateTime dateTime;
     private String nickname;
     private String userProfileImg;
     private List<PostImage> img;
-//    private List<String> image;
 
     public PostResponseDto(Post post) {
         this.postId = post.getId();
@@ -36,13 +33,8 @@ public class PostResponseDto {
         this.boardMainId = post.getBoardMain().getId();
         this.contents = post.getBoardMain().getContent();
         this.likeCnt = post.getBoardMain().getLikeCnt();
-        this.commentCnt = post.getBoardMain().getCommentCnt();
         this.dateTime = post.getBoardMain().getCreatedAt();
         this.postCategory = post.getPostNReelsCategory().name();
-//        this.image = new ArrayList<>();
-//        for(PostImage postImage : post.getPostImage()){
-//            image.add(postImage.getUrl());
-//        }
     }
 
 

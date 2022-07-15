@@ -2,18 +2,15 @@ package com.finalproject.breeding.etc.controller;
 
 import com.finalproject.breeding.board.model.BoardMain;
 import com.finalproject.breeding.board.repository.BoardMainRepository;
-import com.finalproject.breeding.board.repository.PostRepository;
 import com.finalproject.breeding.etc.dto.CommentRequestDto;
 import com.finalproject.breeding.etc.dto.MyDto;
 import com.finalproject.breeding.error.ErrorCode;
 import com.finalproject.breeding.etc.model.Comment;
 import com.finalproject.breeding.etc.repository.CommentRepository;
-import com.finalproject.breeding.etc.repository.ReplyRepository;
 import com.finalproject.breeding.etc.service.CommentService;
-import com.finalproject.breeding.user.SecurityUtil;
+import com.finalproject.breeding.user.security.SecurityUtil;
 import com.finalproject.breeding.dto.CommentResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -34,10 +30,6 @@ public class CommentController {
     private final BoardMainRepository boardMainRepository;
 
     private final CommentService commentService;
-
-    private final ReplyRepository replyRepository;
-
-    private final PostRepository postRepository;
 
 
     //댓글 작성
@@ -81,20 +73,6 @@ public class CommentController {
             return new ResponseEntity<>(dto,header, HttpStatus.BAD_REQUEST);
         }
     }
-
-    //댓글 전체삭제
-    @DeleteMapping("/api/AllDelete1")
-    public void AlldeleteReply(){
-        replyRepository.deleteAll();
-    }
-
-    //댓글 전체삭제
-    @DeleteMapping("/api/AllDelete2")
-    public void AlldeleteComment(){
-        commentRepository.deleteAll();
-    }
-
-
 
     //댓글 수정
     @PatchMapping ("/api/comment/edit/{commentId}")
