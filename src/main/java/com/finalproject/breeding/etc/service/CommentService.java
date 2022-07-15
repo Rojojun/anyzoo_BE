@@ -2,7 +2,7 @@ package com.finalproject.breeding.etc.service;
 
 import com.finalproject.breeding.board.model.BoardMain;
 import com.finalproject.breeding.board.repository.BoardMainRepository;
-import com.finalproject.breeding.dto.CommentResponseDto;
+import com.finalproject.breeding.etc.dto.CommentResponseDto;
 import com.finalproject.breeding.etc.dto.CommentRequestDto;
 import com.finalproject.breeding.etc.dto.MyDto;
 import com.finalproject.breeding.error.ErrorCode;

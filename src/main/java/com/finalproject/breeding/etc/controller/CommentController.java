@@ -9,7 +9,7 @@ import com.finalproject.breeding.etc.model.Comment;
 import com.finalproject.breeding.etc.repository.CommentRepository;
 import com.finalproject.breeding.etc.service.CommentService;
 import com.finalproject.breeding.user.security.SecurityUtil;
-import com.finalproject.breeding.dto.CommentResponseDto;
+import com.finalproject.breeding.etc.dto.CommentResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

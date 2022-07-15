@@ -1,4 +1,4 @@
-package com.finalproject.breeding.dto;
+package com.finalproject.breeding.etc.dto;
 
 import com.finalproject.breeding.etc.dto.CommentMapping;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.finalproject.breeding.dto;
+package com.finalproject.breeding.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

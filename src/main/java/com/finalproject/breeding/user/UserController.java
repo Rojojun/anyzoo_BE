@@ -1,7 +1,7 @@
 package com.finalproject.breeding.user;
 
-import com.finalproject.breeding.dto.EmailVerificationRequestDto;
-import com.finalproject.breeding.dto.NewPasswordDto;
+import com.finalproject.breeding.user.dto.EmailVerificationRequestDto;
+import com.finalproject.breeding.user.dto.NewPasswordDto;
 import com.finalproject.breeding.user.dto.requestDto.LoginDto;
 import com.finalproject.breeding.user.dto.requestDto.SignupRequestDto;
 import com.finalproject.breeding.user.dto.requestDto.TokenRequestDto;
