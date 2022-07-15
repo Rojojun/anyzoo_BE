@@ -34,7 +34,7 @@ public class CommentService {
 
     //댓글 작성
     @Transactional
-    public ResponseEntity<MyDto> createComment( CommentRequestDto requestDto, Long boardMainId, String username) {
+    public ResponseEntity<MyDto> createComment(CommentRequestDto requestDto, Long boardMainId, String username) {
 
         MyDto dto = new MyDto();
         HttpHeaders header = new HttpHeaders();
@@ -48,12 +48,13 @@ public class CommentService {
 
         Comment comment = new Comment(requestDto, boardMain, user);
 
-        commentRepository.save(comment);
+        Long commentId = commentRepository.save(comment).getId();
         boardMain.plusCommentCnt(boardMain);
 
 
+
         dto.setStatus(ErrorCode.OK);
-        dto.setData("boardMainId :"+boardMainId);
+        dto.setData(commentId);
         dto.setMessage("댓글 등록!");
         return new ResponseEntity<>(dto, header, HttpStatus.OK);
 
@@ -75,8 +76,6 @@ public class CommentService {
     public void patchComment(CommentRequestDto requestDto, Long id) {
         Comment comment = commentRepository.findById(id).orElseThrow(
                 ()-> new NullPointerException("댓글이 존재하지 않습니다."));
-
-
         comment.updateComment(requestDto);
 
     }
