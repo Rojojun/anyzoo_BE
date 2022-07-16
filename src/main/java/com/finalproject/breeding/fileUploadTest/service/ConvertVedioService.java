@@ -41,7 +41,7 @@ public class ConvertVedioService {
                 .overrideOutputFiles(true)					// output 파일을 덮어쓸 것인지 여부(false일 경우, output path에 해당 파일이 존재할 경우 예외 발생 - File 'C:/Users/Desktop/test.png' already exists. Exiting.)
                 .addOutput("/Users/hojunna/Desktop/test.mp4") 		// 저장 절대 경로(확장자 미 지정 시 예외 발생 - [NULL @ 000002cc1f9fa500] Unable to find a suitable output format for 'C:/Users/Desktop/test')
                 .setFormat("mp4")
-                .setVideoResolution(426,240)
+                .setVideoResolution(720,500)  // height를 기준으로 Resolution 설정
                 .setDuration(15, TimeUnit.SECONDS)
                 //.setVideoFilter("select='gte(n\\,10)',scale=200:-1")
                 .setStrict(FFmpegBuilder.Strict.EXPERIMENTAL)
