@@ -1,7 +1,6 @@
 package com.finalproject.breeding.etc.controller;
 
 import com.finalproject.breeding.board.dto.PostResponseDto;
-import com.finalproject.breeding.board.model.Post;
 import com.finalproject.breeding.etc.service.RankService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
