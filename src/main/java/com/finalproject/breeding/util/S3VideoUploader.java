@@ -59,25 +59,33 @@ public class S3VideoUploader {
             return upload(uploadFile, uploadFile, dirName,false,UUID.randomUUID().toString());
         }
     }
-    // S3로 파일 업로드하기
+    // S3로 비디오 파일 업로드하기
+    public String uploadVideo(File uploadVideoFile, String dirName, Boolean isShort, String uuid) {
+        if(isShort){
+            String fileName = dirName + "/" + uuid +".short";   // S3에 저장된 파일 이름
+            return putS3(uploadVideoFile, fileName);
+        }
+    // String fileName = dirName + "/" + uuid +".mp4";
+        String fileName = dirName + "/" +uuid +"." + uploadVideoFile.getName().substring(uploadVideoFile.getName().lastIndexOf(".")+1);   // S3에 저장된 파일 이름
+        return putS3(uploadVideoFile, fileName);
+    }
+    // S3로 썸네일 업로드하기
     public String upload(File uploadVideoFile ,File uploadThumbnailFile, String dirName, Boolean isShort, String uuid) {
         if(isShort){
             String fileName = dirName + "/" + uuid +".short";   // S3에 저장된 파일 이름
             String thumbnail = dirName + "/" + uuid +".thumbnail";
             return putS3(uploadVideoFile, uploadThumbnailFile, fileName, thumbnail);
         }
-    // String fileName = dirName + "/" + uuid +".mp4";
+        // String fileName = dirName + "/" + uuid +".mp4";
         String fileName = dirName + "/" +uuid +"." + uploadVideoFile.getName().substring(uploadVideoFile.getName().lastIndexOf(".")+1);   // S3에 저장된 파일 이름
         String thumbnail =  dirName + "/" +uuid +"." + uploadThumbnailFile.getName().substring(uploadThumbnailFile.getName().lastIndexOf(".")+1);
         return putS3(uploadVideoFile, uploadThumbnailFile, fileName, thumbnail);
     }
     // S3로 업로드
-    private String putS3(File uploadFile, File uploadThumbnailFile, String fileName, String thumbnail) {
+    private String putS3(File uploadFile, String fileName) {
         amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
-        amazonS3Client.putObject(new PutObjectRequest(bucket, thumbnail, uploadThumbnailFile).withCannedAcl(CannedAccessControlList.PublicRead));
         removeNewFile(uploadFile);
-        removeNewFile(uploadThumbnailFile);
-        return amazonS3Client.getUrl(bucket, fileName).toString() + "\n" + amazonS3Client.getUrl(bucket, thumbnail).toString();
+        return amazonS3Client.getUrl(bucket, fileName).toString();
     }
     // S3로 삭제
     public void deleteS3(String fileName)
