@@ -26,7 +26,30 @@ public class S3VideoUploader {
 
     @Value("${cloud.aws.s3.bucket}")
     public String bucket;  // S3 버킷 이름
+    public String uploadThumbnail(MultipartFile multipartFile, String dirName, Boolean isVideo) throws Exception {
+        File uploadFile = convert(multipartFile).orElseThrow(() -> new IllegalArgumentException("썸네일 추출 실패"));
 
+        if (isVideo) {
+            File convertFile = new File(System.getProperty("user.dir") + "/" + multipartFile.getOriginalFilename());
+            String randomVideoName = UUID.randomUUID().toString();
+
+            if (convertFile.createNewFile()) {
+                try (FileOutputStream fileOutputStream = new FileOutputStream(convertFile)) {
+                    // File의 데이터를 사용하기 위한 OutputStream 선언
+                    // FileOutputStream : 파일로 바이트 단위의 출력을 내보내는 클래스
+                    fileOutputStream.write(multipartFile.getBytes());
+                }
+            }
+            videoEncode.exportThumbnail(convertFile.getAbsolutePath(), System.getProperty("user.dir") + "/thumbnail" + multipartFile.getName() + ".png");
+            File thumbnailFile = new File(System.getProperty("user.dir") +  "/thumbnail" + multipartFile.getName() + ".png");
+
+            removeNewFile(uploadFile);
+            return upload(thumbnailFile, dirName,false,randomVideoName);
+        }
+        else {
+            return upload(uploadFile, dirName,false,UUID.randomUUID().toString());
+        }
+    }
     public String upload(MultipartFile multipartFile, String dirName, Boolean isVideo) throws Exception {
         File uploadFile = convert(multipartFile).orElseThrow(() -> new IllegalArgumentException("비디오 컨버트 실패"));
 
@@ -48,38 +71,27 @@ public class S3VideoUploader {
 
             removeNewFile(uploadFile);
             if (videoEncode.getVideoLength(file.getAbsolutePath()) < 15){
-                return upload(file, thumbnailFile, dirName, true, randomVideoName);
+                return upload(file, dirName, true, randomVideoName);
             }
 /*            File shortFile = new File(System.getProperty("user.dir") + "/video" + multipartFile.getOriginalFilename());
             upload(shortFile,dirName,true,randomVideoName);*/
 
-            return upload(file, thumbnailFile, dirName,false,randomVideoName);
+            return upload(file, dirName,false,randomVideoName);
 
         }else {
-            return upload(uploadFile, uploadFile, dirName,false,UUID.randomUUID().toString());
+            return upload(uploadFile, dirName,false,UUID.randomUUID().toString());
         }
     }
-    // S3로 비디오 파일 업로드하기
-    public String uploadVideo(File uploadVideoFile, String dirName, Boolean isShort, String uuid) {
+    // S3로 비디오 and 썸네일 파일 업로드하기
+    public String upload(File uploadFile, String dirName, Boolean isShort, String uuid) {
         if(isShort){
             String fileName = dirName + "/" + uuid +".short";   // S3에 저장된 파일 이름
-            return putS3(uploadVideoFile, fileName);
+            return putS3(uploadFile, fileName);
         }
-    // String fileName = dirName + "/" + uuid +".mp4";
-        String fileName = dirName + "/" +uuid +"." + uploadVideoFile.getName().substring(uploadVideoFile.getName().lastIndexOf(".")+1);   // S3에 저장된 파일 이름
-        return putS3(uploadVideoFile, fileName);
-    }
-    // S3로 썸네일 업로드하기
-    public String upload(File uploadVideoFile ,File uploadThumbnailFile, String dirName, Boolean isShort, String uuid) {
-        if(isShort){
-            String fileName = dirName + "/" + uuid +".short";   // S3에 저장된 파일 이름
-            String thumbnail = dirName + "/" + uuid +".thumbnail";
-            return putS3(uploadVideoFile, uploadThumbnailFile, fileName, thumbnail);
-        }
-        // String fileName = dirName + "/" + uuid +".mp4";
-        String fileName = dirName + "/" +uuid +"." + uploadVideoFile.getName().substring(uploadVideoFile.getName().lastIndexOf(".")+1);   // S3에 저장된 파일 이름
-        String thumbnail =  dirName + "/" +uuid +"." + uploadThumbnailFile.getName().substring(uploadThumbnailFile.getName().lastIndexOf(".")+1);
-        return putS3(uploadVideoFile, uploadThumbnailFile, fileName, thumbnail);
+    /* String fileName = dirName + "/" + uuid +".mp4";
+       String fileName = dirName + "/" + uuid + ".png"; */
+        String fileName = dirName + "/" +uuid +"." + uploadFile.getName().substring(uploadFile.getName().lastIndexOf(".")+1);   // S3에 저장된 파일 이름
+        return putS3(uploadFile, fileName);
     }
     // S3로 업로드
     private String putS3(File uploadFile, String fileName) {

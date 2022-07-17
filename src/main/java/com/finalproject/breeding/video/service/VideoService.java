@@ -19,7 +19,7 @@ public class VideoService {
             video = s3VideoUploader.upload(videoFile, "reels", true);
         }
         if (videoFile != null) {
-            tunmbnail = s3VideoUploader.upload(videoFile, "thumbnail", true);
+            tunmbnail = s3VideoUploader.uploadThumbnail(videoFile, "thumbnail", true);
         }
         VideoResponseDto videoResponseDto = new VideoResponseDto(video ,tunmbnail);
         return videoResponseDto;
