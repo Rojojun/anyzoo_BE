@@ -6,6 +6,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class NewPasswordDto {
-    String username;
+    String phoneNumber;
     String newPassword;
 }
