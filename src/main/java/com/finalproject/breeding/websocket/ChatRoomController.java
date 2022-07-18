@@ -4,10 +4,7 @@ package com.finalproject.breeding.websocket;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,11 +20,17 @@ public class ChatRoomController {
         return "/chat/room";
     }
 
-    // 채팅방 생성
+    // 채팅방 조회
     @GetMapping("/rooms")
     @ResponseBody
     public List<ChatRoom> room(){
         return chatRoomRepository.findAllRoom();
+    }
+
+    @PostMapping("/room")
+    @ResponseBody
+    public ChatRoom createRoom(@RequestParam String name) {
+        return chatRoomRepository.createChatRoom(name);
     }
 
     // 채팅방 입장 화면
