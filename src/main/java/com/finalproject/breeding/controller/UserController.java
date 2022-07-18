@@ -96,11 +96,11 @@ public class UserController {
         userService.changePassword(newPasswordDto);
         return ResponseEntity.ok("비밀번호가 변경되었습니다");
     }
-    
+
     //잃어버린 Username(email) 폰번호로 찾기
-    @GetMapping("/user/find/lostEmail")
-    public String findLostEmail(@RequestBody PhoneVerificationDto phoneVerificationDto){
-        return userService.findLostEmail(phoneVerificationDto.getPhoneNumber());
+    @GetMapping("/user/find/lostEmail/{phoneNumber}")
+    public String findLostEmail(@PathVariable String phoneNumber){
+        return userService.findLostEmail(phoneNumber);
     }
 
 
