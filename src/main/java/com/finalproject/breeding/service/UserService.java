@@ -270,7 +270,7 @@ public class UserService {
     @Transactional
     public void changePassword(NewPasswordDto newPasswordDto){
         User user = userRepository
-                .findByUsername(newPasswordDto.getUsername())
+                .findByPhoneNumber(newPasswordDto.getPhoneNumber())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER_INFO));
         String newPassword = passwordEncoder.encode(newPasswordDto.getNewPassword());
         user.changePassword(newPassword);

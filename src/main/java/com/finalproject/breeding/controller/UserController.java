@@ -76,13 +76,12 @@ public class UserController {
         return new ResponseEntity<>(new StatusResponseDto("로그인 되었습니다.", data), HttpStatus.OK);
     }
 
-
-
     //Google oauth 통신할 api
     @PostMapping("/user/socialLogin")
     public ResponseEntity<UserResponseDto> socialLogin(@RequestHeader("code") String code){
         return ResponseEntity.ok(new UserResponseDto(userService.socialLogin(code), "로그인 되었습니다"));
     }
+
 
 
     //----------------------------유저 정보 수정 관련-------------------------------
@@ -92,12 +91,12 @@ public class UserController {
     //    return ResponseEntity.ok(new UserResponseDto("수정 완료 됬다"));
     //}
 
-    //잃어버린 비밀번호 변경
     @PostMapping("/user/make/newPassword")
-    public void changePassword(@RequestBody NewPasswordDto newPasswordDto){
+    public ResponseEntity<String> changePassword(@RequestBody NewPasswordDto newPasswordDto){
         userService.changePassword(newPasswordDto);
+        return ResponseEntity.ok("비밀번호가 변경되었습니다");
     }
-
+    
     //잃어버린 Username(email) 폰번호로 찾기
     @GetMapping("/user/find/lostEmail")
     public String findLostEmail(@RequestBody PhoneVerificationDto phoneVerificationDto){
