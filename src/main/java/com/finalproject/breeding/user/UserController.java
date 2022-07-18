@@ -106,7 +106,7 @@ public class UserController {
 
     //잃어버린 Username(email) 폰번호로 찾기
     @GetMapping("/user/find/lostEmail/{phoneNumber}")
-    public String findLostEmail(@PathVariable String phoneNumber){
+    public String findLostEmail(@PathVariable String phoneNumber) {
         return userService.findLostEmail(phoneNumber);
     }
 
