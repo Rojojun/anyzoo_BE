@@ -1,10 +1,8 @@
 package com.finalproject.breeding.error;
 
-import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
@@ -16,9 +14,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getErrorCode()));
     }
 
-//    @ExceptionHandler(ExpiredJwtException.class)
-////    @ResponseStatus(HttpStatus.FORBIDDEN)
-////    public CustomException ExpiredJwtExceptionException(Exception e) {
-////        return new CustomException(ErrorCode.JWT_TOKEN_EXPIRED);
-////    }
+//    @ExceptionHandler(ResponseMessage.class)
+//    @ResponseStatus(HttpStatus.OK)
+//    public ResponseMessage customMessageAndStatus(String e, int s) {
+//        return new ResponseMessage(e, s);
+//    }
 }

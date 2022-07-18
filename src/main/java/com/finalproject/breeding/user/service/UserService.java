@@ -280,15 +280,13 @@ public class UserService {
     }
 
 
-
-
     //----------------------------유저 정보 수정 관련-------------------------------
     //잃어버린 비밀번호 변경
     @Transactional
     public void changePassword(NewPasswordDto newPasswordDto){
         User user = userRepository
                 .findByPhoneNumber(newPasswordDto.getPhoneNumber())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER_INFO));
+                .orElseThrow(() -> new CustomException(ErrorCode.OK_BUT_NO_USER));
         String newPassword = passwordEncoder.encode(newPasswordDto.getNewPassword());
         user.changePassword(newPassword);
     }
@@ -298,7 +296,7 @@ public class UserService {
     public String findLostEmail(String phoneNumber){
         User user = userRepository
                 .findByPhoneNumber(phoneNumber)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER_INFO));
+                .orElseThrow(() -> new CustomException(ErrorCode.OK_BUT_NO_USER));
         String[] usernameSplit = user.getUsername().split("@");
             if(usernameSplit[0].length() <= 2){
                 return user.getUsername().charAt(0) + "*****@" + usernameSplit[1];
