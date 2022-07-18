@@ -61,6 +61,7 @@ public enum ErrorCode {
 
     // 이미지
     WRONG_INPUT_IMAGE(HttpStatus.BAD_REQUEST, 400, "이미지는 반드시 있어야 합니다"),
+    Image_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "해당 이미지를 찾을 수 없습니다"),
     IMAGE_UPLOAD_ERROR(HttpStatus.BAD_REQUEST, 400, "이미지 업로드에 실패했습니다"),
     WRONG_IMAGE_FORMAT(HttpStatus.BAD_REQUEST, 400, "지원하지 않는 파일 형식입니다"),
 
@@ -81,6 +82,9 @@ public enum ErrorCode {
 
     USER_UPDATE_WRONG_ACCESS(HttpStatus.BAD_REQUEST, 400, "본인이 아니면 수정할 수 없습니다"),
 
+    NOT_FOUND_BOARDKIND_INFO(HttpStatus.NOT_FOUND, 404, "해당 카테고리가 존재하지 않습니다"),
+    NOT_FOUND_CATEGORY_INFO(HttpStatus.NOT_FOUND, 404, "해당 카테고리가 존재하지 않습니다"),
+
     // apply
     APPLY_WRONG_ERROR(HttpStatus.BAD_REQUEST, 400, "본인의 프로젝트에 지원 신청 할 수 없습니다"),
     ALREADY_STARTED_ERROR(HttpStatus.BAD_REQUEST, 400, "모집중인 프로젝트가 아닙니다"),
@@ -99,7 +103,7 @@ public enum ErrorCode {
     EMAIL_WRONG_PATTERN(HttpStatus.BAD_REQUEST, 400, "이메일 형식을 맞춰주세요"),
 
     //Room
-
+    ALREADY_PEOPLE_SET_FULL(HttpStatus.BAD_REQUEST, 400, "해당 모집글의 정원이 다 찼습니다"),
     ALREADY_EXISTS_CHAT_ROOM(HttpStatus.BAD_REQUEST,400,"채팅방이 이미 존재합니다."),
     NOT_EXIST_ROOM(HttpStatus.NOT_FOUND,404,"채팅방이 존재하지 않습니다."),
 
@@ -111,4 +115,5 @@ public enum ErrorCode {
     private final HttpStatus status;
     private final int errorCode;
     private final String errorMessage;
+
 }

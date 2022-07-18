@@ -1,8 +1,8 @@
 package com.finalproject.breeding.config;
 
-import com.finalproject.breeding.token.JwtAccessDeniedHandler;
-import com.finalproject.breeding.token.JwtAuthenticationEntryPoint;
-import com.finalproject.breeding.token.TokenProvider;
+import com.finalproject.breeding.user.token.JwtAccessDeniedHandler;
+import com.finalproject.breeding.user.token.JwtAuthenticationEntryPoint;
+import com.finalproject.breeding.user.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
@@ -21,12 +21,14 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    //    private final CorsFilter corsFilter;
     //private final CorsFilter corsFilter;
     private final TokenProvider tokenProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -49,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .cors().configurationSource(corsConfigurationSource());
         // CSRF 설정 Disable
+        http.cors().configurationSource(corsConfigurationSource());
         http.csrf().disable()
 
                 //.addFilter(corsFilter) // CORS 정책에서 벗어날 수 있음. Cross-Origin Resource Sharing 요청이 와도 다 허용됨
@@ -74,6 +77,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/user/**").permitAll()
+                .antMatchers("/swagger-ui.html").permitAll()
+                .antMatchers("/confirm-email").permitAll()
                 .anyRequest().authenticated()   // 나머지 API 는 전부 인증 필요
 
                 // JwtFilter 를 addFilterBefore 로 등록했던 JwtSecurityConfig 클래스를 적용
@@ -108,8 +113,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
-
 
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
