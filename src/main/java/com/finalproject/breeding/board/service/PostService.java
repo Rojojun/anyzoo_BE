@@ -55,7 +55,6 @@ public class PostService {
         return new PostResponseDto(post);
     }
 
-
     @Transactional
     public Slice<PostResponseDto> readCategoryPost(Long page, String category) {
         PageRequest pageRequest = PageRequest.of(Math.toIntExact(page), 5, Sort.by(Sort.Direction.DESC, "boardMain.createdAt"));

@@ -1,9 +1,13 @@
 package com.finalproject.breeding.util;
 
+import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
+import com.finalproject.breeding.board.model.Reels;
+import com.finalproject.breeding.board.repository.ReelsRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,9 +25,10 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class S3VideoUploader {
 
+    private final AmazonS3 amazonS3;
     private final AmazonS3Client amazonS3Client;
     private final VideoEncode videoEncode;
-
+    private final ReelsRepository reelsRepository;
     @Value("${cloud.aws.s3.bucket}")
     public String bucket;  // S3 버킷 이름
     public String uploadThumbnail(MultipartFile multipartFile, String dirName, Boolean isVideo) throws Exception {
@@ -142,6 +147,19 @@ public class S3VideoUploader {
             }
            */ return Optional.of(convertFile);
         }
+    public void remove(Long id) {
+        Reels reels = reelsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("동영상 및 썸네일을 찾을 수 없습니다."));
+
+        if (amazonS3.doesObjectExist(bucket, reels.getVideo())) {
+            throw new AmazonS3Exception("Object " + reels.getVideo() + " does not exist!");
+        }
+        else if (amazonS3.doesObjectExist(bucket, reels.getTitleImg())) {
+            throw new AmazonS3Exception("Object" + reels.getTitleImg() + " does not exist!");
+        }
+        amazonS3.deleteObject(bucket, reels.getVideo());
+        amazonS3.deleteObject(bucket, reels.getTitleImg());
+        reelsRepository.delete(reels);
+    }
 /*
         return Optional.empty();
 */
