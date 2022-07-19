@@ -16,6 +16,14 @@ jobs:
         with:
           java-version: 1.8
 
+    # application.properties 추가정보 입력 시작
+- name: Create ./src/main/resources/ run: I
+mkdir -p ./src/main/resources/
+# create application-prod.properties
+- name: make application.properties run: |
+cd ./src/main/resources touch ./application.properties
+echo "$ff secrets.PROPERTIES 1)" > . /application.properties shell: bash
+
       # gradle caching
       - name: Gradle Caching
         uses: actions/cache@v3
