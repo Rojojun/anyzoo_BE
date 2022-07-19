@@ -1,7 +1,7 @@
-package com.finalproject.breeding.image;
+package com.finalproject.breeding.etc.image;
 
 
-import com.finalproject.breeding.image.model.PostImage;
+import com.finalproject.breeding.etc.image.model.PostImage;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

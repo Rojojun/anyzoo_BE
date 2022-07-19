@@ -1,5 +1,7 @@
 package com.finalproject.breeding.board.model;
 
+import com.finalproject.breeding.board.dto.NoticeRequestDto;
+import com.finalproject.breeding.etc.dto.CommentRequestDto;
 import com.finalproject.breeding.etc.model.Timestamped;
 import com.finalproject.breeding.user.User;
 import com.sun.istack.NotNull;
@@ -32,4 +34,18 @@ public class Notice extends Timestamped {
     @Column
     @NotNull
     private String content;
+
+    public Notice(NoticeRequestDto requestDto, User user){
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+        this.img = requestDto.getImg();
+        this.user = user;
+    }
+    public void updateNotice(NoticeRequestDto requestDto){
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+        this.img = requestDto.getImg();
+    }
 }
+
+

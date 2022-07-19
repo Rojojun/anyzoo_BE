@@ -1,4 +1,4 @@
-package com.finalproject.breeding.image.model;
+package com.finalproject.breeding.etc.image.model;
 
 import lombok.Builder;
 import lombok.Getter;
