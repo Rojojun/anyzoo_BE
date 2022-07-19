@@ -1,4 +1,4 @@
-package com.finalproject.breeding.image.model;
+package com.finalproject.breeding.etc.image.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.finalproject.breeding.board.model.Community;

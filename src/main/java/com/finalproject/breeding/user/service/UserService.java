@@ -1,8 +1,8 @@
 package com.finalproject.breeding.user.service;
 
 import com.finalproject.breeding.dto.*;
-import com.finalproject.breeding.image.model.UserImage;
-import com.finalproject.breeding.image.repository.UserImageRepository;
+import com.finalproject.breeding.etc.image.model.UserImage;
+import com.finalproject.breeding.etc.image.repository.UserImageRepository;
 import com.finalproject.breeding.service.VerificationEmailSenderService;
 import com.finalproject.breeding.user.UserValidator;
 import com.finalproject.breeding.user.dto.requestDto.LoginDto;

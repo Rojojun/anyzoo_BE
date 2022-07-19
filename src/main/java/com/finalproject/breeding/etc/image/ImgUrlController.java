@@ -1,12 +1,9 @@
-package com.finalproject.breeding.image;
+package com.finalproject.breeding.etc.image;
 
-import com.finalproject.breeding.etc.dto.StatusResponseDto;
-import com.finalproject.breeding.image.model.CommunityImage;
-import com.finalproject.breeding.image.model.PostImage;
-import com.finalproject.breeding.image.model.UserImage;
+import com.finalproject.breeding.etc.image.model.CommunityImage;
+import com.finalproject.breeding.etc.image.model.PostImage;
+import com.finalproject.breeding.etc.image.model.UserImage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

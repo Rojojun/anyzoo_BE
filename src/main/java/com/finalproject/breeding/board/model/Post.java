@@ -1,10 +1,9 @@
 package com.finalproject.breeding.board.model;
 
 
-import com.finalproject.breeding.board.dto.PostRequest4EditDto;
 import com.finalproject.breeding.board.dto.PostRequestDto;
 import com.finalproject.breeding.board.model.category.PostNReelsCategory;
-import com.finalproject.breeding.image.model.PostImage;
+import com.finalproject.breeding.etc.image.model.PostImage;
 import com.finalproject.breeding.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
