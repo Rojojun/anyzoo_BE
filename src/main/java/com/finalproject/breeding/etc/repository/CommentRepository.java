@@ -10,7 +10,9 @@ import org.springframework.data.jpa.repository.Query;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     Slice<CommentMapping> findByBoardMainId(PageRequest pageRequest, Long boardMainId);
 
-
+    @Query(value = "select max(comment.id) " +
+            "from Comment comment " )
+    Comment findMaxCommentId();
 
 
 

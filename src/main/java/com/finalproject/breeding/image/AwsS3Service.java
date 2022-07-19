@@ -1,21 +1,24 @@
-package com.finalproject.breeding.etc.image;
+package com.finalproject.breeding.image;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.finalproject.breeding.error.CustomException;
 import com.finalproject.breeding.error.ErrorCode;
-import com.finalproject.breeding.etc.image.model.CommunityImage;
-import com.finalproject.breeding.etc.image.model.PostImage;
-import com.finalproject.breeding.etc.image.model.UserImage;
-import com.finalproject.breeding.etc.image.repository.CommunityImageRepository;
-import com.finalproject.breeding.etc.image.repository.PostImageRepository;
-import com.finalproject.breeding.etc.image.repository.UserImageRepository;
+import com.finalproject.breeding.image.model.AwsS3;
+import com.finalproject.breeding.image.model.CommunityImage;
+import com.finalproject.breeding.image.model.PostImage;
+import com.finalproject.breeding.image.model.UserImage;
+import com.finalproject.breeding.image.repository.CommunityImageRepository;
+import com.finalproject.breeding.image.repository.PostImageRepository;
+import com.finalproject.breeding.image.repository.UserImageRepository;
 import io.jsonwebtoken.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;

@@ -1,7 +1,9 @@
 package com.finalproject.breeding.board.dto;
 
 import com.finalproject.breeding.board.model.Community;
-import com.finalproject.breeding.etc.image.model.CommunityImage;
+import com.finalproject.breeding.board.model.Post;
+import com.finalproject.breeding.image.model.CommunityImage;
+import com.finalproject.breeding.image.model.PostImage;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

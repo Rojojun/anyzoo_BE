@@ -1,5 +1,6 @@
 package com.finalproject.breeding.user.dto.requestDto;
 
+import com.finalproject.breeding.image.model.UserImage;
 import lombok.Getter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import javax.validation.constraints.NotBlank;

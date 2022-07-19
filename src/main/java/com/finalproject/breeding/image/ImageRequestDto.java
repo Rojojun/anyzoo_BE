@@ -1,4 +1,4 @@
-package com.finalproject.breeding.etc.image;
+package com.finalproject.breeding.image;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -2,7 +2,7 @@ package com.finalproject.breeding.board.model;
 
 import com.finalproject.breeding.board.dto.CommunityRequestDto;
 import com.finalproject.breeding.board.model.category.CommunityCategory;
-import com.finalproject.breeding.etc.image.model.CommunityImage;
+import com.finalproject.breeding.image.model.CommunityImage;
 import com.finalproject.breeding.user.User;
 import com.sun.istack.NotNull;
 import lombok.*;

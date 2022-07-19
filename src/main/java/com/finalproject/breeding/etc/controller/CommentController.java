@@ -39,7 +39,7 @@ public class CommentController {
 
     //댓글 삭제
     @DeleteMapping("/api/comment/edit/{commentId}")
-    public ResponseEntity<MyDto> deleteComment( @PathVariable Long commentId){
+    public ResponseEntity<MyDto> deleteComment(@PathVariable Long commentId){
         return commentService.deleteComment(commentId);
     }
 

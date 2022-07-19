@@ -1,12 +1,16 @@
 package com.finalproject.breeding.board.service;
 
+import com.finalproject.breeding.board.dto.PostRequest4EditDto;
 import com.finalproject.breeding.board.dto.PostRequestDto;
 import com.finalproject.breeding.board.dto.PostResponseDto;
 import com.finalproject.breeding.etc.service.TierService;
-import com.finalproject.breeding.etc.image.AwsS3Service;
-import com.finalproject.breeding.etc.image.model.PostImage;
+import com.finalproject.breeding.image.AwsS3Service;
+import com.finalproject.breeding.image.ImageRequestDto;
+import com.finalproject.breeding.image.model.PostImage;
 import com.finalproject.breeding.board.model.category.PostNReelsCategory;
-import com.finalproject.breeding.etc.image.repository.PostImageRepository;
+import com.finalproject.breeding.error.CustomException;
+import com.finalproject.breeding.error.ErrorCode;
+import com.finalproject.breeding.image.repository.PostImageRepository;
 import com.finalproject.breeding.user.User;
 import com.finalproject.breeding.board.model.BoardMain;
 import com.finalproject.breeding.board.model.Post;

@@ -1,6 +1,6 @@
-package com.finalproject.breeding.etc.image.repository;
+package com.finalproject.breeding.image.repository;
 
-import com.finalproject.breeding.etc.image.model.CommunityImage;
+import com.finalproject.breeding.image.model.CommunityImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
