@@ -10,4 +10,5 @@ public interface ReplyRepository extends JpaRepository<Reply, Long> {
     List<Reply> findByCommentId(Long CommentId);
     List<ReplyMapping> findAllByCommentId(Long commentId);
 
+
 }

@@ -54,9 +54,13 @@ public class BoardMain extends Timestamped {
     public void plusCommentCnt(BoardMain boardMain){
         this.commentCnt = boardMain.getCommentCnt()+1L;
     }
-    public void minusCommentCnt(BoardMain boardMain){
+    public void minusCommentCnt(BoardMain boardMain,Long replyCnt){
+        this.commentCnt = boardMain.getCommentCnt()-1L-replyCnt;
+    }
+    public void minusReplyCnt(BoardMain boardMain){
         this.commentCnt = boardMain.getCommentCnt()-1L;
     }
+
 
     public BoardMain(PostRequestDto postRequestDto) {
         this.content = postRequestDto.getContent();

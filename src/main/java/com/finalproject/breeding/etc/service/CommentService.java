@@ -6,9 +6,12 @@ import com.finalproject.breeding.dto.CommentResponseDto;
 import com.finalproject.breeding.etc.dto.CommentRequestDto;
 import com.finalproject.breeding.etc.dto.MyDto;
 import com.finalproject.breeding.error.ErrorCode;
+import com.finalproject.breeding.etc.dto.ReplyMapping;
 import com.finalproject.breeding.etc.model.Comment;
+import com.finalproject.breeding.etc.model.Reply;
 import com.finalproject.breeding.etc.repository.CommentRepository;
 import com.finalproject.breeding.etc.dto.CommentMapping;
+import com.finalproject.breeding.etc.repository.ReplyRepository;
 import com.finalproject.breeding.user.User;
 import com.finalproject.breeding.user.repository.UserRepository;
 import com.finalproject.breeding.user.security.SecurityUtil;
@@ -24,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -33,6 +37,8 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final BoardMainRepository boardMainRepository;
     private final UserRepository userRepository;
+
+    private final ReplyRepository replyRepository;
 
     //댓글 작성
     @Transactional
@@ -82,11 +88,16 @@ public class CommentService {
 
         if(!comment.isPresent()){
             dto.setMessage("댓글이 없습니다!");
-        }else if (!Objects.equals(userId, comment.get().getUser().getUsername())) {   //댓글의 닉네임와 일치한다면
+        }else if (!Objects.equals(userId, comment.get().getUser().getUsername())) {
             dto.setMessage("사용자의 댓글이 아닙니다!");
         }else{
             BoardMain boardMain = comment.get().getBoardMain();
-            boardMain.minusCommentCnt(boardMain);
+
+            Long replyCnt =(long)replyRepository.findAllByCommentId(commentId).size();
+            boardMain.minusCommentCnt(boardMain,replyCnt);
+            List<Reply> replyies = replyRepository.findByCommentId(commentId); //댓글에있는 대댓글 삭제
+            replyRepository.deleteAll(replyies);
+
             commentRepository.deleteById(commentId);
             dto.setMessage("댓글 삭제!");
         }

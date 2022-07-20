@@ -88,7 +88,7 @@ public class ReplyService {
             dto.setMessage("사용자의 댓글이 아닙니다!");
         }else{
             BoardMain boardMain = reply.get().getComment().getBoardMain();
-            boardMain.minusCommentCnt(boardMain);
+            boardMain.minusReplyCnt(boardMain);
             replyRepository.deleteById(replyId);
             dto.setMessage("대댓글 삭제!");
         }
