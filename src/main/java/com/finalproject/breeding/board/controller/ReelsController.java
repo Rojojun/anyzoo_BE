@@ -1,5 +1,6 @@
 package com.finalproject.breeding.board.controller;
 
+import com.finalproject.breeding.board.dto.ReelsRequest4EditDto;
 import com.finalproject.breeding.board.dto.ReelsRequestDto;
 import com.finalproject.breeding.board.dto.ReelsResponseDto;
 import com.finalproject.breeding.etc.dto.StatusResponseDto;
@@ -44,5 +45,12 @@ public class ReelsController {
         User user = userService.getUser();
         reelsService.deleteReels(boardMainId, user);
         return new ResponseEntity<>(new StatusResponseDto("삭제 되었습니다.", ""), HttpStatus.OK);
+    }
+    // 릴스 특정 게시글 수정 (단, 동영상 및 썸네일 수정은 불가)
+    @PatchMapping("/api/reels/{boardMainId}")
+    public ResponseEntity<Object> updateReels(@PathVariable Long boardMainId, @RequestBody ReelsRequest4EditDto requestDto) {
+        User user = userService.getUser();
+        Map<String, Object> data = reelsService.updateReels(boardMainId, requestDto, user);
+        return new ResponseEntity<>(new StatusResponseDto("수정 되었습니다.", data), HttpStatus.OK);
     }
 }

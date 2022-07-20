@@ -64,7 +64,23 @@ public class Post {
     }
 
 
-    public void updatePost(PostRequest4EditDto requestDto) {
+    public void updatePost(PostRequest4EditDto requestDto, BoardMain boardMain, List<PostImage> postImage) {
+        this.boardMain = boardMain;
+        this.postImage = postImage;
+        switch (requestDto.getCategoryName()) {
+            case "comic":
+                this.postNReelsCategory = PostNReelsCategory.COMIC;
+                break;
+            case "cool":
+                this.postNReelsCategory = PostNReelsCategory.COOL;
+                break;
+            case "pretty":
+                this.postNReelsCategory = PostNReelsCategory.PRETTY;
+                break;
+            case "cute":
+                this.postNReelsCategory = PostNReelsCategory.CUTE;
+                break;
+        }
 
     }
 }

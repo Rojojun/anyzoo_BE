@@ -1,5 +1,6 @@
 package com.finalproject.breeding.board.service;
 
+import com.finalproject.breeding.board.dto.ReelsRequest4EditDto;
 import com.finalproject.breeding.board.dto.ReelsRequestDto;
 import com.finalproject.breeding.board.dto.ReelsResponseDto;
 import com.finalproject.breeding.board.model.BoardMain;
@@ -13,6 +14,7 @@ import com.finalproject.breeding.user.User;
 import com.finalproject.breeding.user.repository.UserRepository;
 import com.finalproject.breeding.util.S3VideoUploader;
 import lombok.RequiredArgsConstructor;
+import org.bytedeco.opencv.presets.opencv_core;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
@@ -91,5 +93,32 @@ public class ReelsService {
         }
         s3VideoUploader.remove(reels.getId());
         reelsRepository.delete(reels);
+    }
+
+    // 수정 부분 동영상, 썸네일 포함 수정할지 논의 중
+    @Transactional
+    public Map<String, Object> updateReels(Long boardMainId, ReelsRequest4EditDto requestDto, User user) {
+        Reels reels = reelsRepository.findByBoardMainId(boardMainId);
+        if (!Objects.equals(user.getId(), reels.getUser().getId())) {
+            throw new CustomException(ErrorCode.POST_UPDATE_WRONG_ACCESS);
+        }
+
+        String reelsVideo = requestDto.getVideo();
+        String reelsThumbnail = requestDto.getThumbnail();
+
+        reels.updateReels(requestDto, reels.getBoardMain() ,reelsVideo, reelsThumbnail);
+
+        mediaUpdateToReels(reelsVideo, reelsThumbnail, reels);
+
+        Map<String, Object> data =new HashMap<>();
+        data.put("reelsId", reels.getId());
+        data.put("boardMainId", reels.getBoardMain().getId());
+        return data;
+    }
+
+    public void mediaUpdateToReels(String video, String thumbnail, Reels reels) {
+        Reels saveReels = reels;
+        video = saveReels.getVideo();
+        thumbnail = saveReels.getTitleImg();
     }
 }

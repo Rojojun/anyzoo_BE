@@ -3,6 +3,7 @@ package com.finalproject.breeding.board.service;
 import com.finalproject.breeding.board.dto.PostRequest4EditDto;
 import com.finalproject.breeding.board.dto.PostRequestDto;
 import com.finalproject.breeding.board.dto.PostResponseDto;
+import com.finalproject.breeding.board.model.category.BoardKind;
 import com.finalproject.breeding.etc.service.TierService;
 import com.finalproject.breeding.image.AwsS3Service;
 import com.finalproject.breeding.image.ImageRequestDto;
@@ -103,10 +104,9 @@ public class PostService {
         if (!Objects.equals(user.getId(), post.getUser().getId())) {
             throw new CustomException(ErrorCode.POST_UPDATE_WRONG_ACCESS);
         }
-
         List<PostImage> postImages = requestDto.getPostImages();
 
-        post.updatePost(requestDto);
+        post.updatePost(requestDto, post.getBoardMain(), post.getPostImage());
 
         imageUpdateToPost(postImages, post);
 

@@ -1,6 +1,7 @@
 package com.finalproject.breeding.board.model;
 
 
+import com.finalproject.breeding.board.dto.ReelsRequest4EditDto;
 import com.finalproject.breeding.board.dto.ReelsRequestDto;
 import com.finalproject.breeding.board.model.BoardMain;
 import com.finalproject.breeding.board.model.category.PostNReelsCategory;
@@ -44,6 +45,26 @@ public class Reels {
         this.titleImg = reelsRequestDto.getTitleImg();
 
         switch (reelsRequestDto.getCategoryName()) {
+            case "comic":
+                this.postNReelsCategory = PostNReelsCategory.COMIC;
+                break;
+            case "cool":
+                this.postNReelsCategory = PostNReelsCategory.COOL;
+                break;
+            case "pretty":
+                this.postNReelsCategory = PostNReelsCategory.PRETTY;
+                break;
+            case "cute":
+                this.postNReelsCategory = PostNReelsCategory.CUTE;
+                break;
+        }
+    }
+
+    public void updateReels(ReelsRequest4EditDto requestDto, BoardMain boardMain, String video, String thumbnail) {
+        this.boardMain = boardMain;
+        this.video = video;
+        this.titleImg = thumbnail;
+        switch (requestDto.getCategoryName()) {
             case "comic":
                 this.postNReelsCategory = PostNReelsCategory.COMIC;
                 break;
