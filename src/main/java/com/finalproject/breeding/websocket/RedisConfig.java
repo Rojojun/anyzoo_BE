@@ -26,6 +26,11 @@ public class RedisConfig {
         return new LettuceConnectionFactory(host, port);
     }
 
+    @Bean
+    public ChannelTopic channelTopic(){
+        return new ChannelTopic("chatroom");
+    }
+
     // redis에 발행(publish)된 메시지 처리를 위한 리스너 설정
     @Bean
     public RedisMessageListenerContainer redisMessageListener(RedisConnectionFactory connectionFactory,
@@ -37,12 +42,12 @@ public class RedisConfig {
         return container;
     }
 
-
     // 실제 메시지를 처리하는 subcriber 설정
     @Bean
     public MessageListenerAdapter listenerAdapter(RedisSubscriber subscriber){
         return new MessageListenerAdapter(subscriber, "sendMessage");
     }
+
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate(){
@@ -52,7 +57,6 @@ public class RedisConfig {
         redisTemplate.setConnectionFactory(redisConnectionFactory());
         return redisTemplate;
     }
-
     @Bean
     public StringRedisTemplate stringRedisTemplate(){
         final StringRedisTemplate stringRedisTemplate = new StringRedisTemplate();

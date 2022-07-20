@@ -15,8 +15,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class StompHandler implements ChannelInterceptor {
     private final TokenProvider tokenProvider;
-    private final ChatRoomRepository chatRoomRepository;
-    //private final ChatService chatService;
 
     // websocket을 통해 들어온 요청이 처리 되기전 실행됨
     @Override
