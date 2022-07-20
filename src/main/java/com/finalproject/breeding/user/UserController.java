@@ -84,7 +84,7 @@ public class UserController {
     }
 
     //Google oauth 통신할 api
-    @PostMapping("/user/socialLogin")
+    @PostMapping("/user/oauth/GoogleLogin")
     public ResponseEntity<UserResponseDto> socialLogin(@RequestHeader("code") String code){
         return ResponseEntity.ok(new UserResponseDto(userService.socialLogin(code), "로그인 되었습니다"));
     }

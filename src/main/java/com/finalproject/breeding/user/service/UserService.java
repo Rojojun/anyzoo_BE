@@ -294,14 +294,15 @@ public class UserService {
     //잃어버린 Username(email) 찾기
     @Transactional
     public String findLostEmail(String phoneNumber){
-        User user = userRepository
-                .findByPhoneNumber(phoneNumber)
-                .orElseThrow(() -> new IllegalArgumentException("번호가 일치하지 않습니다"));
-        //.orElseThrow(() -> new CustomException(ErrorCode.OK_BUT_NO_USER));
-        String[] usernameSplit = user.getUsername().split("@");
-            if(usernameSplit[0].length() <= 2){
+        //String pNumber = phoneNumber;
+            User user = userRepository
+                    .findByPhoneNumber(phoneNumber)
+                    //.orElseThrow(() -> new IllegalArgumentException("번호가 일치하지 않습니다"));
+                    .orElseThrow(() -> new CustomException(ErrorCode.OK_BUT_NO_USER));
+            String[] usernameSplit = user.getUsername().split("@");
+            if (usernameSplit[0].length() <= 2) {
                 return user.getUsername().charAt(0) + "*****@" + usernameSplit[1];
-            }else{
+            } else {
                 return user.getUsername().substring(0, 2) + "****@" + usernameSplit[1];
             }
     }
