@@ -90,12 +90,14 @@ public class PostService {
     // 삭제하기
     public void deletePost(Long boardMainId, User user) {
         Post post = postRepository.findByBoardMainId(boardMainId);
-
+        BoardMain deleteBoardMainId = post.getBoardMain();
         if (!Objects.equals(user.getId(), post.getUser().getId())) {
             throw new CustomException(ErrorCode.POST_DELETE_WRONG_ACCESS);
         }
         awsS3Service.removePostImages(post.getId());
         postRepository.delete(post);
+        boardMainRepository.delete(deleteBoardMainId);
+
     }
 
     @Transactional
