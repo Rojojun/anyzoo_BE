@@ -38,11 +38,10 @@ public class CommunityController {
         return communityService.getCommunityDetail(boardMainId);
     }
 
-    // 전체 게시글 조회하기 (all, free, review, qna)
-    @GetMapping("/api/community/category/{category}")
-    public Slice<CommunityResponseDto> readAllCommunity(HttpServletRequest httpServletRequest, @PathVariable String category) {
+    @GetMapping("/api/community")
+    public Slice<CommunityResponseDto> readAllCommunity(HttpServletRequest httpServletRequest) {
         int page = Integer.parseInt(httpServletRequest.getParameter("page"));
-        return communityService.readCommunity(page, category);
+        return communityService.readCommunity(page);
     }
 
     @DeleteMapping("/api/community/{boardMainId}")
