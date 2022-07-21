@@ -91,14 +91,10 @@ public class PostService {
     // 삭제하기
     public void deletePost(Long boardMainId, User user) {
         Post post = postRepository.findByBoardMainId(boardMainId);
-<<<<<<< HEAD
-        UserValidator.validateDelete4User(user, post.getUser().getId());   //로그인유저ID와 작성글의 유저ID 체크
-=======
         BoardMain deleteBoardMainId = post.getBoardMain();
         if (!Objects.equals(user.getId(), post.getUser().getId())) {
             throw new CustomException(ErrorCode.POST_DELETE_WRONG_ACCESS);
         }
->>>>>>> hojun-dev
         awsS3Service.removePostImages(post.getId());
         postRepository.delete(post);
         boardMainRepository.delete(deleteBoardMainId);
@@ -106,30 +102,23 @@ public class PostService {
     }
 
     @Transactional
-    public Map<String, Object> updatePost(Long boardMainId, PostRequestDto requestDto, User user) {
+    public Map<String, Object> updatePost(Long boardMainId, PostRequest4EditDto requestDto, User user) {
         Post post = postRepository.findByBoardMainId(boardMainId);
-        UserValidator.validateUpdate4User(user, post.getUser().getId()); //로그인유저ID와 작성글의 유저ID 체크
-        post.getBoardMain().updatePost(requestDto);
-        if (requestDto.getPostImages()!=null){
-            awsS3Service.removePostImages(post.getId());
-            List<PostImage> postImages = requestDto.getPostImages();
-            post.updatePost(requestDto);
-            imageUpdateToPost(postImages, post); //포스트와 포스트이미지 연관관계 맺어주기
+        if (!Objects.equals(user.getId(), post.getUser().getId())) {
+            throw new CustomException(ErrorCode.POST_UPDATE_WRONG_ACCESS);
         }
-<<<<<<< HEAD
-=======
         List<PostImage> postImages = requestDto.getPostImages();
 
         post.updatePost(requestDto, post.getBoardMain(), post.getPostImage());
 
         imageUpdateToPost(postImages, post);
->>>>>>> hojun-dev
 
         Map<String, Object> data = new HashMap<>();
         data.put("postId", post.getId());
         data.put("boardMainId", post.getBoardMain().getId());
         return data;
     }
+
 
     public void imageUpdateToPost(List<PostImage> postImages, Post post) {
         for (PostImage postimage : postImages) {

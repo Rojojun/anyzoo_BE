@@ -63,11 +63,6 @@ public class Post {
         }
     }
 
-
-<<<<<<< HEAD
-    public void updatePost(PostRequestDto requestDto) {
-        this.postImage = requestDto.getPostImages();
-=======
     public void updatePost(PostRequest4EditDto requestDto, BoardMain boardMain, List<PostImage> postImage) {
         this.boardMain = boardMain;
         this.postImage = postImage;
@@ -85,7 +80,5 @@ public class Post {
                 this.postNReelsCategory = PostNReelsCategory.CUTE;
                 break;
         }
-
->>>>>>> hojun-dev
     }
 }
