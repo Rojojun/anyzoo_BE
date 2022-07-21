@@ -1,8 +1,9 @@
 package com.finalproject.breeding.etc.model;
 
-
 import com.finalproject.breeding.board.model.BoardMain;
 import com.finalproject.breeding.etc.dto.CommentRequestDto;
+import com.finalproject.breeding.etc.dto.ReplyRequestDto;
+import com.finalproject.breeding.etc.repository.ReplyRepository;
 import com.finalproject.breeding.user.User;
 import com.sun.istack.NotNull;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @NoArgsConstructor
-public class Comment extends Timestamped {
+public class Reply extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
@@ -24,24 +25,23 @@ public class Comment extends Timestamped {
     @ManyToOne
     private User user;
 
-    @JoinColumn(name = "BOARDMAIN_ID")
+    @JoinColumn(name = "COMMENT_ID")
     @ManyToOne
-    private BoardMain boardMain;
-
+    private Comment comment;
 
     @Column
     @NotNull
-    private String comment;
+    private String reply;
 
-    public Comment(CommentRequestDto requestDto, BoardMain boardMain, User user){
+    public Reply(ReplyRequestDto requestDto, Comment comment, User user){
 
-        this.comment = requestDto.getComment();
-        this.boardMain = boardMain;
+        this.reply = requestDto.getReply();
+        this.comment = comment;
         this.user = user;
     }
 
-    public void updateComment(CommentRequestDto requestDto){
-        this.comment = requestDto.getComment();
+    public void updateReply(ReplyRequestDto requestDto){
+        this.reply = requestDto.getReply();
     }
 
 

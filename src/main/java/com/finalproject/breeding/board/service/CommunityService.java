@@ -32,7 +32,6 @@ public class CommunityService {
 
     private final CommunityRepository communityRepository;
     private final BoardMainRepository boardMainRepository;
-    private final CommunityImageRepository communityImageRepository;
     private final AwsS3Service awsS3Service;
 
 
@@ -62,20 +61,9 @@ public class CommunityService {
     }
 
 
-    public Slice<CommunityResponseDto> readCommunity(int page, String category) {
+    public Slice<CommunityResponseDto> readCommunity(int page) {
         PageRequest pageRequest = PageRequest.of(page, 5);
-        switch (category) {
-            case "qna":
-                return communityRepository.findByCommunityCategoryOrderByBoardMainCreatedAtDesc(pageRequest, CommunityCategory.QNA);
-            case "free":
-                return communityRepository.findByCommunityCategoryOrderByBoardMainCreatedAtDesc(pageRequest, CommunityCategory.FREE);
-            case "review":
-                return communityRepository.findByCommunityCategoryOrderByBoardMainCreatedAtDesc(pageRequest, CommunityCategory.REVIEW);
-            case "all":
-                return communityRepository.findByOrderByBoardMainCreatedAtDesc(pageRequest);
-            default:
-                return null;
-        }
+        return communityRepository.findByOrderByBoardMainCreatedAtDesc(pageRequest);
     }
 
     public void deleteCommunity(User user, Long boardMainId) {
@@ -89,16 +77,6 @@ public class CommunityService {
         Community community = communityRepository.findCommunityByBoardMainId(boardMainId);
         UserValidator.validateUpdate4User(user, community.getUser().getId());
         community.getBoardMain().updateCommunity(communityRequestDto);
-
-
-        if (communityRequestDto.getCommunityImages()==null){
-            community.updateTitle(communityRequestDto);
-        }else {
-            awsS3Service.removeCommunityImages(community.getId());
-            List<CommunityImage> communityImages = communityRequestDto.getCommunityImages();
-            community.update(communityRequestDto);
-            imageUpdateToCommunity(communityImages, community);
-        }
 
         Map<String, Object> data = new HashMap<>();
         data.put("communityId", community.getId());
