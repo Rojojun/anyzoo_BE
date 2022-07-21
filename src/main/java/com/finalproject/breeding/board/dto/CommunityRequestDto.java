@@ -14,9 +14,9 @@ import java.util.List;
 public class CommunityRequestDto {
 
 
-    private String title;
+    //private String title;
     private String content;
-    private String categoryName; //카테고리이름
+    //private String categoryName; //카테고리이름
     private List<CommunityImage> communityImages;
 
 }
