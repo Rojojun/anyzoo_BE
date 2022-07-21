@@ -85,6 +85,7 @@ public class CommunityService {
         Community community = communityRepository.findCommunityByBoardMainId(boardMainId);
         UserValidator.validateUpdate4User(user, community.getUser().getId());
         community.getBoardMain().updateCommunity(communityRequestDto);
+        communityRepository.save(community);
 
         Map<String, Object> data = new HashMap<>();
         data.put("communityId", community.getId());
