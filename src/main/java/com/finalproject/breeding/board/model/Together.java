@@ -2,6 +2,7 @@ package com.finalproject.breeding.board.model;
 
 import com.finalproject.breeding.board.dto.TogetherRequestDto;
 import com.finalproject.breeding.board.model.category.PostNReelsCategory;
+import com.finalproject.breeding.board.model.category.ProvinceAreas;
 import com.finalproject.breeding.board.model.category.TogetherCategory;
 import com.finalproject.breeding.user.User;
 import lombok.Getter;
@@ -18,6 +19,10 @@ public class Together {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
+
+    @JoinColumn
+    @ManyToOne
+    private ProvinceAreas provinceAreas;
 
     @JoinColumn(name = "USER_ID")
     @ManyToOne
