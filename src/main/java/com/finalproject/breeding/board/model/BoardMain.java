@@ -1,9 +1,6 @@
 package com.finalproject.breeding.board.model;
 
-import com.finalproject.breeding.board.dto.CommunityRequestDto;
-import com.finalproject.breeding.board.dto.PostRequestDto;
-import com.finalproject.breeding.board.dto.ReelsRequestDto;
-import com.finalproject.breeding.board.dto.TogetherRequestDto;
+import com.finalproject.breeding.board.dto.*;
 import com.finalproject.breeding.etc.model.Timestamped;
 import com.finalproject.breeding.board.model.category.BoardKind;
 import com.sun.istack.NotNull;
@@ -84,5 +81,15 @@ public class BoardMain extends Timestamped {
         this.content = togetherRequestDto.getContent();
         this.likeCnt = 0L;
         this.boardKind = BoardKind.Together;
+    }
+
+    public BoardMain(PostRequest4EditDto postRequest4EditDto) {
+        this.content = postRequest4EditDto.getContent();
+        this.boardKind = BoardKind.POST;
+    }
+
+    public BoardMain(ReelsRequest4EditDto reelsRequest4EditDto) {
+        this.content = reelsRequest4EditDto.getContent();
+        this.boardKind = BoardKind.REELS;
     }
 }

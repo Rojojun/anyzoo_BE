@@ -3,6 +3,7 @@ package com.finalproject.breeding.board.service;
 import com.finalproject.breeding.board.dto.PostRequest4EditDto;
 import com.finalproject.breeding.board.dto.PostRequestDto;
 import com.finalproject.breeding.board.dto.PostResponseDto;
+import com.finalproject.breeding.board.model.category.BoardKind;
 import com.finalproject.breeding.etc.service.TierService;
 import com.finalproject.breeding.image.AwsS3Service;
 import com.finalproject.breeding.image.ImageRequestDto;
@@ -56,7 +57,6 @@ public class PostService {
         return new PostResponseDto(post);
     }
 
-
     @Transactional
     public Slice<PostResponseDto> readCategoryPost(int page, String category) {
         PageRequest pageRequest = PageRequest.of(page, 3, Sort.by(Sort.Direction.DESC, "boardMain.createdAt"));
@@ -91,9 +91,18 @@ public class PostService {
     // 삭제하기
     public void deletePost(Long boardMainId, User user) {
         Post post = postRepository.findByBoardMainId(boardMainId);
+<<<<<<< HEAD
         UserValidator.validateDelete4User(user, post.getUser().getId());   //로그인유저ID와 작성글의 유저ID 체크
+=======
+        BoardMain deleteBoardMainId = post.getBoardMain();
+        if (!Objects.equals(user.getId(), post.getUser().getId())) {
+            throw new CustomException(ErrorCode.POST_DELETE_WRONG_ACCESS);
+        }
+>>>>>>> hojun-dev
         awsS3Service.removePostImages(post.getId());
         postRepository.delete(post);
+        boardMainRepository.delete(deleteBoardMainId);
+
     }
 
     @Transactional
@@ -107,6 +116,14 @@ public class PostService {
             post.updatePost(requestDto);
             imageUpdateToPost(postImages, post); //포스트와 포스트이미지 연관관계 맺어주기
         }
+<<<<<<< HEAD
+=======
+        List<PostImage> postImages = requestDto.getPostImages();
+
+        post.updatePost(requestDto, post.getBoardMain(), post.getPostImage());
+
+        imageUpdateToPost(postImages, post);
+>>>>>>> hojun-dev
 
         Map<String, Object> data = new HashMap<>();
         data.put("postId", post.getId());
