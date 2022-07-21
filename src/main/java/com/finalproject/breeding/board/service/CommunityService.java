@@ -36,11 +36,19 @@ public class CommunityService {
 
 
     public Map<String, Object> registCommunity(CommunityRequestDto communityRequestDto, User user) {
-        List<CommunityImage> communityImages = communityRequestDto.getCommunityImages();
+        Community community;
+        if(communityRequestDto.getCommunityImages()!=null){
+            List<CommunityImage> communityImages = communityRequestDto.getCommunityImages();
 
-        Community community = new Community(communityRequestDto,boardMainRepository.save(new BoardMain(communityRequestDto)),user, communityImages);
+            community = Community.builder().communityImages(communityImages).user(user).boardMain(boardMainRepository.save(new BoardMain(communityRequestDto))).build();
 
-        imageUpdateToCommunity(communityImages, communityRepository.save(community));
+            imageUpdateToCommunity(communityImages, communityRepository.save(community));
+        }else{
+            community = Community.builder().boardMain(boardMainRepository.save(new BoardMain(communityRequestDto))).user(user).build();
+            communityRepository.save(community);
+        }
+
+
 
         Map<String, Object> data = new HashMap<>();
         data.put("communityId", community.getId());

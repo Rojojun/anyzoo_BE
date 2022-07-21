@@ -9,8 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CommunityRepository extends JpaRepository<Community, Long> {
 
-
-    Slice<CommunityResponseDto> findByCommunityCategoryOrderByBoardMainCreatedAtDesc(PageRequest pageRequest, CommunityCategory communityCategory);
+    
 
     Slice<CommunityResponseDto> findByOrderByBoardMainCreatedAtDesc(PageRequest pageRequest);
 

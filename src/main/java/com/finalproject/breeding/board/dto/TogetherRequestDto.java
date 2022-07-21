@@ -12,5 +12,6 @@ public class TogetherRequestDto {
     private String categoryName;
     private String date;
     private int limitPeople;
+    private Long provinceId;
 
 }
