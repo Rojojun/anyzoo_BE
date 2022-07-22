@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
     OK(HttpStatus.OK,  200, "true"),
-    OK_BUT_NO_USER(HttpStatus.NOT_FOUND, 200,  "유저를 찾을 수 없습니다"),
+    OK_BUT_NO_USER(HttpStatus.OK, 200,  "유저를 찾을 수 없습니다"),
 
 
     //문자열 체크

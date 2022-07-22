@@ -14,12 +14,15 @@ public class UserResponseDto {
     private String message;
     private String accesstoken;
 
+    private String refreshtoken;
+
     public UserResponseDto(String message) {
         this.message = message;
     }
 
     public UserResponseDto(SocialTokenDto socialTokenDto, String message) {
         this.accesstoken = socialTokenDto.getAccessToken();
+        this.refreshtoken = socialTokenDto.getRefreshToken();
         this.nickname = socialTokenDto.getNickname();
         this.message = message;
     }

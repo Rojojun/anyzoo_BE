@@ -1,5 +1,6 @@
 package com.finalproject.breeding.user;
 
+import com.finalproject.breeding.dto.KakaoUserInfoDto;
 import com.finalproject.breeding.etc.model.Timestamped;
 import com.finalproject.breeding.image.model.UserImage;
 import com.finalproject.breeding.dto.SocialLoginRequestDto;
@@ -33,6 +34,9 @@ public class User extends Timestamped{
     @Size(min = 3, max = 20, message = "2 ~ 8 사이로 입력해주세요.")
     private String nickname;
 
+    @Column
+    private Long kakaoId;
+
     @OneToOne
     @JoinColumn(name = "USERIMAGE_ID")
     private UserImage userImage;
@@ -44,7 +48,7 @@ public class User extends Timestamped{
     @Column
     private boolean verification;
 
-    @Column//(nullable = false)
+    @Column(nullable=true)
     private String phoneNumber;
 
     @Column
@@ -79,7 +83,28 @@ public class User extends Timestamped{
 
     public User(SocialLoginRequestDto socialLoginRequestDto){
         this.username = socialLoginRequestDto.getEmail();
-        this.nickname = "googleUser";
+        this.nickname = socialLoginRequestDto.getName();
+        this.phoneNumber = "0000";
+        this.userRole = UserRole.ROLE_USER;
+        this.exp = 0L;
+        this.tier = 0;
+    }
+
+    public User(String username, String email, UserRole role){
+        this.nickname = username;
+        this.username = email;
+        this.userRole = role;
+    }
+
+    public User(String username, String email, UserRole role, Long kakaoId){
+        this.nickname = username;
+        this.username = email;
+        this.userRole = role;
+        this.phoneNumber = "0000";
+        this.exp = 0L;
+        this.tier = 0;
+        this.kakaoId = kakaoId;
+
     }
 
     public void edit(UserEditDto userEditDto){

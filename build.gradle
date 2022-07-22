@@ -56,8 +56,11 @@ dependencies {
     //이메일인증
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
-    //구글 소셜로그인
+    //구글 소셜
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+    //카카오 소셜
+    implementation 'com.google.code.gson:gson:2.8.7'
 
 }
 
