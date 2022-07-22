@@ -55,9 +55,10 @@ dependencies {
     //이메일인증
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
-    //구글 소셜로그인
+    //구글 소셜
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
+<<<<<<< HEAD
     // https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
     // API 스펙 자동관리 툴 'swagger' 디펜던시
     implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
@@ -77,6 +78,11 @@ dependencies {
 
     // 썸네일 Extract
     implementation group: 'org.bytedeco', name: 'javacv-platform', version: '1.5.7'
+=======
+    //카카오 소셜
+    implementation 'com.google.code.gson:gson:2.8.7'
+
+>>>>>>> jihun-dev
 }
 
 tasks.named('test') {

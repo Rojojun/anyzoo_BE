@@ -1,5 +1,6 @@
 package com.finalproject.breeding.user;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.finalproject.breeding.dto.EmailVerificationRequestDto;
 import com.finalproject.breeding.dto.NewPasswordDto;
 import com.finalproject.breeding.dto.PhoneVerificationDto;
@@ -83,12 +84,17 @@ public class UserController {
         return new ResponseEntity<>(new StatusResponseDto("로그인이 되었습니다.", data), HttpStatus.OK);
     }
 
-    //Google oauth 통신할 api
-    @PostMapping("/user/socialLogin")
+    //Google oauth api
+    @GetMapping("/user/oauth/google")
     public ResponseEntity<UserResponseDto> socialLogin(@RequestHeader("code") String code){
-        return ResponseEntity.ok(new UserResponseDto(userService.socialLogin(code), "로그인 되었습니다"));
+        return ResponseEntity.ok(new UserResponseDto(userService.googleLogin(code), "로그인 되었습니다"));
     }
 
+    //Kakao oauth api
+    @GetMapping("/user/oauth/kakao")
+    public ResponseEntity<UserResponseDto> kakaoLogin(@RequestParam String code) throws JsonProcessingException {
+        return ResponseEntity.ok(new UserResponseDto(userService.kakaoLogin(code), "로그인 되었습니다"));
+    }
 
 
     //----------------------------유저 정보 수정 관련-------------------------------

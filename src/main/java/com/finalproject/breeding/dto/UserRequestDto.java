@@ -22,6 +22,10 @@ public class UserRequestDto {
         this.password = user.getPassword();
     }
 
+    public UserRequestDto(String username) {
+        this.username = username;
+    }
+
     public User toUser(PasswordEncoder passwordEncoder){
         return User.builder()
                 .username(username)
