@@ -13,10 +13,10 @@ public interface ReelsRepository extends JpaRepository<Reels, Long> {
 
     Slice<ReelsMapping> findByPostNReelsCategory(PageRequest pageRequest, PostNReelsCategory postNReelsCategory);*/
 
-    Slice<ReelsResponseDto> findPostByPostNReelsCategory(PageRequest pageRequest, PostNReelsCategory postNReelsCategory);
-    Slice<ReelsResponseDto> findPostByPostNReelsCategoryOrderByBoardMainLikeCntDesc(PageRequest pageRequest, PostNReelsCategory postNReelsCategory);
-    Slice<ReelsResponseDto> findPostByOrderByBoardMainLikeCntDesc(PageRequest pageRequest);
-    Slice<ReelsResponseDto> findPostByOrderByIdDesc(PageRequest pageRequest);
+    Slice<ReelsResponseDto> findReelsByPostNReelsCategory(PageRequest pageRequest, PostNReelsCategory postNReelsCategory);
+    Slice<ReelsResponseDto> findReelsByPostNReelsCategoryOrderByBoardMainLikeCntDesc(PageRequest pageRequest, PostNReelsCategory postNReelsCategory);
+    Slice<ReelsResponseDto> findReelsByOrderByBoardMainLikeCntDesc(PageRequest pageRequest);
+    Slice<ReelsResponseDto> findReelsByOrderByIdDesc(PageRequest pageRequest);
     Reels findByBoardMainId(Long boardMainId);
 /*    Long findVideoByreelsId(Long reelsId);
     Long findThumbnailByreelsId(Long reelsId);*/
