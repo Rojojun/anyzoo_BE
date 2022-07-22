@@ -58,28 +58,28 @@ public class ReelsService {
 
     @Transactional
     public Slice<ReelsResponseDto> readCategoryReels(int page, String category) {
-        PageRequest pageRequest = PageRequest.of(Math.toIntExact(page), 3, Sort.by(Sort.Direction.DESC, "boardMain.createdAt"));
+        PageRequest pageRequest = PageRequest.of(Math.toIntExact(page), 1, Sort.by(Sort.Direction.DESC, "boardMain.createdAt"));
         switch (category) {
             case "cool":
-                return reelsRepository.findPostByPostNReelsCategory(pageRequest, PostNReelsCategory.COOL);
+                return reelsRepository.findReelsByPostNReelsCategory(pageRequest, PostNReelsCategory.COOL);
             case "coollike":
-                return reelsRepository.findPostByPostNReelsCategoryOrderByBoardMainLikeCntDesc(pageRequest, PostNReelsCategory.COOL);
+                return reelsRepository.findReelsByPostNReelsCategoryOrderByBoardMainLikeCntDesc(pageRequest, PostNReelsCategory.COOL);
             case "cute":
-                return reelsRepository.findPostByPostNReelsCategory(pageRequest, PostNReelsCategory.CUTE);
+                return reelsRepository.findReelsByPostNReelsCategory(pageRequest, PostNReelsCategory.CUTE);
             case "cutelike":
-                return reelsRepository.findPostByPostNReelsCategoryOrderByBoardMainLikeCntDesc(pageRequest, PostNReelsCategory.CUTE);
+                return reelsRepository.findReelsByPostNReelsCategoryOrderByBoardMainLikeCntDesc(pageRequest, PostNReelsCategory.CUTE);
             case "comic":
-                return reelsRepository.findPostByPostNReelsCategory(pageRequest, PostNReelsCategory.COMIC);
+                return reelsRepository.findReelsByPostNReelsCategory(pageRequest, PostNReelsCategory.COMIC);
             case "comiclike":
-                return reelsRepository.findPostByPostNReelsCategoryOrderByBoardMainLikeCntDesc(pageRequest, PostNReelsCategory.COMIC);
+                return reelsRepository.findReelsByPostNReelsCategoryOrderByBoardMainLikeCntDesc(pageRequest, PostNReelsCategory.COMIC);
             case "pretty":
-                return reelsRepository.findPostByPostNReelsCategory(pageRequest, PostNReelsCategory.PRETTY);
+                return reelsRepository.findReelsByPostNReelsCategory(pageRequest, PostNReelsCategory.PRETTY);
             case "prettylike":
-                return reelsRepository.findPostByPostNReelsCategoryOrderByBoardMainLikeCntDesc(pageRequest, PostNReelsCategory.PRETTY);
+                return reelsRepository.findReelsByPostNReelsCategoryOrderByBoardMainLikeCntDesc(pageRequest, PostNReelsCategory.PRETTY);
             case "all":
-                return reelsRepository.findPostByOrderByIdDesc(pageRequest);
+                return reelsRepository.findReelsByOrderByIdDesc(pageRequest);
             case "alllike":
-                return reelsRepository.findPostByOrderByBoardMainLikeCntDesc(pageRequest);
+                return reelsRepository.findReelsByOrderByBoardMainLikeCntDesc(pageRequest);
             default:
                 return null;
         }
