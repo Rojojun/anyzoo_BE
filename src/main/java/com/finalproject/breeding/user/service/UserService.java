@@ -1,5 +1,8 @@
 package com.finalproject.breeding.user.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.finalproject.breeding.dto.*;
 import com.finalproject.breeding.image.model.UserImage;
 import com.finalproject.breeding.image.repository.UserImageRepository;
@@ -18,20 +21,30 @@ import com.finalproject.breeding.user.UserRole;
 import com.finalproject.breeding.user.dto.responseDto.UserInfo;
 import com.finalproject.breeding.user.repository.RefreshTokenRepository;
 import com.finalproject.breeding.user.repository.UserRepository;
+import com.finalproject.breeding.user.security.UserDetailsImpl;
 import com.finalproject.breeding.user.token.TokenProvider;
 import com.finalproject.breeding.socialUtil.GoogleRestTemplate;
 import lombok.RequiredArgsConstructor;
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
+import org.apache.http.protocol.HTTP;
 import org.json.simple.JSONObject;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
@@ -251,11 +264,42 @@ public class UserService {
     }
 
     //Google 로그인
-    public SocialTokenDto socialLogin(String code){
+    public SocialTokenDto googleLogin(String code){
         SocialLoginRequestDto socialLoginRequestDto = googleRestTemplate.googleUserInfoByAccessToken(googleRestTemplate.findAccessTokenByCode(code).getAccess_token());
         User user = userRepository.findByUsername(socialLoginRequestDto.getEmail())
                 .orElseGet(() -> userRepository.save(new User(socialLoginRequestDto)));
         return createToken(new UserRequestDto(user));
+    }
+
+    public SocialTokenDto kakaoLogin(String code) throws JsonProcessingException {
+        // 1. "인가 코드"로 "액세스 토큰" 요청
+        String kakaoAccessToken = getAccessToken(code);
+        // 2. 토큰으로 카카오 API 호출
+        KakaoUserInfoDto kakaoUserInfo = getKakaoUserInfo(kakaoAccessToken);
+
+        // DB 에 중복된 Kakao Id 가 있는지 확인
+        Long kakaoId = kakaoUserInfo.getKakaoId();
+        User kakaoUser = userRepository.findByKakaoId(kakaoId)
+                .orElse(null);
+        if (kakaoUser == null) {
+// 회원가입
+// username: kakao nickname
+            String nickname = kakaoUserInfo.getNickname();
+
+// email: kakao email
+            String email = kakaoUserInfo.getEmail();
+// role: 일반 사용자
+            UserRole role = UserRole.ROLE_USER;
+
+            kakaoUser = new User(nickname, email, role, kakaoId);
+            userRepository.save(kakaoUser);
+        }
+        // 4. 강제 로그인 처리
+//        UserDetails userDetails = new UserDetailsImpl(kakaoUser);
+//        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return createToken(new UserRequestDto(kakaoUser.getUsername()));
     }
 
     public SocialTokenDto createToken(UserRequestDto userRequestDto){
@@ -279,6 +323,66 @@ public class UserService {
         return tokenDto;
     }
 
+    //kakao 인가 code 받은후 access token 생성
+    private String getAccessToken(String code) throws JsonProcessingException {
+        // HTTP Header 생성
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+// HTTP Body 생성
+            StringBuilder body = new StringBuilder();
+            body.append("grant_type=authorization_code&client_id=7ed074dd8ee05fafa99735fba28a41d2&redirect_uri=https://localhost:3000/oauth&code=" + code + "&client_secret=28ibusk6KsYMwzHk2MyKow5ed5wV8j8l");
+//https://anyzoo.co.kr/oauth
+
+// HTTP 요청 보내기
+            HttpEntity<String> kakaoTokenRequest =
+                    new HttpEntity<String>(body.toString(), headers);
+            RestTemplate rt = new RestTemplate();
+            ResponseEntity<String> response = rt.exchange(
+                    "https://kauth.kakao.com/oauth/token",
+                    HttpMethod.POST,
+                    kakaoTokenRequest,
+                    String.class
+            );
+
+// HTTP 응답 (JSON) -> 액세스 토큰 파싱
+        String responseBody = response.getBody();
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(responseBody);
+        return jsonNode.get("access_token").asText();
+    }
+
+    //kakao 유저정보 메서드
+    private KakaoUserInfoDto getKakaoUserInfo(String accessToken) throws JsonProcessingException {
+
+        HttpHeaders headers = new HttpHeaders();
+
+        // HTTP Header 생성
+        headers.add("Authorization", "Bearer " + accessToken);
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+// HTTP 요청 보내기
+        HttpEntity<MultiValueMap<String, String>> kakaoUserInfoRequest = new HttpEntity<>(headers);
+        RestTemplate rt = new RestTemplate();
+        ResponseEntity<String>response = rt.exchange(
+                "https://kapi.kakao.com/v2/user/me",
+                HttpMethod.POST,
+                kakaoUserInfoRequest,
+                String.class
+        );
+
+        String responseBody = response.getBody();
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(responseBody);
+        Long id = jsonNode.get("id").asLong();
+        String nickname = jsonNode.get("properties")
+                .get("nickname").asText();
+        String email = jsonNode.get("kakao_account")
+                .get("email").asText();
+
+        System.out.println("카카오 사용자 정보: " + id + ", " + nickname + ", " + email);
+        return new KakaoUserInfoDto(id, nickname, email);
+    }
 
     //----------------------------유저 정보 수정 관련-------------------------------
     //잃어버린 비밀번호 변경
@@ -294,14 +398,18 @@ public class UserService {
     //잃어버린 Username(email) 찾기
     @Transactional
     public String findLostEmail(String phoneNumber){
-        User user = userRepository
-                .findByPhoneNumber(phoneNumber)
-                .orElseThrow(() -> new IllegalArgumentException("번호가 일치하지 않습니다"));
-        //.orElseThrow(() -> new CustomException(ErrorCode.OK_BUT_NO_USER));
-        String[] usernameSplit = user.getUsername().split("@");
-            if(usernameSplit[0].length() <= 2){
+            User user = userRepository
+                    .findByPhoneNumber(phoneNumber)
+                    .orElseGet(() -> null);
+                    //.orElseThrow(() -> new IllegalArgumentException("번호가 일치하지 않습니다"));
+                    //.orElseThrow(() -> new CustomException(ErrorCode.OK_BUT_NO_USER));
+            if(!Optional.ofNullable(user).isPresent()) {
+                return "존재하지 않는 유저 정보 입니다";
+            }
+            String[] usernameSplit = user.getUsername().split("@");
+            if (usernameSplit[0].length() <= 2) {
                 return user.getUsername().charAt(0) + "*****@" + usernameSplit[1];
-            }else{
+            } else {
                 return user.getUsername().substring(0, 2) + "****@" + usernameSplit[1];
             }
     }
