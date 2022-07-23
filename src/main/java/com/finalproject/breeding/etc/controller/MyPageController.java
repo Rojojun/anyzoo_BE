@@ -28,7 +28,7 @@ public class MyPageController {
     private final UserService userService;
 
 
-    @GetMapping("/api/mypage/{userId}")
+    @GetMapping("/api/mypage/{nickname}")
     public Slice<MyPagePostResponseDto> getMyPagePost(HttpServletRequest httpServletRequest, @PathVariable String nickname){
         int page = Integer.parseInt(httpServletRequest.getParameter("page"));
         return myPageService.getMyPagePost(nickname, page);
