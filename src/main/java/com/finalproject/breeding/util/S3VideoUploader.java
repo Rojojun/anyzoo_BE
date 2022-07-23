@@ -78,7 +78,7 @@ public class S3VideoUploader {
             if (videoEncode.getVideoLength(file.getAbsolutePath()) < 15){
                 return upload(file, dirName, true, randomVideoName);
             }
-/*            File shortFile = new File(System.getProperty("user.dir") + "/video" + multipartFile.getOriginalFilename());
+        /* File shortFile = new File(System.getProperty("user.dir") + "/video" + multipartFile.getOriginalFilename());
             upload(shortFile,dirName,true,randomVideoName);*/
 
             return upload(file, dirName,false,randomVideoName);
@@ -90,7 +90,7 @@ public class S3VideoUploader {
     // S3로 비디오 and 썸네일 파일 업로드하기
     public String upload(File uploadFile, String dirName, Boolean isShort, String uuid) {
         if(isShort){
-            String fileName = dirName + "/" + uuid +".short";   // S3에 저장된 파일 이름
+            String fileName = dirName + "/" + uuid + uploadFile.getName().substring(uploadFile.getName().lastIndexOf(".")+1);   // S3에 저장된 파일 이름
             return putS3(uploadFile, fileName);
         }
     /* String fileName = dirName + "/" + uuid +".mp4";

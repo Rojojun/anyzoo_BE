@@ -1,14 +1,13 @@
 package com.finalproject.breeding.board.model;
 
-
 import com.finalproject.breeding.board.dto.ReelsRequest4EditDto;
 import com.finalproject.breeding.board.dto.ReelsRequestDto;
-import com.finalproject.breeding.board.model.BoardMain;
 import com.finalproject.breeding.board.model.category.PostNReelsCategory;
 import com.finalproject.breeding.user.User;
+import com.finalproject.breeding.video.model.ReelsThumbnail;
+import com.finalproject.breeding.video.model.ReelsVideo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 
 @Getter
@@ -32,17 +31,19 @@ public class Reels {
     @Enumerated(EnumType.STRING)
     private PostNReelsCategory postNReelsCategory;
 
-    @Column
-    private String video;
+    @OneToOne
+    @JoinColumn(name = "REELS_VIDEO_ID")
+    private ReelsVideo video;
 
-    @Column
-    private String titleImg;
+    @OneToOne
+    @JoinColumn(name = "REELS_THUMBNAIL_ID")
+    private ReelsThumbnail titleImg;
 
-    public Reels(ReelsRequestDto reelsRequestDto, BoardMain boardMain, User user) {
+    public Reels(ReelsRequestDto reelsRequestDto, BoardMain boardMain, User user, ReelsVideo video, ReelsThumbnail titleImg) {
         this.boardMain = boardMain;
         this.user = user;
-        this.video = reelsRequestDto.getVideo();
-        this.titleImg = reelsRequestDto.getTitleImg();
+        this.video = video;
+        this.titleImg = titleImg;
 
         switch (reelsRequestDto.getCategoryName()) {
             case "comic":
@@ -60,10 +61,8 @@ public class Reels {
         }
     }
 
-    public void updateReels(ReelsRequest4EditDto requestDto, BoardMain boardMain, String video, String thumbnail) {
+    public void updateReels(ReelsRequest4EditDto requestDto, BoardMain boardMain) {
         this.boardMain = boardMain;
-        this.video = video;
-        this.titleImg = thumbnail;
         switch (requestDto.getCategoryName()) {
             case "comic":
                 this.postNReelsCategory = PostNReelsCategory.COMIC;

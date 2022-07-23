@@ -43,11 +43,12 @@ public class VideoEncode {
                 .setInput(/*"/Users/hojunna/Desktop/" + */fileUrl)     					// 썸네일 이미지 추출에 사용할 영상 파일의 절대 경로
                 .overrideOutputFiles(true)					// output 파일을 덮어쓸 것인지 여부(false일 경우, output path에 해당 파일이 존재할 경우 예외 발생 - File 'C:/Users/Desktop/test.png' already exists. Exiting.)
                 .addOutput(/*"/Users/hojunna/Desktop/" + */savePath) 		// 저장 절대 경로(확장자 미 지정 시 예외 발생 - [NULL @ 000002cc1f9fa500] Unable to find a suitable output format for 'C:/Users/Desktop/test')
-                .setFormat("mp4")
-                .setVideoResolution(720,500)  // height를 기준으로 Resolution 설정
+                .setVideoResolution(720, 1280)      // height를 기준으로 Resolution 설정
+                .setVideoFrameRate(30,1)
                 .setDuration(15, TimeUnit.SECONDS)
                 //.setVideoFilter("select='gte(n\\,10)',scale=200:-1")
                 .setStrict(FFmpegBuilder.Strict.EXPERIMENTAL)
+                .setFormat("mp4")
                 .done();
 
         FFmpegExecutor executor = new FFmpegExecutor(ffmpeg,ffprobe);

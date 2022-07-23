@@ -13,6 +13,8 @@ import com.finalproject.breeding.error.ErrorCode;
 import com.finalproject.breeding.user.User;
 import com.finalproject.breeding.user.repository.UserRepository;
 import com.finalproject.breeding.util.S3VideoUploader;
+import com.finalproject.breeding.video.model.ReelsVideo;
+import com.finalproject.breeding.video.repository.ReelsVideoRepository;
 import lombok.RequiredArgsConstructor;
 import org.bytedeco.opencv.presets.opencv_core;
 import org.springframework.data.domain.PageRequest;
@@ -32,16 +34,24 @@ public class ReelsService {
     private final BoardMainRepository boardMainRepository;
     private final UserRepository userRepository;
     private final S3VideoUploader s3VideoUploader;
+    private final ReelsVideoRepository reelsVideoRepository;
     public Map<String, Object> registReels(ReelsRequestDto reelsRequestDto,
                                            User username) {
         User user = userRepository.findByUsername(username.getUsername()).orElseThrow(
                 () -> new RuntimeException("아이디가 존재하지 않습니다.")
         );
 
+        ReelsVideo reelsVideo;
+        if (reelsRequestDto.getVideo()!=null) {
+            reelsVideo = reelsRequestDto.getVideo();
+        } else {
+            reelsVideoRepository.save(reelsVideo = new ReelsVideo());
+        }
+
         BoardMain boardMain = new BoardMain(reelsRequestDto);
         boardMainRepository.save(boardMain);
 
-        Reels reels = new Reels(reelsRequestDto, boardMain, user);
+        Reels reels = new Reels(reelsRequestDto, boardMain, user, reelsVideo, reelsThumbnail);
         reelsRepository.save(reels);
 
         Map<String,Object> data = new HashMap<>();
@@ -106,9 +116,9 @@ public class ReelsService {
         String reelsVideo = requestDto.getVideo();
         String reelsThumbnail = requestDto.getThumbnail();
 
-        reels.updateReels(requestDto, reels.getBoardMain() ,reelsVideo, reelsThumbnail);
+        reels.updateReels(requestDto, reels.getBoardMain());
 
-        mediaUpdateToReels(reelsVideo, reelsThumbnail, reels);
+        // mediaUpdateToReels(reelsVideo, reelsThumbnail, reels);
 
         Map<String, Object> data =new HashMap<>();
         data.put("reelsId", reels.getId());
@@ -116,9 +126,11 @@ public class ReelsService {
         return data;
     }
 
+/*
     public void mediaUpdateToReels(String video, String thumbnail, Reels reels) {
         Reels saveReels = reels;
         video = saveReels.getVideo();
         thumbnail = saveReels.getTitleImg();
     }
+    */
 }
