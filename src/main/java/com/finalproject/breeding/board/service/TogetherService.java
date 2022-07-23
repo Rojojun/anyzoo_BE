@@ -3,7 +3,9 @@ package com.finalproject.breeding.board.service;
 import com.finalproject.breeding.board.dto.TogetherRequestDto;
 import com.finalproject.breeding.board.model.BoardMain;
 import com.finalproject.breeding.board.model.Together;
+import com.finalproject.breeding.board.model.category.ProvinceAreas;
 import com.finalproject.breeding.board.repository.BoardMainRepository;
+import com.finalproject.breeding.board.repository.ProvinceRepository;
 import com.finalproject.breeding.board.repository.TogetherRepository;
 import com.finalproject.breeding.error.CustomException;
 import com.finalproject.breeding.error.ErrorCode;
@@ -11,6 +13,7 @@ import com.finalproject.breeding.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,17 +24,41 @@ public class TogetherService {
 
     private final BoardMainRepository boardMainRepository;
     private final TogetherRepository togetherRepository;
+    private final ProvinceRepository provinceRepository;
     public Map<String, Object> registTogether(TogetherRequestDto togetherRequestDto, User user) {
+        ProvinceAreas provinceAreas = provinceRepository.findById(togetherRequestDto.getProvinceId()).orElseThrow(()->new CustomException(ErrorCode.NOT_FOUND_PROVINCE));
+        Together together;
+        if(togetherRequestDto.getTogetherImages()!=null){
+            together = Together.builder()
+                    .provinceAreas(provinceAreas)
+                    .user(user)
+                    .boardMain(boardMainRepository.save(new BoardMain(togetherRequestDto)))
+                    .title(togetherRequestDto.getTitle())
+                    .limitPeople(togetherRequestDto.getLimitPeople())
+                    .peopleCnt(1)
+                    .date(togetherRequestDto.getDate())
+                    .togetherImages(togetherRequestDto.getTogetherImages())
+                    .build();
+            //이미지업데이트 메소드 추가
+
+        }else {
+            together = Together.builder()
+                    .provinceAreas(provinceAreas)
+                    .user(user)
+                    .boardMain(boardMainRepository.save(new BoardMain(togetherRequestDto)))
+                    .title(togetherRequestDto.getTitle())
+                    .limitPeople(togetherRequestDto.getLimitPeople())
+                    .peopleCnt(1)
+                    .date(togetherRequestDto.getDate())
+                    .build();
+            togetherRepository.save(together);
+        }
 
 
 
-        Together together = new Together(
-                togetherRequestDto,
-                LocalDateTime.parse(togetherRequestDto.getDate()),
-                boardMainRepository.save(
-                        new BoardMain(togetherRequestDto)),
-                user
-                );
+
+
+
         togetherRepository.save(together);
 
         Map<String, Object> data = new HashMap<>();

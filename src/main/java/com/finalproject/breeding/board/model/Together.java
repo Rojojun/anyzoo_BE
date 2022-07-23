@@ -1,15 +1,15 @@
 package com.finalproject.breeding.board.model;
 
-import com.finalproject.breeding.board.dto.TogetherRequestDto;
-import com.finalproject.breeding.board.model.category.PostNReelsCategory;
 import com.finalproject.breeding.board.model.category.ProvinceAreas;
-import com.finalproject.breeding.board.model.category.TogetherCategory;
+import com.finalproject.breeding.image.model.TogetherImage;
 import com.finalproject.breeding.user.User;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Entity
@@ -28,17 +28,9 @@ public class Together {
     @ManyToOne
     private User user;
 
-//    @JoinColumn
-//    @OneToOne
-//    private Room room;
-
     @JoinColumn(name = "BOARDMAIN_ID")
     @OneToOne
     private BoardMain boardMain;
-
-    @JoinColumn(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private TogetherCategory togetherCategory;
 
     @Column(nullable = false)
     private String title;
@@ -55,29 +47,21 @@ public class Together {
     @Column(nullable = false)
     private boolean status;
 
-    public Together(TogetherRequestDto togetherRequestDto, LocalDateTime date, BoardMain boardMain, User user){
-        this.peopleCnt = 1;
-        this.status = true;
-        this.boardMain = boardMain;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TOGETHER_ID")
+    private List<TogetherImage> togetherImages;
+
+    @Builder
+    public Together(ProvinceAreas provinceAreas, User user, BoardMain boardMain, String title, int limitPeople, int peopleCnt, LocalDateTime date, List<TogetherImage> togetherImages){
+        this.provinceAreas = provinceAreas;
         this.user = user;
-        this.title = togetherRequestDto.getTitle();
+        this.boardMain = boardMain;
+        this.title = title;
+        this.limitPeople = limitPeople;
+        this.peopleCnt = peopleCnt;
         this.date = date;
-        //this.room = room;
-        this.limitPeople = togetherRequestDto.getLimitPeople();
-        switch (togetherRequestDto.getCategoryName()) {
-            case "walk":
-                this.togetherCategory = TogetherCategory.WALK;
-                break;
-            case "buy":
-                this.togetherCategory = TogetherCategory.BUY;
-                break;
-            case "cafe":
-                this.togetherCategory = TogetherCategory.CAFE;
-                break;
-            case "etc":
-                this.togetherCategory = TogetherCategory.ETC;
-                break;
-        }
+        this.status = false;
+        this.togetherImages = togetherImages;
     }
 
 

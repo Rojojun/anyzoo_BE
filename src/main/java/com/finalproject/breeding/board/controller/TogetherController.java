@@ -3,6 +3,7 @@ package com.finalproject.breeding.board.controller;
 import com.finalproject.breeding.board.dto.CityResponseDto;
 import com.finalproject.breeding.board.dto.ProvinceResponseDto;
 import com.finalproject.breeding.board.dto.TogetherRequestDto;
+import com.finalproject.breeding.board.model.Together;
 import com.finalproject.breeding.board.service.TogetherService;
 import com.finalproject.breeding.etc.dto.StatusResponseDto;
 import com.finalproject.breeding.board.repository.CityRepository;
@@ -26,23 +27,9 @@ public class TogetherController {
     private final CityRepository cityRepository;
     private final ProvinceRepository provinceRepository;
 
-    @PostMapping("/api/together")
-    public ResponseEntity<Object> registTogether(@RequestBody TogetherRequestDto togetherRequestDto){
-        User user = userService.getUser();
-        Map<String, Object> data = togetherService.registTogether(togetherRequestDto, user);
-        return new ResponseEntity<>(new StatusResponseDto("등록 되었습니다.", data), HttpStatus.OK);
-    }
-
-    @PostMapping("/api/together/join/{boardMainId}")
-    public ResponseEntity<Object> joinTogether(@PathVariable Long boardMainId){
-        User user = userService.getUser();
-        Map<String, Object> data = togetherService.joinTogether(boardMainId, user);
-        return new ResponseEntity<>(new StatusResponseDto("참여 했습니다.",data), HttpStatus.OK);
-    }
-
     @GetMapping("/api/together/city")
     public List<CityResponseDto> cityAreas(){
-       return cityRepository.findAllByOrderByIdAsc();
+        return cityRepository.findAllByOrderByIdAsc();
     }
 
     @GetMapping("/api/together/province/{cityId}")
@@ -51,6 +38,25 @@ public class TogetherController {
     }
 
 
+    @PostMapping("/api/together")
+    public ResponseEntity<Object> registTogether(@RequestBody TogetherRequestDto togetherRequestDto){
+        User user = userService.getUser();
+        Map<String, Object> data = togetherService.registTogether(togetherRequestDto, user);
+        return new ResponseEntity<>(new StatusResponseDto("등록 되었습니다.", data), HttpStatus.OK);
+    }
 
+//    @GetMapping("/api/together/detail/{boardMainId}")
+//    public Together getTogether(@PathVariable Long boardMainId){
+//
+//    }
+
+
+
+    @PostMapping("/api/together/join/{boardMainId}")
+    public ResponseEntity<Object> joinTogether(@PathVariable Long boardMainId){
+        User user = userService.getUser();
+        Map<String, Object> data = togetherService.joinTogether(boardMainId, user);
+        return new ResponseEntity<>(new StatusResponseDto("참여 했습니다.",data), HttpStatus.OK);
+    }
 
 }
