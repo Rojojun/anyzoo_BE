@@ -30,8 +30,14 @@ public class VideoEncode {
             // 2. FFmpeg 파일 경로 설정
 
             String ffmpegBasePath = "/opt/homebrew/bin/";
+            /*
+            MAC 로컬 경로
             ffmpeg = new FFmpeg("/opt/homebrew/bin/ffmpeg");		// ffmpeg.exe 파일 경로
             ffprobe = new FFprobe("/opt/homebrew/bin/ffprobe");	// ffprobe.exe 파일 경로
+            */
+
+            ffmpeg = new FFmpeg("/usr/bin/ffmpeg");
+            ffprobe = new FFprobe("/usr/bin/ffprobe");
         } catch (Exception e){
             e.printStackTrace();
         }
