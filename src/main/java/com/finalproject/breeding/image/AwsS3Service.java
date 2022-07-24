@@ -7,12 +7,10 @@ import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.finalproject.breeding.error.CustomException;
 import com.finalproject.breeding.error.ErrorCode;
-import com.finalproject.breeding.image.model.AwsS3;
-import com.finalproject.breeding.image.model.CommunityImage;
-import com.finalproject.breeding.image.model.PostImage;
-import com.finalproject.breeding.image.model.UserImage;
+import com.finalproject.breeding.image.model.*;
 import com.finalproject.breeding.image.repository.CommunityImageRepository;
 import com.finalproject.breeding.image.repository.PostImageRepository;
+import com.finalproject.breeding.image.repository.TogetherImageRepository;
 import com.finalproject.breeding.image.repository.UserImageRepository;
 import io.jsonwebtoken.io.IOException;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +34,7 @@ public class AwsS3Service {
     private final PostImageRepository postImageRepository;
     private final UserImageRepository userImageRepository;
     private final CommunityImageRepository communityImageRepository;
+    private final TogetherImageRepository togetherImageRepository;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -83,6 +82,20 @@ public class AwsS3Service {
             communityImages.add(communityImageRepository.save(new CommunityImage(key,path)));
         }
         return communityImages;
+    }
+
+    public List<TogetherImage> uploadTogether(List<MultipartFile> multipartFiles, String dirName) throws IOException, java.io.IOException{
+
+        List<TogetherImage> togetherImages = new ArrayList<>();
+
+        for (MultipartFile multipartFile : multipartFiles){
+            File file = convertMultipartFileToFile(multipartFile).orElseThrow(()->new IllegalArgumentException("MultipartFile -> File convert fail"));
+            String key = randomFileName(file, dirName);
+            String path = putS3(file, key);
+            removeFile(file);
+            togetherImages.add(togetherImageRepository.save(new TogetherImage(key,path)));
+        }
+        return togetherImages;
     }
 
     public UserImage uploadUser(MultipartFile multipartFile, String dirName) throws IOException, java.io.IOException {

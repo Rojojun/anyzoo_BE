@@ -1,6 +1,6 @@
 package com.finalproject.breeding.dto;
 
-import com.finalproject.breeding.etc.dto.CommentMapping;
+import com.finalproject.breeding.etc.dto.response.CommentMapping;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

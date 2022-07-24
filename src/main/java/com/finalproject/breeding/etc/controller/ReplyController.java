@@ -1,17 +1,14 @@
 package com.finalproject.breeding.etc.controller;
 
-import com.finalproject.breeding.dto.CommentResponseDto;
-import com.finalproject.breeding.etc.dto.MyDto;
-import com.finalproject.breeding.etc.dto.ReplyMapping;
+import com.finalproject.breeding.etc.dto.response.MyDto;
+import com.finalproject.breeding.etc.dto.response.ReplyMapping;
 import com.finalproject.breeding.etc.dto.ReplyRequestDto;
-import com.finalproject.breeding.etc.model.Reply;
 import com.finalproject.breeding.etc.service.ReplyService;
 import com.finalproject.breeding.user.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController

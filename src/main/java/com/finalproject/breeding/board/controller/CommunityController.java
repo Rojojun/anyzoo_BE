@@ -2,10 +2,8 @@ package com.finalproject.breeding.board.controller;
 
 import com.finalproject.breeding.board.dto.CommunityRequestDto;
 import com.finalproject.breeding.board.dto.CommunityResponseDto;
-import com.finalproject.breeding.board.dto.PostRequestDto;
-import com.finalproject.breeding.board.dto.PostResponseDto;
 import com.finalproject.breeding.board.service.CommunityService;
-import com.finalproject.breeding.etc.dto.StatusResponseDto;
+import com.finalproject.breeding.etc.dto.response.StatusResponseDto;
 import com.finalproject.breeding.user.User;
 import com.finalproject.breeding.user.service.UserService;
 import lombok.RequiredArgsConstructor;

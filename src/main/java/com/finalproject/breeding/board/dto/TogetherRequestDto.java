@@ -15,9 +15,8 @@ public class TogetherRequestDto {
 
     private String title;
     private String content;
-    private String categoryName;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime date;
+    private LocalDateTime dday;
     private int limitPeople;
     private Long provinceId;
     private List<TogetherImage> togetherImages;

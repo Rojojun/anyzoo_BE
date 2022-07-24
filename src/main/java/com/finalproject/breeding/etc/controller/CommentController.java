@@ -3,23 +3,14 @@ package com.finalproject.breeding.etc.controller;
 import com.finalproject.breeding.board.model.BoardMain;
 import com.finalproject.breeding.board.repository.BoardMainRepository;
 import com.finalproject.breeding.etc.dto.CommentRequestDto;
-import com.finalproject.breeding.etc.dto.MyDto;
-import com.finalproject.breeding.error.ErrorCode;
-import com.finalproject.breeding.etc.model.Comment;
-import com.finalproject.breeding.etc.repository.CommentRepository;
+import com.finalproject.breeding.etc.dto.response.MyDto;
 import com.finalproject.breeding.etc.service.CommentService;
 import com.finalproject.breeding.user.security.SecurityUtil;
 import com.finalproject.breeding.dto.CommentResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
-import java.nio.charset.Charset;
-import java.util.Objects;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor

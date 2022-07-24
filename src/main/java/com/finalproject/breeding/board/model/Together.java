@@ -42,7 +42,7 @@ public class Together {
     private int peopleCnt;
 
     @Column(nullable = false)
-    private LocalDateTime date;
+    private LocalDateTime dday;
 
     @Column(nullable = false)
     private boolean status;
@@ -52,14 +52,14 @@ public class Together {
     private List<TogetherImage> togetherImages;
 
     @Builder
-    public Together(ProvinceAreas provinceAreas, User user, BoardMain boardMain, String title, int limitPeople, int peopleCnt, LocalDateTime date, List<TogetherImage> togetherImages){
+    public Together(ProvinceAreas provinceAreas, User user, BoardMain boardMain, String title, int limitPeople, int peopleCnt, LocalDateTime dday, List<TogetherImage> togetherImages){
         this.provinceAreas = provinceAreas;
         this.user = user;
         this.boardMain = boardMain;
         this.title = title;
         this.limitPeople = limitPeople;
         this.peopleCnt = peopleCnt;
-        this.date = date;
+        this.dday = dday;
         this.status = false;
         this.togetherImages = togetherImages;
     }
