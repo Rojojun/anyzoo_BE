@@ -1,20 +1,16 @@
 package com.finalproject.breeding.board.repository;
 
 import com.finalproject.breeding.board.dto.PostResponseDto;
-import com.finalproject.breeding.board.model.category.BoardKind;
 import com.finalproject.breeding.board.model.category.PostNReelsCategory;
 import com.finalproject.breeding.board.model.Post;
-import com.finalproject.breeding.etc.dto.MyPagePostResponseDto;
-import com.finalproject.breeding.user.User;
+import com.finalproject.breeding.etc.dto.response.MyPagePostDto;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 public interface PostRepository extends JpaRepository <Post, Long> {
     //List<Post> findByOrderByLikeCntDesc();
@@ -36,5 +32,5 @@ public interface PostRepository extends JpaRepository <Post, Long> {
     Post findByBoardMainId(Long boardMainId);
 
 
-    Slice<MyPagePostResponseDto> findByUserNicknameOrderByBoardMainCreatedAtDesc(PageRequest pageRequest, String nickname);
+    Slice<MyPagePostDto> findByUserNicknameOrderByBoardMainCreatedAtDesc(PageRequest pageRequest, String nickname);
 }

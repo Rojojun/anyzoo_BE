@@ -1,6 +1,7 @@
 package com.finalproject.breeding.etc.repository;
 
-import com.finalproject.breeding.etc.dto.FollowResponseDto;
+import com.finalproject.breeding.etc.dto.response.FollowerDto;
+import com.finalproject.breeding.etc.dto.response.FollowingDto;
 import com.finalproject.breeding.etc.model.Follow;
 import com.finalproject.breeding.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,8 +12,7 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
     Follow findByFollowerAndFollowing(User follower, User following);
 
     
-    List<FollowResponseDto> findFollowingByFollowerOrderByIdDesc(User follower);
+    List<FollowingDto> findFollowByFollowerOrderByIdDesc(User follower);
 
-
-    List<FollowResponseDto> findFollowerByFollowingOrderByIdDesc(User following);
+    List<FollowerDto> findFollowByFollowingOrderByIdDesc(User following);
 }

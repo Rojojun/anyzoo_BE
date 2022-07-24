@@ -3,7 +3,7 @@ package com.finalproject.breeding.board.controller;
 import com.finalproject.breeding.board.dto.ReelsRequest4EditDto;
 import com.finalproject.breeding.board.dto.ReelsRequestDto;
 import com.finalproject.breeding.board.dto.ReelsResponseDto;
-import com.finalproject.breeding.etc.dto.StatusResponseDto;
+import com.finalproject.breeding.etc.dto.response.StatusResponseDto;
 import com.finalproject.breeding.board.service.ReelsService;
 import com.finalproject.breeding.user.User;
 import com.finalproject.breeding.user.service.UserService;

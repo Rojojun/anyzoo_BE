@@ -1,15 +1,15 @@
 package com.finalproject.breeding.etc.service;
 
-import com.finalproject.breeding.board.dto.PostResponseDto;
-import com.finalproject.breeding.board.model.BoardMain;
-import com.finalproject.breeding.board.model.category.BoardKind;
-import com.finalproject.breeding.board.repository.BoardMainRepository;
+import com.finalproject.breeding.board.dto.CommunityResponseDto;
 import com.finalproject.breeding.board.repository.CommunityRepository;
 import com.finalproject.breeding.board.repository.PostRepository;
+import com.finalproject.breeding.board.repository.ReelsRepository;
 import com.finalproject.breeding.error.CustomException;
 import com.finalproject.breeding.error.ErrorCode;
-import com.finalproject.breeding.etc.dto.FollowResponseDto;
-import com.finalproject.breeding.etc.dto.MyPagePostResponseDto;
+import com.finalproject.breeding.etc.dto.response.FollowerDto;
+import com.finalproject.breeding.etc.dto.response.FollowingDto;
+import com.finalproject.breeding.etc.dto.response.MyPagePostDto;
+import com.finalproject.breeding.etc.dto.response.MyPageReelsDto;
 import com.finalproject.breeding.etc.model.Follow;
 import com.finalproject.breeding.etc.repository.FollowRepository;
 import com.finalproject.breeding.user.User;
@@ -17,8 +17,8 @@ import com.finalproject.breeding.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,11 +31,25 @@ public class MyPageService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
+    private final ReelsRepository reelsRepository;
+    private final CommunityRepository communityRepository;
 
-
-    public Slice<MyPagePostResponseDto> getMyPagePost(String nickname, int page) {
-        PageRequest pageRequest = PageRequest.of(page, 12);
+    @Transactional(readOnly = true)
+    public Slice<MyPagePostDto> getMyPagePost(String nickname, int page) {
+        PageRequest pageRequest = PageRequest.of(page, 16);
         return postRepository.findByUserNicknameOrderByBoardMainCreatedAtDesc(pageRequest, nickname);
+    }
+
+    @Transactional(readOnly = true)
+    public Slice<MyPageReelsDto> getMyPageReels(String nickname, int page) {
+        PageRequest pageRequest = PageRequest.of(page, 16);
+        return reelsRepository.findByUserNicknameOrderByBoardMainCreatedAtDesc(pageRequest, nickname);
+    }
+
+    @Transactional(readOnly = true)
+    public Slice<CommunityResponseDto> getMyPageCommunity(String nickname, int page) {
+        PageRequest pageRequest = PageRequest.of(page, 5);
+        return communityRepository.findByUserNicknameOrderByBoardMainCreatedAtDesc(pageRequest, nickname);
     }
 
     public Map<String, Object> followUnFollow(User follower, String nickname) {
@@ -53,17 +67,19 @@ public class MyPageService {
             following.unFollowing(following);
             data.put("unFollow", nickname);
         }
+        userRepository.save(follower);
+        userRepository.save(following);
         return data;
     }
 
-    public List<FollowResponseDto> getFollowing(String nickname) {
+    public List<FollowingDto> getFollowing(String nickname) {
         User follower = userRepository.findByNickname(nickname).orElseThrow(()->new CustomException(ErrorCode.NOT_FOUND_USER_INFO));
-        return followRepository.findFollowingByFollowerOrderByIdDesc(follower);
+        return followRepository.findFollowByFollowerOrderByIdDesc(follower);
     }
 
-    public List<FollowResponseDto> getFollower(String nickname) {
+    public List<FollowerDto> getFollower(String nickname) {
         User following = userRepository.findByNickname(nickname).orElseThrow(()->new CustomException(ErrorCode.NOT_FOUND_USER_INFO));
-        return followRepository.findFollowerByFollowingOrderByIdDesc(following);
+        return followRepository.findFollowByFollowingOrderByIdDesc(following);
     }
 
     public boolean checkFollow(User follower, String nickname) {
@@ -71,4 +87,7 @@ public class MyPageService {
 
         return followRepository.findByFollowerAndFollowing(follower, following) == null;
     }
+
+
+
 }

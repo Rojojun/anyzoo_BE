@@ -16,4 +16,6 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
     CommunityResponseDto findByBoardMainId(Long boardMainId);
 
     Community findCommunityByBoardMainId(Long boardMainId);
+
+    Slice<CommunityResponseDto> findByUserNicknameOrderByBoardMainCreatedAtDesc(PageRequest pageRequest, String nickname);
 }

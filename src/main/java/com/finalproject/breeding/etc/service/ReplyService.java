@@ -1,10 +1,10 @@
 package com.finalproject.breeding.etc.service;
 
 import com.finalproject.breeding.board.model.BoardMain;
-import com.finalproject.breeding.board.repository.BoardMainRepository;
-import com.finalproject.breeding.dto.CommentResponseDto;
 import com.finalproject.breeding.error.ErrorCode;
 import com.finalproject.breeding.etc.dto.*;
+import com.finalproject.breeding.etc.dto.response.MyDto;
+import com.finalproject.breeding.etc.dto.response.ReplyMapping;
 import com.finalproject.breeding.etc.model.Comment;
 import com.finalproject.breeding.etc.model.Reply;
 import com.finalproject.breeding.etc.repository.CommentRepository;
@@ -13,9 +13,6 @@ import com.finalproject.breeding.user.User;
 import com.finalproject.breeding.user.repository.UserRepository;
 import com.finalproject.breeding.user.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
