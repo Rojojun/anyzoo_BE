@@ -1,17 +1,16 @@
 package com.finalproject.breeding.etc.controller;
 
-import com.finalproject.breeding.dto.CommentResponseDto;
-import com.finalproject.breeding.etc.dto.MyDto;
-import com.finalproject.breeding.etc.dto.ReplyMapping;
+
 import com.finalproject.breeding.etc.dto.ReplyRequestDto;
-import com.finalproject.breeding.etc.model.Reply;
+import com.finalproject.breeding.etc.dto.response.MyDto;
+import com.finalproject.breeding.etc.dto.response.ReplyMapping;
+import com.finalproject.breeding.etc.repository.ReplyRepository;
 import com.finalproject.breeding.etc.service.ReplyService;
 import com.finalproject.breeding.user.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -19,6 +18,7 @@ import java.util.List;
 public class ReplyController {
 
     private final ReplyService replyService;
+    private final ReplyRepository replyRepository;
     //대댓글 작성
     @PostMapping("/api/reply/{commentId}")
     public ResponseEntity<MyDto> createReply(@RequestBody ReplyRequestDto requestDto, @PathVariable Long commentId){
@@ -45,13 +45,10 @@ public class ReplyController {
         return replyService.getAllReply(commentId);
 
     }
-//
-//    //댓글 수 불러오기
-//    @GetMapping("/api/comment/count/{boardMainId}")
-//    public Long getCommnetCount(@PathVariable Long boardMainId){
-//        BoardMain boardMain = boardMainRepository.findById(boardMainId).orElseThrow(
-//                () -> new NullPointerException("게시글이 존재하지 않습니다."));
-//        return boardMain.getCommentCnt();
-//
-//    }
+
+    //대댓글 수 불러오기
+    @GetMapping("/api/reply/count/{commentId}")
+    public Long getCommnetCount(@PathVariable Long commentId){
+        return (long)replyRepository.findAllByCommentId(commentId).size();
+    }
 }

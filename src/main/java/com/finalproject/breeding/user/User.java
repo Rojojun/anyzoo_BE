@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.UUID;
 
 @Getter
 @Entity
@@ -81,30 +82,35 @@ public class User extends Timestamped{
         this.phoneNumber = phoneNumber;
     }
 
+    //Google
     public User(SocialLoginRequestDto socialLoginRequestDto){
         this.username = socialLoginRequestDto.getEmail();
-        this.nickname = socialLoginRequestDto.getName();
+        this.nickname = socialLoginRequestDto.getName() + UUID.randomUUID().toString().replaceAll("-", "").substring(0, 4);
         this.phoneNumber = "0000";
         this.userRole = UserRole.ROLE_USER;
         this.exp = 0L;
         this.tier = 0;
+        this.follower = 0L;
+        this.following = 0L;
     }
 
-    public User(String username, String email, UserRole role){
-        this.nickname = username;
-        this.username = email;
-        this.userRole = role;
-    }
+//    public User(String username, String email, UserRole role){
+//        this.nickname = username;
+//        this.username = email;
+//        this.userRole = role;
+//    }
 
-    public User(String username, String email, UserRole role, Long kakaoId){
-        this.nickname = username;
-        this.username = email;
+    //kakao
+    public User(UserRole role, Long kakaoId, String socialRandomValue){
+        this.username = socialRandomValue;
+        this.nickname = socialRandomValue;
         this.userRole = role;
         this.phoneNumber = "0000";
         this.exp = 0L;
         this.tier = 0;
+        this.follower = 0L;
+        this.following = 0L;
         this.kakaoId = kakaoId;
-
     }
 
     public void edit(UserEditDto userEditDto){
@@ -138,15 +144,19 @@ public class User extends Timestamped{
     }
 
     public void following(User user){
-        this.following = user.getFollowing()+1L;
-    }
-    public void follower(User user){
         this.follower = user.getFollower()+1L;
     }
+    public void follower(User user){
+        this.following = user.getFollowing()+1L;
+    }
     public void unFollowing(User user){
-        this.following = user.getFollowing()-1L;
+        this.follower = user.getFollower()-1L;
     }
     public void unFollower(User user){
-        this.follower = user.getFollower()-1L;
+        this.following = user.getFollowing()-1L;
+    }
+
+    public void updateProfileImage(UserImage userImage) {
+        this.userImage = userImage;
     }
 }

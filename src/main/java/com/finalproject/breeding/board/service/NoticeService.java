@@ -5,13 +5,11 @@ import com.finalproject.breeding.board.dto.NoticeResponseDto;
 import com.finalproject.breeding.board.model.Notice;
 import com.finalproject.breeding.board.repository.NoticeRepository;
 import com.finalproject.breeding.error.ErrorCode;
-import com.finalproject.breeding.etc.dto.MyDto;
-import com.finalproject.breeding.board.dto.NoticeMapping;
+import com.finalproject.breeding.etc.dto.response.MyDto;
 import com.finalproject.breeding.user.User;
 import com.finalproject.breeding.user.repository.UserRepository;
 import com.finalproject.breeding.user.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.Charset;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 

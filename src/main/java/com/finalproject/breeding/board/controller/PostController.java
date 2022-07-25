@@ -3,7 +3,7 @@ package com.finalproject.breeding.board.controller;
 import com.finalproject.breeding.board.dto.PostRequest4EditDto;
 import com.finalproject.breeding.board.dto.PostRequestDto;
 import com.finalproject.breeding.board.dto.PostResponseDto;
-import com.finalproject.breeding.etc.dto.StatusResponseDto;
+import com.finalproject.breeding.etc.dto.response.StatusResponseDto;
 import com.finalproject.breeding.user.User;
 import com.finalproject.breeding.board.service.PostService;
 import com.finalproject.breeding.user.service.UserService;

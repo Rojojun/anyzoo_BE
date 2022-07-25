@@ -1,12 +1,10 @@
 package com.finalproject.breeding.image;
 
-import com.finalproject.breeding.etc.dto.StatusResponseDto;
 import com.finalproject.breeding.image.model.CommunityImage;
 import com.finalproject.breeding.image.model.PostImage;
+import com.finalproject.breeding.image.model.TogetherImage;
 import com.finalproject.breeding.image.model.UserImage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,6 +32,11 @@ public class ImgUrlController {
     @PostMapping("/api/community/image")
     public List<CommunityImage> uploadCommunity(@RequestPart(value = "file", required = false)List<MultipartFile> multipartFiles)throws IOException{
         return awsS3Service.uploadCommunity(multipartFiles, "community");
+    }
+
+    @PostMapping("/api/together/image")
+    public List<TogetherImage> uploadTogether(@RequestPart(value = "file", required = false)List<MultipartFile> multipartFiles)throws IOException{
+        return awsS3Service.uploadTogether(multipartFiles, "together");
     }
 
     @PostMapping("/user/image")

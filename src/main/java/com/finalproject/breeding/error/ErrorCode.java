@@ -48,10 +48,10 @@ public enum ErrorCode {
     REFRESH_TOKEN_REISSUE_WRONG_INPUT(HttpStatus.BAD_REQUEST, 400, "userId, accessToken, refreshToken을 입력해주세요"),
 
     // 로그인
-    LOGIN_NOT_FOUNT_MEMBERID(HttpStatus.NOT_FOUND, 404, "해당 아이디를 찾을 수 없습니다"),
+    LOGIN_NOT_FOUNT_MEMBERID(HttpStatus.NOT_FOUND, 404, "해당 아이디를 찾을 수 없습니다."),
     LOGIN_MEMBERID_EMPTY(HttpStatus.BAD_REQUEST, 400, "아이디를 입력해주세요"),
     LOGIN_PASSWORD_EMPTY(HttpStatus.BAD_REQUEST, 400, "비밀번호를 입력해주세요"),
-    LOGIN_PASSWORD_NOT_MATCH(HttpStatus.BAD_REQUEST, 400, "비밀번호가 틀렸습니다. 다시 입력해주세요"),
+    LOGIN_PASSWORD_NOT_MATCH(HttpStatus.BAD_REQUEST, 400, "비밀번호가 일치하지 않습니다"),
 
     // 회원 탈퇴
     NOT_MATCH_USER_INFO(HttpStatus.BAD_REQUEST, 400, "유저 정보가 일치하지 않습니다"),
@@ -74,6 +74,7 @@ public enum ErrorCode {
     POST_MAJOR_WRONG_INPUT(HttpStatus.BAD_REQUEST, 400, "모집 분야를 선택해주세요"),
     POST_TITLE_INPUT_LENGTH_ERROR(HttpStatus.BAD_REQUEST, 400, "제목을 공백 포함 20자 이내로 작성해주세요"),
     POST_CONTENT_INPUT_LENGTH_ERROR(HttpStatus.BAD_REQUEST, 400, "내용을 공백 포함 250자 이내로 작성해주세요"),
+    NOT_FOUND_PROVINCE(HttpStatus.NOT_FOUND, 404, "해당 지역이 존재하지 않습니다"),
 
     // comment
     COMMENT_WRONG_INPUT(HttpStatus.BAD_REQUEST, 400, "댓글을 입력해주세요"),

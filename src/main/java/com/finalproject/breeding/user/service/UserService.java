@@ -192,7 +192,6 @@ public class UserService {
             userImageRepository.save(userImage = new UserImage());
         } else {
             userImage = userImageRepository.findById(signupRequestDto.getUserImage()).orElseThrow(()->new CustomException(ErrorCode.Image_NOT_FOUND));
-
         }
         userImage.updateToUser(userRepository.save(
                 User.builder()
@@ -264,13 +263,20 @@ public class UserService {
     }
 
     //Google 로그인
-    public SocialTokenDto googleLogin(String code){
+    public SocialTokenDto googleLogin(String code) {
         SocialLoginRequestDto socialLoginRequestDto = googleRestTemplate.googleUserInfoByAccessToken(googleRestTemplate.findAccessTokenByCode(code).getAccess_token());
         User user = userRepository.findByUsername(socialLoginRequestDto.getEmail())
-                .orElseGet(() -> userRepository.save(new User(socialLoginRequestDto)));
+                .orElseGet(() -> {
+                            User tempUser = userRepository.save(new User(socialLoginRequestDto));
+                            UserImage userImage = userImageRepository.save(new UserImage(tempUser, socialLoginRequestDto));
+                            tempUser.updateProfileImage(userImage);
+                            return tempUser;
+                        }
+                );
         return createToken(new UserRequestDto(user));
     }
 
+    @Transactional
     public SocialTokenDto kakaoLogin(String code) throws JsonProcessingException {
         // 1. "인가 코드"로 "액세스 토큰" 요청
         String kakaoAccessToken = getAccessToken(code);
@@ -282,24 +288,27 @@ public class UserService {
         User kakaoUser = userRepository.findByKakaoId(kakaoId)
                 .orElse(null);
         if (kakaoUser == null) {
-// 회원가입
-// username: kakao nickname
-            String nickname = kakaoUserInfo.getNickname();
-
-// email: kakao email
-            String email = kakaoUserInfo.getEmail();
-// role: 일반 사용자
+        // role: 일반 사용자
             UserRole role = UserRole.ROLE_USER;
+            kakaoUser = new User(role, kakaoId, getSocialRandomValue());
 
-            kakaoUser = new User(nickname, email, role, kakaoId);
-            userRepository.save(kakaoUser);
+            User user = userRepository.save(kakaoUser);
+
+            UserImage userImage = userImageRepository.save(new UserImage(user, kakaoUserInfo));
+
+            user.updateProfileImage(userImage);
         }
-        // 4. 강제 로그인 처리
-//        UserDetails userDetails = new UserDetailsImpl(kakaoUser);
-//        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-
         return createToken(new UserRequestDto(kakaoUser.getUsername()));
+    }
+
+
+    public String getSocialRandomValue() {
+        while (true) {
+            String value = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 15);
+            if (!userRepository.existsByUsername(value) && !userRepository.existsByNickname(value)) {
+                return value;
+            }
+        }
     }
 
     public SocialTokenDto createToken(UserRequestDto userRequestDto){
@@ -331,7 +340,7 @@ public class UserService {
 
 // HTTP Body 생성
             StringBuilder body = new StringBuilder();
-            body.append("grant_type=authorization_code&client_id=7ed074dd8ee05fafa99735fba28a41d2&redirect_uri=https://localhost:3000/oauth&code=" + code + "&client_secret=28ibusk6KsYMwzHk2MyKow5ed5wV8j8l");
+            body.append("grant_type=authorization_code&client_id=7ed074dd8ee05fafa99735fba28a41d2&redirect_uri=http://localhost:3000/oauth&code=" + code + "&client_secret=28ibusk6KsYMwzHk2MyKow5ed5wV8j8l");
 //https://anyzoo.co.kr/oauth
 
 // HTTP 요청 보내기
@@ -375,13 +384,10 @@ public class UserService {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseBody);
         Long id = jsonNode.get("id").asLong();
-        String nickname = jsonNode.get("properties")
-                .get("nickname").asText();
-        String email = jsonNode.get("kakao_account")
-                .get("email").asText();
+        String profile_image = jsonNode.get("kakao_account").get("profile").get("profile_image_url").asText();
 
-        System.out.println("카카오 사용자 정보: " + id + ", " + nickname + ", " + email);
-        return new KakaoUserInfoDto(id, nickname, email);
+        System.out.println("카카오 사용자 정보: " + id + ", " + profile_image);
+        return new KakaoUserInfoDto(id, profile_image);
     }
 
     //----------------------------유저 정보 수정 관련-------------------------------

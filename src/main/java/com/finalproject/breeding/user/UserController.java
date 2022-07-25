@@ -8,7 +8,7 @@ import com.finalproject.breeding.dto.UserResponseDto;
 import com.finalproject.breeding.user.dto.requestDto.LoginDto;
 import com.finalproject.breeding.user.dto.requestDto.SignupRequestDto;
 import com.finalproject.breeding.user.dto.requestDto.TokenRequestDto;
-import com.finalproject.breeding.etc.dto.StatusResponseDto;
+import com.finalproject.breeding.etc.dto.response.StatusResponseDto;
 import com.finalproject.breeding.user.dto.responseDto.TokenDto;
 import com.finalproject.breeding.user.dto.responseDto.UserInfo;
 import com.finalproject.breeding.user.service.UserService;
@@ -92,7 +92,7 @@ public class UserController {
 
     //Kakao oauth api
     @GetMapping("/user/oauth/kakao")
-    public ResponseEntity<UserResponseDto> kakaoLogin(@RequestParam String code) throws JsonProcessingException {
+    public ResponseEntity<UserResponseDto> kakaoLogin(@RequestHeader("code") String code) throws JsonProcessingException {
         return ResponseEntity.ok(new UserResponseDto(userService.kakaoLogin(code), "로그인 되었습니다"));
     }
 
@@ -121,6 +121,12 @@ public class UserController {
     @ResponseBody
     public UserInfo Session() {
        return new UserInfo(userService.getUser());
+    }
+
+    @GetMapping("/api/user/userInfoTest")
+    @ResponseBody
+    public User getuser() {
+        return userService.getUser();
     }
 
     //@ExceptionHandler(Exception.class)

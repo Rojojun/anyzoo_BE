@@ -1,4 +1,4 @@
-package com.finalproject.breeding.etc.dto;
+package com.finalproject.breeding.etc.dto.response;
 
 import com.finalproject.breeding.error.ErrorCode;
 import lombok.Data;
