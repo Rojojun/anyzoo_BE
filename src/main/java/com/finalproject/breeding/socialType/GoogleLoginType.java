@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public enum GoogleLoginType {
     GOOGLE_ACCESS_TOKEN_URL("googleAccessTokenUrl", "accounts.google.com"),
+
+    GOOGLE_PHONE_NUMBER("phoneNumber","0000"),
     GOOGLE_USER_INFO_URL("googleUserInfoUrl", "www.googleapis.com"),
     GOOGLE_ACCESS_PATH("path", "/o/oauth2/token"),
     GOOGLE_USER_INFO_PATH("path", "/oauth2/v3/tokeninfo"),
@@ -14,8 +16,8 @@ public enum GoogleLoginType {
     CLIENT_SECRET("client_secret"),
     CODE("code"),
     GRANT_TYPE("grant_type", "authorization_code"),
-    REDIRECT_URI("redirect_uri", "http://localhost:3000");
-
+    REDIRECT_URI("redirect_uri", "http://localhost:3000/oauth");
+    //https://anyzoo.co.kr/oauth
     private String name;
     private String value;
 

@@ -1,5 +1,6 @@
 package com.finalproject.breeding.user;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.finalproject.breeding.dto.EmailVerificationRequestDto;
 import com.finalproject.breeding.dto.NewPasswordDto;
 import com.finalproject.breeding.dto.PhoneVerificationDto;
@@ -7,7 +8,7 @@ import com.finalproject.breeding.dto.UserResponseDto;
 import com.finalproject.breeding.user.dto.requestDto.LoginDto;
 import com.finalproject.breeding.user.dto.requestDto.SignupRequestDto;
 import com.finalproject.breeding.user.dto.requestDto.TokenRequestDto;
-import com.finalproject.breeding.etc.dto.StatusResponseDto;
+import com.finalproject.breeding.etc.dto.response.StatusResponseDto;
 import com.finalproject.breeding.user.dto.responseDto.TokenDto;
 import com.finalproject.breeding.user.dto.responseDto.UserInfo;
 import com.finalproject.breeding.user.service.UserService;
@@ -83,12 +84,17 @@ public class UserController {
         return new ResponseEntity<>(new StatusResponseDto("로그인이 되었습니다.", data), HttpStatus.OK);
     }
 
-    //Google oauth 통신할 api
-    @PostMapping("/user/socialLogin")
+    //Google oauth api
+    @GetMapping("/user/oauth/google")
     public ResponseEntity<UserResponseDto> socialLogin(@RequestHeader("code") String code){
-        return ResponseEntity.ok(new UserResponseDto(userService.socialLogin(code), "로그인 되었습니다"));
+        return ResponseEntity.ok(new UserResponseDto(userService.googleLogin(code), "로그인 되었습니다"));
     }
 
+    //Kakao oauth api
+    @GetMapping("/user/oauth/kakao")
+    public ResponseEntity<UserResponseDto> kakaoLogin(@RequestParam String code) throws JsonProcessingException {
+        return ResponseEntity.ok(new UserResponseDto(userService.kakaoLogin(code), "로그인 되었습니다"));
+    }
 
 
     //----------------------------유저 정보 수정 관련-------------------------------
@@ -115,6 +121,12 @@ public class UserController {
     @ResponseBody
     public UserInfo Session() {
        return new UserInfo(userService.getUser());
+    }
+
+    @GetMapping("/api/user/userInfoTest")
+    @ResponseBody
+    public User getuser() {
+        return userService.getUser();
     }
 
     //@ExceptionHandler(Exception.class)

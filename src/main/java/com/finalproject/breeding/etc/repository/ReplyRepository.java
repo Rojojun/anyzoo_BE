@@ -1,6 +1,6 @@
 package com.finalproject.breeding.etc.repository;
 
-import com.finalproject.breeding.etc.dto.ReplyMapping;
+import com.finalproject.breeding.etc.dto.response.ReplyMapping;
 import com.finalproject.breeding.etc.model.Reply;
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
     OK(HttpStatus.OK,  200, "true"),
-    OK_BUT_NO_USER(HttpStatus.NOT_FOUND, 200,  "유저를 찾을 수 없습니다"),
+    OK_BUT_NO_USER(HttpStatus.OK, 200,  "유저를 찾을 수 없습니다"),
 
 
     //문자열 체크
@@ -74,6 +74,7 @@ public enum ErrorCode {
     POST_MAJOR_WRONG_INPUT(HttpStatus.BAD_REQUEST, 400, "모집 분야를 선택해주세요"),
     POST_TITLE_INPUT_LENGTH_ERROR(HttpStatus.BAD_REQUEST, 400, "제목을 공백 포함 20자 이내로 작성해주세요"),
     POST_CONTENT_INPUT_LENGTH_ERROR(HttpStatus.BAD_REQUEST, 400, "내용을 공백 포함 250자 이내로 작성해주세요"),
+    NOT_FOUND_PROVINCE(HttpStatus.NOT_FOUND, 404, "해당 지역이 존재하지 않습니다"),
 
     // comment
     COMMENT_WRONG_INPUT(HttpStatus.BAD_REQUEST, 400, "댓글을 입력해주세요"),
