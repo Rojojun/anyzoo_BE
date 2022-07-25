@@ -92,7 +92,7 @@ public class UserController {
 
     //Kakao oauth api
     @GetMapping("/user/oauth/kakao")
-    public ResponseEntity<UserResponseDto> kakaoLogin(@RequestParam String code) throws JsonProcessingException {
+    public ResponseEntity<UserResponseDto> kakaoLogin(@RequestHeader("code") String code) throws JsonProcessingException {
         return ResponseEntity.ok(new UserResponseDto(userService.kakaoLogin(code), "로그인 되었습니다"));
     }
 
