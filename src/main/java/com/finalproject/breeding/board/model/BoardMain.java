@@ -69,17 +69,20 @@ public class BoardMain extends Timestamped {
     public BoardMain(CommunityRequestDto communityRequestDto) {
         this.content = communityRequestDto.getContent();
         this.likeCnt = 0L;
+        this.commentCnt = 0L;
         this.boardKind = BoardKind.COMMUNITY;
     }
 
     public BoardMain(ReelsRequestDto reelsRequestDto) {
         this.content = reelsRequestDto.getContent();
         this.likeCnt = 0L;
+        this.commentCnt = 0L;
         this.boardKind = BoardKind.REELS;
     }
     public BoardMain(TogetherRequestDto togetherRequestDto){
         this.content = togetherRequestDto.getContent();
         this.likeCnt = 0L;
+        this.commentCnt = 0L;
         this.boardKind = BoardKind.Together;
     }
 
