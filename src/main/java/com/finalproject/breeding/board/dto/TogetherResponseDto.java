@@ -22,7 +22,7 @@ public class TogetherResponseDto {
     private int peopleCnt;
     private int limitPeople;
     private Long likeCnt;
-    private LocalDate dday;
+    private LocalDateTime dday;
     private LocalDateTime dateTime;
     private String nickname;
     private String userProfileImg;
