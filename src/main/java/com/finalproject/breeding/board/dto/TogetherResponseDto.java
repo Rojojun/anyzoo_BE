@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -18,8 +19,10 @@ public class TogetherResponseDto {
     private String provinceName;
     private String title;
     private String contents;
+    private int peopleCnt;
+    private int limitPeople;
     private Long likeCnt;
-    private LocalDateTime dday;
+    private LocalDate dday;
     private LocalDateTime dateTime;
     private String nickname;
     private String userProfileImg;
@@ -39,6 +42,8 @@ public class TogetherResponseDto {
         this.nickname = together.getUser().getNickname();
         this.userProfileImg = together.getUser().getUserImage().getUrl();
         this.img = together.getTogetherImages();
+        this.peopleCnt = together.getPeopleCnt();
+        this.limitPeople = together.getLimitPeople();
     }
 
 }

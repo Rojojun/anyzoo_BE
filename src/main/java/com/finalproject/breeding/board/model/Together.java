@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -42,7 +42,7 @@ public class Together {
     private int peopleCnt;
 
     @Column(nullable = false)
-    private LocalDateTime dday;
+    private LocalDate dday;
 
     @Column(nullable = false)
     private boolean status;
@@ -52,7 +52,7 @@ public class Together {
     private List<TogetherImage> togetherImages;
 
     @Builder
-    public Together(ProvinceAreas provinceAreas, User user, BoardMain boardMain, String title, int limitPeople, int peopleCnt, LocalDateTime dday, List<TogetherImage> togetherImages){
+    public Together(ProvinceAreas provinceAreas, User user, BoardMain boardMain, String title, int limitPeople, int peopleCnt, LocalDate dday, List<TogetherImage> togetherImages){
         this.provinceAreas = provinceAreas;
         this.user = user;
         this.boardMain = boardMain;
