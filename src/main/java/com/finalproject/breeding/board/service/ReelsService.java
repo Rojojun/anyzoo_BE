@@ -14,7 +14,6 @@ import com.finalproject.breeding.user.User;
 import com.finalproject.breeding.user.repository.UserRepository;
 import com.finalproject.breeding.util.S3VideoUploader;
 import lombok.RequiredArgsConstructor;
-import org.bytedeco.opencv.presets.opencv_core;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;

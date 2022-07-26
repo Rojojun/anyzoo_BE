@@ -2,6 +2,7 @@ package com.finalproject.breeding.user.security;
 
 import com.finalproject.breeding.error.CustomException;
 import com.finalproject.breeding.error.ErrorCode;
+import com.finalproject.breeding.user.UserRole;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
