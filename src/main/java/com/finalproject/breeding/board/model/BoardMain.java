@@ -40,7 +40,7 @@ public class BoardMain extends Timestamped {
     public void updateTogether(TogetherRequestDto togetherRequestDto) {
         this.content = togetherRequestDto.getContent();
     }
-    public void updatePost(PostRequestDto postRequestDto) {
+    public void updatePost(PostRequest4EditDto postRequestDto) {
         this.content = postRequestDto.getContent();
     }
 
