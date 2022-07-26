@@ -107,7 +107,7 @@ public class TogetherService {
         togetherRepository.save(together);
 
         Map<String, Object> data = new HashMap<>();
-        data.put("communityId", together.getId());
+        data.put("togetherId", together.getId());
         data.put("boardMainId", together.getBoardMain().getId());
         return data;
     }
