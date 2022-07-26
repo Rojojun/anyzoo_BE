@@ -58,7 +58,7 @@ public class S3VideoUploader {
         }
     }
 
-    public String upload(MultipartFile multipartFile, String dirName, Boolean isVideo, String getThumbnailTime) throws Exception {
+    public String upload(MultipartFile multipartFile, String dirName, Boolean isVideo, String getThumbnailTime, String getStartPoint) throws Exception {
         File uploadFile = convert(multipartFile).orElseThrow(() -> new IllegalArgumentException("비디오 컨버트 실패"));
 
         if (isVideo) {
@@ -72,14 +72,19 @@ public class S3VideoUploader {
                     fileOutputStream.write(multipartFile.getBytes());
                 }
             }
-            videoEncode.videoEncode(convertFile.getAbsolutePath(), System.getProperty("user.dir") + "/video" + multipartFile.getOriginalFilename());
-            videoEncode.exportThumbnail(convertFile.getAbsolutePath(), System.getProperty("user.dir") + "/thumbnail" + multipartFile.getName() + ".png", getThumbnailTime);
+
+            if (videoEncode.getVideoLength(convertFile.getAbsolutePath()) < 15) {
+                System.out.println("size is under 15sec");
+            }
+
+            videoEncode.videoEncode(convertFile.getAbsolutePath(), System.getProperty("user.dir") + "/video" + multipartFile.getOriginalFilename(), getStartPoint);
+            // videoEncode.exportThumbnail(convertFile.getAbsolutePath(), System.getProperty("user.dir") + "/thumbnail" + multipartFile.getName() + ".png", getThumbnailTime);
             File file = new File(System.getProperty("user.dir") + "/video" + multipartFile.getOriginalFilename());
-            File thumbnailFile = new File(System.getProperty("user.dir") + "/thumbnail" + multipartFile.getName() + ".png");
+            // File thumbnailFile = new File(System.getProperty("user.dir") + "/thumbnail" + multipartFile.getName() + ".png");
 
             removeNewFile(uploadFile);
             if (videoEncode.getVideoLength(file.getAbsolutePath()) < 15) {
-                return upload(file, dirName, true, randomVideoName);
+                return shortVideoUpload(file, dirName, true, randomVideoName);
             }
 /*            File shortFile = new File(System.getProperty("user.dir") + "/video" + multipartFile.getOriginalFilename());
             upload(shortFile,dirName,true,randomVideoName);*/
@@ -103,6 +108,17 @@ public class S3VideoUploader {
         return putS3(uploadFile, fileName);
     }
 
+    // 15초 미만 비디오 및 썸네일 업로드
+    public String shortVideoUpload(File uploadFile, String dirName, Boolean isShort, String uuid) {
+        if (isShort) {
+            String fileName = dirName + "/" + uuid + ".short";   // S3에 저장된 파일 이름
+            return putS3(uploadFile, fileName);
+        }
+    /* String fileName = dirName + "/" + uuid +".mp4";
+       String fileName = dirName + "/" + uuid + ".png"; */
+        String fileName = dirName + "/" + uuid + "." + uploadFile.getName().substring(uploadFile.getName().lastIndexOf(".") + 1);   // S3에 저장된 파일 이름
+        return putS3(uploadFile, fileName);
+    }
     // S3로 업로드
     private String putS3(File uploadFile, String fileName) {
         amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
