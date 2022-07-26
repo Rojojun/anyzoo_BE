@@ -37,6 +37,9 @@ public class BoardMain extends Timestamped {
     public void updateCommunity(CommunityRequestDto communityRequestDto) {
         this.content = communityRequestDto.getContent();
     }
+    public void updateTogether(TogetherRequestDto togetherRequestDto) {
+        this.content = togetherRequestDto.getContent();
+    }
     public void updatePost(PostRequestDto postRequestDto) {
         this.content = postRequestDto.getContent();
     }
