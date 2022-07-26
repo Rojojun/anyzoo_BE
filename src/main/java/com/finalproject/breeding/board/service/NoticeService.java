@@ -6,12 +6,12 @@ import com.finalproject.breeding.board.model.Notice;
 import com.finalproject.breeding.board.repository.NoticeRepository;
 import com.finalproject.breeding.error.ErrorCode;
 import com.finalproject.breeding.etc.dto.MyDto;
-import com.finalproject.breeding.board.dto.NoticeMapping;
 import com.finalproject.breeding.user.User;
+import com.finalproject.breeding.user.UserRole;
 import com.finalproject.breeding.user.repository.UserRepository;
 import com.finalproject.breeding.user.security.SecurityUtil;
+import com.finalproject.breeding.user.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.Charset;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -33,7 +32,7 @@ public class NoticeService {
 
     //공지글 작성
     @Transactional
-    public ResponseEntity<MyDto> createNotice(NoticeRequestDto requestDto, String username) {
+    public ResponseEntity<MyDto> createNotice(NoticeRequestDto requestDto, String username, UserRole role) {
 
         MyDto dto = new MyDto();
         HttpHeaders header = new HttpHeaders();
@@ -42,7 +41,8 @@ public class NoticeService {
         Optional<User> user1 = userRepository.findByUsername(username);
         dto.setStatus(ErrorCode.OK);
 
-         if(!user1.isPresent()) {
+
+         if(!user1.isPresent() || role!=UserRole.ROLE_ADMIN) {
             dto.setData(null);
             dto.setMessage("권한이 없습니다!");
         }else{
@@ -59,7 +59,7 @@ public class NoticeService {
 
     //공지글 삭제
     @Transactional
-    public ResponseEntity<MyDto> deleteComment(Long noticeId) {
+    public ResponseEntity<MyDto> deleteComment(Long noticeId, UserRole role) {
 
         MyDto dto = new MyDto();
         HttpHeaders header = new HttpHeaders();
@@ -72,7 +72,7 @@ public class NoticeService {
 
         if(!notice.isPresent()){
             dto.setMessage("공지글이 없습니다!");
-        }else if (!Objects.equals(userId, notice.get().getUser().getUsername())) {
+        }else if (!Objects.equals(userId, notice.get().getUser().getUsername()) || role!=UserRole.ROLE_ADMIN) {
             dto.setMessage("권한이 없습니다!");
         }else{
             noticeRepository.deleteById(noticeId);
@@ -84,7 +84,7 @@ public class NoticeService {
 
     //공지글 수정
     @Transactional
-    public ResponseEntity<MyDto> patchNotice(NoticeRequestDto requestDto, Long noticeId) {
+    public ResponseEntity<MyDto> patchNotice(NoticeRequestDto requestDto, Long noticeId, UserRole role) {
 
         MyDto dto = new MyDto();
         HttpHeaders header = new HttpHeaders();
@@ -97,7 +97,7 @@ public class NoticeService {
 
         if(!notice.isPresent()){
             dto.setMessage("공지글이 없습니다!");
-        }else if (!Objects.equals(userId, notice.get().getUser().getUsername())) {
+        }else if (!Objects.equals(userId, notice.get().getUser().getUsername()) || role!=UserRole.ROLE_ADMIN) {
             dto.setMessage("권한이 없습니다!");
         }else{
             Notice notice1 = notice.get();

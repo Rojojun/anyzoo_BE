@@ -42,7 +42,6 @@ public class ReplyController {
     @GetMapping("/api/reply/{commentId}")
     public List<ReplyMapping> getAllReply(@PathVariable Long commentId){
         return replyService.getAllReply(commentId);
-
     }
 
     //대댓글 수 불러오기
