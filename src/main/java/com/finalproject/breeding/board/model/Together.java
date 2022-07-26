@@ -1,5 +1,6 @@
 package com.finalproject.breeding.board.model;
 
+import com.finalproject.breeding.board.dto.TogetherRequestDto;
 import com.finalproject.breeding.board.model.category.ProvinceAreas;
 import com.finalproject.breeding.image.model.TogetherImage;
 import com.finalproject.breeding.user.User;
@@ -75,5 +76,9 @@ public class Together {
 
 
 
-
+    public void updateTogether(TogetherRequestDto togetherRequestDto) {
+        this.title = togetherRequestDto.getTitle();
+        this.limitPeople = togetherRequestDto.getLimitPeople();
+        this.dday = togetherRequestDto.getDday();
+    }
 }

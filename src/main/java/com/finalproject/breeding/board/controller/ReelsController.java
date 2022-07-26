@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 @RestController
@@ -41,7 +42,7 @@ public class ReelsController {
     }
     // 릴스 특정 게시글 삭제
     @DeleteMapping("/api/reels/{boardMainId}")
-    public ResponseEntity<Object> deleteReels(@PathVariable Long boardMainId) {
+    public ResponseEntity<Object> deleteReels(@PathVariable Long boardMainId) throws UnsupportedEncodingException {
         User user = userService.getUser();
         reelsService.deleteReels(boardMainId, user);
         return new ResponseEntity<>(new StatusResponseDto("삭제 되었습니다.", ""), HttpStatus.OK);

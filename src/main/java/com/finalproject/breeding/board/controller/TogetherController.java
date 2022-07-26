@@ -1,9 +1,6 @@
 package com.finalproject.breeding.board.controller;
 
-import com.finalproject.breeding.board.dto.CityResponseDto;
-import com.finalproject.breeding.board.dto.ProvinceResponseDto;
-import com.finalproject.breeding.board.dto.TogetherRequestDto;
-import com.finalproject.breeding.board.dto.TogetherResponseDto;
+import com.finalproject.breeding.board.dto.*;
 import com.finalproject.breeding.board.repository.TogetherRepository;
 import com.finalproject.breeding.board.service.TogetherService;
 import com.finalproject.breeding.etc.dto.response.StatusResponseDto;
@@ -51,7 +48,7 @@ public class TogetherController {
 
     @GetMapping("/api/together/detail/{boardMainId}") // 특정 글 조회
     public TogetherResponseDto getTogether(@PathVariable Long boardMainId){
-        return togetherRepository.findByBoardMainId(boardMainId);
+        return togetherRepository.findTogetherByBoardMainId(boardMainId);
     }
 
     @GetMapping("/api/together/category/{provinceId}") // 지역조회
@@ -65,4 +62,17 @@ public class TogetherController {
         return togetherService.getAllTogether(page);
     }
 
+    @PatchMapping("/api/together/detail/{boardMainId}")
+    public ResponseEntity<Object> updateTogether(@RequestBody TogetherRequestDto togetherRequestDto, @PathVariable Long boardMainId){
+        User user = userService.getUser();
+        Map<String, Object> data = togetherService.updateTogether(togetherRequestDto, boardMainId, user);
+        return new ResponseEntity<>(new StatusResponseDto("수정 되었습니다.", data), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/api/together/detail/{boardMainId}")
+    public ResponseEntity<Object> deleteTogether(@PathVariable Long boardMainId){
+        User user = userService.getUser();
+        togetherService.deleteTogether(boardMainId, user);
+        return new ResponseEntity<>(new StatusResponseDto("삭제 되었습니다.", ""), HttpStatus.OK);
+    }
 }

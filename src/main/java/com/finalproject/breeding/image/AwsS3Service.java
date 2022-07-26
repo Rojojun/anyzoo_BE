@@ -161,6 +161,13 @@ public class AwsS3Service {
             communityImageRepository.delete(communityImage);
         }
     }
+    public void removeTogetherImages(Long togetherId) {
+        List<TogetherImage> togetherImages = togetherImageRepository.findByTogetherId(togetherId);
+        for(TogetherImage togetherImage : togetherImages){
+            remove(togetherImage.getKey());
+            togetherImageRepository.delete(togetherImage);
+        }
+    }
     public void removeUserImage(Long userId){
         UserImage userImage = userImageRepository.findByUserId(userId);
         remove(userImage.getKey());

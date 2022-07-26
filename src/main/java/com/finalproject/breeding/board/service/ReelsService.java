@@ -20,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -84,7 +85,7 @@ public class ReelsService {
         }
     }
 
-    public void deleteReels(Long boardMainId, User user) {
+    public void deleteReels(Long boardMainId, User user) throws UnsupportedEncodingException {
         Reels reels = reelsRepository.findByBoardMainId(boardMainId);
 
         if (!Objects.equals(user.getId(), reels.getUser().getId())) {

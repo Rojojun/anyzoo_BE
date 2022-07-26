@@ -6,9 +6,14 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class KakaoUserInfoDto {
     private Long kakaoId;
-    private String nickname;
-    private String email;
+    private String profile_image;
+
+    public KakaoUserInfoDto(Long kakaoId, String profile_image){
+        this.kakaoId = kakaoId;
+        this.profile_image = profile_image;
+    }
 }
+
+

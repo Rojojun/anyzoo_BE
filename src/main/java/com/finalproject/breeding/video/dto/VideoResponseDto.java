@@ -3,6 +3,8 @@ package com.finalproject.breeding.video.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.StringReader;
+
 @Getter
 @NoArgsConstructor
 public class VideoResponseDto {

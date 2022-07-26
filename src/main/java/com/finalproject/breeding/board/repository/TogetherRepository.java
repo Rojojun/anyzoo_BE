@@ -8,10 +8,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface TogetherRepository extends JpaRepository<Together, Long> {
-    TogetherResponseDto findByBoardMainId(Long boardMainId);
+    Together findByBoardMainId(Long boardMainId);
 
     @Query("select t " + "from Together t " + "where t.provinceAreas.id = :provinceId " + "order by t.boardMain.createdAt desc " )
     Slice<TogetherResponseDto> findByProvinceIdOrderByBoardMainCreatedAtDesc(PageRequest pageRequest, Long provinceId);
 
     Slice<TogetherResponseDto> findByOrderByBoardMainCreatedAtDesc(PageRequest pageRequest);
+
+    TogetherResponseDto findTogetherByBoardMainId(Long boardMainId);
 }
