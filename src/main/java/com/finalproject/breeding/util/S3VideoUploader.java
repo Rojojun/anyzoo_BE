@@ -31,7 +31,7 @@ public class S3VideoUploader {
     private final ReelsRepository reelsRepository;
     @Value("${cloud.aws.s3.bucket}")
     public String bucket;  // S3 버킷 이름
-    public String uploadThumbnail(MultipartFile multipartFile, String dirName, Boolean isVideo) throws Exception {
+    public String uploadThumbnail(MultipartFile multipartFile, String dirName, Boolean isVideo, String thumnailTime) throws Exception {
         File uploadFile = convert(multipartFile).orElseThrow(() -> new IllegalArgumentException("썸네일 추출 실패"));
 
         if (isVideo) {
@@ -45,7 +45,7 @@ public class S3VideoUploader {
                     fileOutputStream.write(multipartFile.getBytes());
                 }
             }
-            videoEncode.exportThumbnail(convertFile.getAbsolutePath(), System.getProperty("user.dir") + "/thumbnail" + multipartFile.getName() + ".png");
+            videoEncode.exportThumbnail(convertFile.getAbsolutePath(), System.getProperty("user.dir") + "/thumbnail" + multipartFile.getName() + ".png", thumnailTime);
             File thumbnailFile = new File(System.getProperty("user.dir") +  "/thumbnail" + multipartFile.getName() + ".png");
 
             removeNewFile(uploadFile);
@@ -55,7 +55,7 @@ public class S3VideoUploader {
             return upload(uploadFile, dirName,false,UUID.randomUUID().toString());
         }
     }
-    public String upload(MultipartFile multipartFile, String dirName, Boolean isVideo) throws Exception {
+    public String upload(MultipartFile multipartFile, String dirName, Boolean isVideo, String getThumbnailTime) throws Exception {
         File uploadFile = convert(multipartFile).orElseThrow(() -> new IllegalArgumentException("비디오 컨버트 실패"));
 
         if (isVideo) {
@@ -70,7 +70,7 @@ public class S3VideoUploader {
                 }
             }
             videoEncode.videoEncode(convertFile.getAbsolutePath(),System.getProperty("user.dir") + "/video" + multipartFile.getOriginalFilename());
-            videoEncode.exportThumbnail(convertFile.getAbsolutePath(), System.getProperty("user.dir") + "/thumbnail" + multipartFile.getName() + ".png");
+            videoEncode.exportThumbnail(convertFile.getAbsolutePath(), System.getProperty("user.dir") + "/thumbnail" + multipartFile.getName() + ".png", getThumbnailTime);
             File file = new File(System.getProperty("user.dir") + "/video" + multipartFile.getOriginalFilename());
             File thumbnailFile = new File(System.getProperty("user.dir") +  "/thumbnail" + multipartFile.getName() + ".png");
 
