@@ -4,16 +4,14 @@ import com.finalproject.breeding.board.dto.CommunityResponseDto;
 import com.finalproject.breeding.etc.dto.response.*;
 import com.finalproject.breeding.etc.service.MyPageService;
 import com.finalproject.breeding.user.User;
+import com.finalproject.breeding.user.dto.responseDto.UserInfo;
 import com.finalproject.breeding.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -25,6 +23,11 @@ public class MyPageController {
 
     private final MyPageService myPageService;
     private final UserService userService;
+
+    @GetMapping("/api/mypage/userInfo/{nickname}")
+    public UserInfo getUserInfo(@PathVariable String nickname){
+        return myPageService.getUserInfo(nickname);
+    }
 
     @GetMapping("/api/mypage/post/{nickname}")
     public Slice<MyPagePostDto> getMyPagePost(HttpServletRequest httpServletRequest, @PathVariable String nickname){

@@ -123,11 +123,6 @@ public class UserController {
        return new UserInfo(userService.getUser());
     }
 
-    @GetMapping("/api/user/userInfoTest")
-    @ResponseBody
-    public User getuser() {
-        return userService.getUser();
-    }
 
     //@ExceptionHandler(Exception.class)
     //@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

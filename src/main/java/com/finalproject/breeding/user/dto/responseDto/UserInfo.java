@@ -14,6 +14,8 @@ public class UserInfo {
     private int tier;
     private Long exp;
     private String img;
+    private Long following;
+    private Long follower;
 
     public UserInfo(User user){
         this.username = user.getUsername();
@@ -21,5 +23,7 @@ public class UserInfo {
         this.tier = user.getTier();
         this.exp = user.getExp();
         this.img = user.getUserImage().getUrl();
+        this.follower = user.getFollower();
+        this.following = user.getFollowing();
     }
 }

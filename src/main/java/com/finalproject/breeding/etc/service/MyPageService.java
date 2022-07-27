@@ -13,6 +13,7 @@ import com.finalproject.breeding.etc.dto.response.MyPageReelsDto;
 import com.finalproject.breeding.etc.model.Follow;
 import com.finalproject.breeding.etc.repository.FollowRepository;
 import com.finalproject.breeding.user.User;
+import com.finalproject.breeding.user.dto.responseDto.UserInfo;
 import com.finalproject.breeding.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -89,5 +90,7 @@ public class MyPageService {
     }
 
 
-
+    public UserInfo getUserInfo(String nickname) {
+        return userRepository.findUserByNickname(nickname);
+    }
 }
