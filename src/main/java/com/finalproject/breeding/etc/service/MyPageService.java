@@ -1,9 +1,12 @@
 package com.finalproject.breeding.etc.service;
 
 import com.finalproject.breeding.board.dto.CommunityResponseDto;
+import com.finalproject.breeding.board.dto.TogetherRequestDto;
+import com.finalproject.breeding.board.dto.TogetherResponseDto;
 import com.finalproject.breeding.board.repository.CommunityRepository;
 import com.finalproject.breeding.board.repository.PostRepository;
 import com.finalproject.breeding.board.repository.ReelsRepository;
+import com.finalproject.breeding.board.repository.TogetherRepository;
 import com.finalproject.breeding.error.CustomException;
 import com.finalproject.breeding.error.ErrorCode;
 import com.finalproject.breeding.etc.dto.response.FollowerDto;
@@ -34,16 +37,17 @@ public class MyPageService {
     private final FollowRepository followRepository;
     private final ReelsRepository reelsRepository;
     private final CommunityRepository communityRepository;
+    private final TogetherRepository togetherRepository;
 
     @Transactional(readOnly = true)
     public Slice<MyPagePostDto> getMyPagePost(String nickname, int page) {
-        PageRequest pageRequest = PageRequest.of(page, 16);
+        PageRequest pageRequest = PageRequest.of(page, 20);
         return postRepository.findByUserNicknameOrderByBoardMainCreatedAtDesc(pageRequest, nickname);
     }
 
     @Transactional(readOnly = true)
     public Slice<MyPageReelsDto> getMyPageReels(String nickname, int page) {
-        PageRequest pageRequest = PageRequest.of(page, 16);
+        PageRequest pageRequest = PageRequest.of(page, 20);
         return reelsRepository.findByUserNicknameOrderByBoardMainCreatedAtDesc(pageRequest, nickname);
     }
 
@@ -51,6 +55,11 @@ public class MyPageService {
     public Slice<CommunityResponseDto> getMyPageCommunity(String nickname, int page) {
         PageRequest pageRequest = PageRequest.of(page, 5);
         return communityRepository.findByUserNicknameOrderByBoardMainCreatedAtDesc(pageRequest, nickname);
+    }
+    @Transactional(readOnly = true)
+    public Slice<TogetherResponseDto> getMyPageTogether(String nickname, int page) {
+        PageRequest pageRequest = PageRequest.of(page, 5);
+        return togetherRepository.findByUserNicknameOrderByBoardMainCreatedAtDesc(pageRequest, nickname);
     }
 
     public Map<String, Object> followUnFollow(User follower, String nickname) {
