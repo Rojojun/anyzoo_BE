@@ -1,4 +1,4 @@
-package com.finalproject.breeding.util;
+package com.finalproject.breeding.video.util;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
@@ -8,6 +8,8 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.finalproject.breeding.board.model.Reels;
 import com.finalproject.breeding.board.repository.ReelsRepository;
+import com.finalproject.breeding.error.CustomException;
+import com.finalproject.breeding.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -60,6 +62,7 @@ public class S3VideoUploader {
 
     public String upload(MultipartFile multipartFile, String dirName, Boolean isVideo, String getThumbnailTime, String getStartPoint) throws Exception {
         File uploadFile = convert(multipartFile).orElseThrow(() -> new IllegalArgumentException("비디오 컨버트 실패"));
+        String secValidation = "업로드 하려는 비디오의 길이가 4초보다 짧거나 300초를 초과합니다.";
 
         if (isVideo) {
             File convertFile = new File(System.getProperty("user.dir") + "/" + multipartFile.getOriginalFilename());
@@ -77,11 +80,11 @@ public class S3VideoUploader {
 
             // 업로드 된 비디오 길이 Validation Check
             if (videoEncode.getVideoLength(convertFile.getAbsolutePath()) < 4 || videoEncode.getVideoLength(convertFile.getAbsolutePath()) > 300) {
-                log.warn("업로드 하려는 비디오의 길이가 4초보다 짧거나 300초를 초과합니다.");
-                throw new IOException("업로드 하려는 비디오의 길이가 4초보다 짧거나 300초를 초과합니다.");
+                log.error(secValidation);
+                throw new CustomException(ErrorCode.TIME_VALIDATION_WRONG);
             } else if (videoEncode.getVideoWidth(convertFile.getAbsolutePath()) < 300) {
-                log.warn("업로드 하려는 비디오의 화질이 300pixel 미만입니다.");
-                throw new IOException("업로드 하려는 비디오의 화질이 300pixel 미만입니다.");
+                log.error("업로드 하려는 비디오의 화질이 300pixel 미만입니다.");
+                throw new CustomException(ErrorCode.RESOLUTION_VALIDAION_WRONG);
             }
 
             videoEncode.videoEncode(convertFile.getAbsolutePath(), System.getProperty("user.dir") + "/video" + multipartFile.getOriginalFilename(), getStartPoint);

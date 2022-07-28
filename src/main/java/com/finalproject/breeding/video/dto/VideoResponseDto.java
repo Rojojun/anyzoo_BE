@@ -10,10 +10,8 @@ import java.io.StringReader;
 public class VideoResponseDto {
     private String video;
     private String thumbnail;
-    private String message;
-    public VideoResponseDto(String video, String thumbnail, String message) {
+    public VideoResponseDto(String video, String thumbnail) {
         this.video = video;
         this.thumbnail = thumbnail;
-        this.message = message;
     }
 }

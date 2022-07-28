@@ -12,7 +12,13 @@ import lombok.Setter;
 public class ImageResponseDto {
     private String url;
 
+    private String errorMessage;
     public ImageResponseDto(PostImage postImage){
         this.url = postImage.getUrl();
+        this.errorMessage = "200 request : success";
+    }
+
+    public ImageResponseDto(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 }

@@ -12,7 +12,7 @@ import com.finalproject.breeding.error.CustomException;
 import com.finalproject.breeding.error.ErrorCode;
 import com.finalproject.breeding.user.User;
 import com.finalproject.breeding.user.repository.UserRepository;
-import com.finalproject.breeding.util.S3VideoUploader;
+import com.finalproject.breeding.video.util.S3VideoUploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
@@ -103,12 +103,8 @@ public class ReelsService {
             throw new CustomException(ErrorCode.POST_UPDATE_WRONG_ACCESS);
         }
 
-        String reelsVideo = requestDto.getVideo();
-        String reelsThumbnail = requestDto.getThumbnail();
-
-        reels.updateReels(requestDto, reels.getBoardMain() ,reelsVideo, reelsThumbnail);
-
-        mediaUpdateToReels(reelsVideo, reelsThumbnail, reels);
+        reels.getBoardMain().updateReels(requestDto);
+        reels.updateReels(requestDto, reels.getBoardMain());
 
         Map<String, Object> data =new HashMap<>();
         data.put("reelsId", reels.getId());
@@ -116,9 +112,10 @@ public class ReelsService {
         return data;
     }
 
-    public void mediaUpdateToReels(String video, String thumbnail, Reels reels) {
+    // 릴스 동영상 및 썸네일 업데이트 관련 메소드 -> 현 상태로 미구현 예정
+/*    public void mediaUpdateToReels(String video, String thumbnail, Reels reels) {
         Reels saveReels = reels;
         video = saveReels.getVideo();
         thumbnail = saveReels.getTitleImg();
-    }
+    }*/
 }

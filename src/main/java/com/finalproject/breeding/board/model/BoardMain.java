@@ -94,8 +94,7 @@ public class BoardMain extends Timestamped {
         this.boardKind = BoardKind.POST;
     }
 
-    public BoardMain(ReelsRequest4EditDto reelsRequest4EditDto) {
-        this.content = reelsRequest4EditDto.getContent();
-        this.boardKind = BoardKind.REELS;
+    public void updateReels(ReelsRequest4EditDto reelsRequestDto) {
+        this.content = reelsRequestDto.getContents();
     }
 }

@@ -14,6 +14,8 @@ import com.finalproject.breeding.image.repository.TogetherImageRepository;
 import com.finalproject.breeding.image.repository.UserImageRepository;
 import io.jsonwebtoken.io.IOException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.bytedeco.opencv.presets.opencv_core;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -27,6 +29,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class AwsS3Service {
 
@@ -57,7 +60,21 @@ public class AwsS3Service {
 //    }
     public List<PostImage> uploadPost(List<MultipartFile> multipartFiles, String dirName) throws IOException, java.io.IOException{
 
+        // 파일 확장자명 벨리데이션 체크
+        ArrayList<String> accessableLists = new ArrayList<>();
+        accessableLists.add(".jpg");
+        accessableLists.add(".png");
+        accessableLists.add(".gif");
+
         List<PostImage> postImages = new ArrayList<>();
+
+        for (MultipartFile multipartFile : multipartFiles) {
+            String ext = multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."));
+            if (!accessableLists.contains(ext)) {
+                log.error("500 Error : 사진 파일이 아니거나, 지원하지 않는 확장 파일입니다.");
+                throw new CustomException(ErrorCode.EXTRACTION_VALIDATION_ERROR);
+            }
+        }
 
        for (MultipartFile multipartFile : multipartFiles){
            File file = convertMultipartFileToFile(multipartFile).orElseThrow(()->new CustomException(ErrorCode.IMAGE_UPLOAD_ERROR));
