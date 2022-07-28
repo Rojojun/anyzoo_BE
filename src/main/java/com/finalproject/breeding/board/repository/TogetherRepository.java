@@ -16,4 +16,6 @@ public interface TogetherRepository extends JpaRepository<Together, Long> {
     Slice<TogetherResponseDto> findByOrderByBoardMainCreatedAtDesc(PageRequest pageRequest);
 
     TogetherResponseDto findTogetherByBoardMainId(Long boardMainId);
+
+    Slice<TogetherResponseDto> findByUserNicknameOrderByBoardMainCreatedAtDesc(PageRequest pageRequest, String nickname);
 }

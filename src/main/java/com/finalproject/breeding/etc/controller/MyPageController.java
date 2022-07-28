@@ -1,6 +1,7 @@
 package com.finalproject.breeding.etc.controller;
 
 import com.finalproject.breeding.board.dto.CommunityResponseDto;
+import com.finalproject.breeding.board.dto.TogetherResponseDto;
 import com.finalproject.breeding.etc.dto.response.*;
 import com.finalproject.breeding.etc.service.MyPageService;
 import com.finalproject.breeding.user.User;
@@ -45,6 +46,11 @@ public class MyPageController {
     public Slice<CommunityResponseDto> getMyPageCommunity(HttpServletRequest httpServletRequest, @PathVariable String nickname){
         int page = Integer.parseInt(httpServletRequest.getParameter("page"));
         return myPageService.getMyPageCommunity(nickname,page);
+    }
+    @GetMapping("/api/mypage/together/{nickname}")
+    public Slice<TogetherResponseDto> getMyPageTogether(HttpServletRequest httpServletRequest, @PathVariable String nickname){
+        int page = Integer.parseInt(httpServletRequest.getParameter("page"));
+        return myPageService.getMyPageTogether(nickname,page);
     }
 
 
