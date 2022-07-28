@@ -77,9 +77,10 @@ public class S3VideoUploader {
 
             // 업로드 된 비디오 길이 Validation Check
             if (videoEncode.getVideoLength(convertFile.getAbsolutePath()) < 4 || videoEncode.getVideoLength(convertFile.getAbsolutePath()) > 300) {
-                System.out.println(videoEncode.getVideoLength(convertFile.getAbsolutePath()));
+                log.warn("업로드 하려는 비디오의 길이가 4초보다 짧거나 300초를 초과합니다.");
                 throw new IOException("업로드 하려는 비디오의 길이가 4초보다 짧거나 300초를 초과합니다.");
             } else if (videoEncode.getVideoWidth(convertFile.getAbsolutePath()) < 300) {
+                log.warn("업로드 하려는 비디오의 화질이 300pixel 미만입니다.");
                 throw new IOException("업로드 하려는 비디오의 화질이 300pixel 미만입니다.");
             }
 
