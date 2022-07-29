@@ -42,7 +42,16 @@ public class AwsS3Service {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-//    public PostImage uploadPost(MultipartFile multipartFile, String dirName) throws IOException, java.io.IOException {
+    /*ArrayList<String> accessableLists = new ArrayList<>();
+    public ArrayList<String> setAccessableLists() {
+        accessableLists.add(".jpg");
+        accessableLists.add(".png");
+        accessableLists.add(".gif");
+
+        return accessableLists;
+    }*/
+
+    //    public PostImage uploadPost(MultipartFile multipartFile, String dirName) throws IOException, java.io.IOException {
 //        File file = convertMultipartFileToFile(multipartFile)
 //                .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File convert fail"));
 //
@@ -58,6 +67,7 @@ public class AwsS3Service {
 //                .path(path)
 //                .build();
 //    }
+
     public List<PostImage> uploadPost(List<MultipartFile> multipartFiles, String dirName) throws IOException, java.io.IOException{
 
         // 파일 확장자명 벨리데이션 체크
@@ -116,9 +126,20 @@ public class AwsS3Service {
     }
 
     public UserImage uploadUser(MultipartFile multipartFile, String dirName) throws IOException, java.io.IOException {
+        ArrayList<String> accessableLists = new ArrayList<>();
+        accessableLists.add(".jpg");
+        accessableLists.add(".png");
+        accessableLists.add(".gif");
+
         File file = convertMultipartFileToFile(multipartFile)
                 .orElseThrow(() -> new CustomException(ErrorCode.IMAGE_UPLOAD_ERROR));
 
+        String ext = file.getName().substring(file.getName().lastIndexOf("."));
+
+        if(!accessableLists.contains(ext)){
+            log.error("500 Error : 사진 파일이 아니거나, 지원하지 않는 확장 파일입니다.");
+            throw new CustomException(ErrorCode.EXTRACTION_VALIDATION_ERROR);
+        }
         String key = randomFileName(file, dirName);
         String path = putS3(file, key);
         removeFile(file);

@@ -39,7 +39,7 @@ public class VideoEncode {
 
             ffmpeg = new FFmpeg("/usr/bin/ffmpeg");
             ffprobe = new FFprobe("/usr/bin/ffprobe");
-            
+
         } catch (Exception e){
             e.printStackTrace();
         }

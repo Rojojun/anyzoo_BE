@@ -27,16 +27,12 @@ public class PostImage {
     @JsonIgnore
     private String key;
 
-    private String errorMessage;
-
 
     public PostImage(String key, String path){
         this.url = path;
         this.key = key;
     }
-    public PostImage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
+
     public void updateToPost(Post post){
         this.postId = post.getId();
     }
