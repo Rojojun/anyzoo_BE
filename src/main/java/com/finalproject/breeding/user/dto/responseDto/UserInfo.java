@@ -15,11 +15,18 @@ public class UserInfo {
     private Long exp;
     private String img;
 
+    private Long follower;
+    private Long following;
+    private String phoneNumber;
+
     public UserInfo(User user){
         this.username = user.getUsername();
         this.nickname = user.getNickname();
         this.tier = user.getTier();
         this.exp = user.getExp();
         this.img = user.getUserImage().getUrl();
+        this.follower = user.getFollower();
+        this.following = user.getFollowing();
+        this.phoneNumber = user.getPhoneNumber();
     }
 }

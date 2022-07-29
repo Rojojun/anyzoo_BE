@@ -85,20 +85,15 @@ public class User extends Timestamped{
     //Google
     public User(SocialLoginRequestDto socialLoginRequestDto){
         this.username = socialLoginRequestDto.getEmail();
-        this.nickname = socialLoginRequestDto.getName() + UUID.randomUUID().toString().replaceAll("-", "").substring(0, 4);
+        this.nickname = "googleUser" + UUID.randomUUID().toString().replaceAll("-", "").substring(0, 5);
         this.phoneNumber = "0000";
         this.userRole = UserRole.ROLE_USER;
         this.exp = 0L;
         this.tier = 0;
         this.follower = 0L;
         this.following = 0L;
+        this.verification = true;
     }
-
-//    public User(String username, String email, UserRole role){
-//        this.nickname = username;
-//        this.username = email;
-//        this.userRole = role;
-//    }
 
     //kakao
     public User(UserRole role, Long kakaoId, String socialRandomValue){
@@ -111,6 +106,7 @@ public class User extends Timestamped{
         this.follower = 0L;
         this.following = 0L;
         this.kakaoId = kakaoId;
+        this.verification = true;
     }
 
     public void edit(UserEditDto userEditDto){
