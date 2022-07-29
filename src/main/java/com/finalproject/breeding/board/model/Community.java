@@ -23,13 +23,13 @@ public class Community {
     @JoinColumn(name = "USER_ID")
     @ManyToOne
     private User user;
-    @Column
-    @NotNull
-    private String title;
 
-    @JoinColumn(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private CommunityCategory communityCategory;
+//    @Column
+//    private String title;
+//
+//    @JoinColumn
+//    @Enumerated(EnumType.STRING)
+//    private CommunityCategory communityCategory;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "COMMUNITY_ID")
@@ -40,34 +40,12 @@ public class Community {
     private BoardMain boardMain;
 
 
-    public Community(CommunityRequestDto communityRequestDto, BoardMain boardMain, User user, List<CommunityImage> communityImages){
+
+    @Builder
+    public Community(BoardMain boardMain, User user, List<CommunityImage> communityImages){
         this.boardMain = boardMain;
         this.user = user;
-        this.title = communityRequestDto.getTitle();
         this.communityImages = communityImages;
-
-        switch (communityRequestDto.getCategoryName()) {
-            case "qna":
-                this.communityCategory = CommunityCategory.QNA;
-                break;
-            case "free":
-                this.communityCategory = CommunityCategory.FREE;
-                break;
-            case "review":
-                this.communityCategory = CommunityCategory.REVIEW;
-                break;
-        }
-
     }
-
-
-
-    public void update(CommunityRequestDto communityRequestDto) {
-        this.title = communityRequestDto.getTitle();
-        this.communityImages = communityRequestDto.getCommunityImages();
-    }
-
-    public void updateTitle(CommunityRequestDto communityRequestDto) {
-        this.title = communityRequestDto.getTitle();
-    }
+    
 }

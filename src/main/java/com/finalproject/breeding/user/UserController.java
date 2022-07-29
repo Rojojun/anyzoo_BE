@@ -8,7 +8,7 @@ import com.finalproject.breeding.dto.UserResponseDto;
 import com.finalproject.breeding.user.dto.requestDto.LoginDto;
 import com.finalproject.breeding.user.dto.requestDto.SignupRequestDto;
 import com.finalproject.breeding.user.dto.requestDto.TokenRequestDto;
-import com.finalproject.breeding.etc.dto.StatusResponseDto;
+import com.finalproject.breeding.etc.dto.response.StatusResponseDto;
 import com.finalproject.breeding.user.dto.responseDto.TokenDto;
 import com.finalproject.breeding.user.dto.responseDto.UserInfo;
 import com.finalproject.breeding.user.service.UserService;
@@ -122,6 +122,7 @@ public class UserController {
     public UserInfo Session() {
        return new UserInfo(userService.getUser());
     }
+
 
     //@ExceptionHandler(Exception.class)
     //@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

@@ -28,6 +28,7 @@ public class Comment extends Timestamped {
     @ManyToOne
     private BoardMain boardMain;
 
+
     @Column
     @NotNull
     private String comment;

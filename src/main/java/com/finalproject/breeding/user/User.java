@@ -140,16 +140,16 @@ public class User extends Timestamped{
     }
 
     public void following(User user){
-        this.following = user.getFollowing()+1L;
-    }
-    public void follower(User user){
         this.follower = user.getFollower()+1L;
     }
+    public void follower(User user){
+        this.following = user.getFollowing()+1L;
+    }
     public void unFollowing(User user){
-        this.following = user.getFollowing()-1L;
+        this.follower = user.getFollower()-1L;
     }
     public void unFollower(User user){
-        this.follower = user.getFollower()-1L;
+        this.following = user.getFollowing()-1L;
     }
 
     public void updateProfileImage(UserImage userImage) {

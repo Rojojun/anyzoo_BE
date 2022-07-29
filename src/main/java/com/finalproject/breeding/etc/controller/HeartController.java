@@ -1,6 +1,6 @@
 package com.finalproject.breeding.etc.controller;
 
-import com.finalproject.breeding.etc.dto.StatusResponseDto;
+import com.finalproject.breeding.etc.dto.response.StatusResponseDto;
 import com.finalproject.breeding.user.User;
 import com.finalproject.breeding.etc.repository.HeartMapping;
 import com.finalproject.breeding.etc.service.HeartService;

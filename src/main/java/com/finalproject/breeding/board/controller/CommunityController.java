@@ -2,10 +2,8 @@ package com.finalproject.breeding.board.controller;
 
 import com.finalproject.breeding.board.dto.CommunityRequestDto;
 import com.finalproject.breeding.board.dto.CommunityResponseDto;
-import com.finalproject.breeding.board.dto.PostRequestDto;
-import com.finalproject.breeding.board.dto.PostResponseDto;
 import com.finalproject.breeding.board.service.CommunityService;
-import com.finalproject.breeding.etc.dto.StatusResponseDto;
+import com.finalproject.breeding.etc.dto.response.StatusResponseDto;
 import com.finalproject.breeding.user.User;
 import com.finalproject.breeding.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -38,11 +36,10 @@ public class CommunityController {
         return communityService.getCommunityDetail(boardMainId);
     }
 
-    // 전체 게시글 조회하기 (all, free, review, qna)
-    @GetMapping("/api/community/category/{category}")
-    public Slice<CommunityResponseDto> readAllCommunity(HttpServletRequest httpServletRequest, @PathVariable String category) {
+    @GetMapping("/api/community")
+    public Slice<CommunityResponseDto> readAllCommunity(HttpServletRequest httpServletRequest) {
         int page = Integer.parseInt(httpServletRequest.getParameter("page"));
-        return communityService.readCommunity(page, category);
+        return communityService.readCommunity(page);
     }
 
     @DeleteMapping("/api/community/{boardMainId}")

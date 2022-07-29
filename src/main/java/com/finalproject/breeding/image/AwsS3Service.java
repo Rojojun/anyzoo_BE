@@ -7,15 +7,15 @@ import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.finalproject.breeding.error.CustomException;
 import com.finalproject.breeding.error.ErrorCode;
-import com.finalproject.breeding.image.model.AwsS3;
-import com.finalproject.breeding.image.model.CommunityImage;
-import com.finalproject.breeding.image.model.PostImage;
-import com.finalproject.breeding.image.model.UserImage;
+import com.finalproject.breeding.image.model.*;
 import com.finalproject.breeding.image.repository.CommunityImageRepository;
 import com.finalproject.breeding.image.repository.PostImageRepository;
+import com.finalproject.breeding.image.repository.TogetherImageRepository;
 import com.finalproject.breeding.image.repository.UserImageRepository;
 import io.jsonwebtoken.io.IOException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.bytedeco.opencv.presets.opencv_core;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -29,6 +29,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class AwsS3Service {
 
@@ -36,11 +37,21 @@ public class AwsS3Service {
     private final PostImageRepository postImageRepository;
     private final UserImageRepository userImageRepository;
     private final CommunityImageRepository communityImageRepository;
+    private final TogetherImageRepository togetherImageRepository;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-//    public PostImage uploadPost(MultipartFile multipartFile, String dirName) throws IOException, java.io.IOException {
+    /*ArrayList<String> accessableLists = new ArrayList<>();
+    public ArrayList<String> setAccessableLists() {
+        accessableLists.add(".jpg");
+        accessableLists.add(".png");
+        accessableLists.add(".gif");
+
+        return accessableLists;
+    }*/
+
+    //    public PostImage uploadPost(MultipartFile multipartFile, String dirName) throws IOException, java.io.IOException {
 //        File file = convertMultipartFileToFile(multipartFile)
 //                .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File convert fail"));
 //
@@ -56,9 +67,24 @@ public class AwsS3Service {
 //                .path(path)
 //                .build();
 //    }
+
     public List<PostImage> uploadPost(List<MultipartFile> multipartFiles, String dirName) throws IOException, java.io.IOException{
 
+        // 파일 확장자명 벨리데이션 체크
+        ArrayList<String> accessableLists = new ArrayList<>();
+        accessableLists.add(".jpg");
+        accessableLists.add(".png");
+        accessableLists.add(".gif");
+
         List<PostImage> postImages = new ArrayList<>();
+
+        for (MultipartFile multipartFile : multipartFiles) {
+            String ext = multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."));
+            if (!accessableLists.contains(ext)) {
+                log.error("500 Error : 사진 파일이 아니거나, 지원하지 않는 확장 파일입니다.");
+                throw new CustomException(ErrorCode.EXTRACTION_VALIDATION_ERROR);
+            }
+        }
 
        for (MultipartFile multipartFile : multipartFiles){
            File file = convertMultipartFileToFile(multipartFile).orElseThrow(()->new CustomException(ErrorCode.IMAGE_UPLOAD_ERROR));
@@ -85,10 +111,35 @@ public class AwsS3Service {
         return communityImages;
     }
 
+    public List<TogetherImage> uploadTogether(List<MultipartFile> multipartFiles, String dirName) throws IOException, java.io.IOException{
+
+        List<TogetherImage> togetherImages = new ArrayList<>();
+
+        for (MultipartFile multipartFile : multipartFiles){
+            File file = convertMultipartFileToFile(multipartFile).orElseThrow(()->new IllegalArgumentException("MultipartFile -> File convert fail"));
+            String key = randomFileName(file, dirName);
+            String path = putS3(file, key);
+            removeFile(file);
+            togetherImages.add(togetherImageRepository.save(new TogetherImage(key,path)));
+        }
+        return togetherImages;
+    }
+
     public UserImage uploadUser(MultipartFile multipartFile, String dirName) throws IOException, java.io.IOException {
+        ArrayList<String> accessableLists = new ArrayList<>();
+        accessableLists.add(".jpg");
+        accessableLists.add(".png");
+        accessableLists.add(".gif");
+
         File file = convertMultipartFileToFile(multipartFile)
                 .orElseThrow(() -> new CustomException(ErrorCode.IMAGE_UPLOAD_ERROR));
 
+        String ext = file.getName().substring(file.getName().lastIndexOf("."));
+
+        if(!accessableLists.contains(ext)){
+            log.error("500 Error : 사진 파일이 아니거나, 지원하지 않는 확장 파일입니다.");
+            throw new CustomException(ErrorCode.EXTRACTION_VALIDATION_ERROR);
+        }
         String key = randomFileName(file, dirName);
         String path = putS3(file, key);
         removeFile(file);
@@ -146,6 +197,13 @@ public class AwsS3Service {
         for(CommunityImage communityImage : communityImages){
             remove(communityImage.getKey());
             communityImageRepository.delete(communityImage);
+        }
+    }
+    public void removeTogetherImages(Long togetherId) {
+        List<TogetherImage> togetherImages = togetherImageRepository.findByTogetherId(togetherId);
+        for(TogetherImage togetherImage : togetherImages){
+            remove(togetherImage.getKey());
+            togetherImageRepository.delete(togetherImage);
         }
     }
     public void removeUserImage(Long userId){

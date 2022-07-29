@@ -63,8 +63,20 @@ public class Post {
         }
     }
 
-
-    public void updatePost(PostRequestDto requestDto) {
-        this.postImage = requestDto.getPostImages();
+    public void updatePost(PostRequest4EditDto requestDto) {
+        switch (requestDto.getCategoryName()) {
+            case "comic":
+                this.postNReelsCategory = PostNReelsCategory.COMIC;
+                break;
+            case "cool":
+                this.postNReelsCategory = PostNReelsCategory.COOL;
+                break;
+            case "pretty":
+                this.postNReelsCategory = PostNReelsCategory.PRETTY;
+                break;
+            case "cute":
+                this.postNReelsCategory = PostNReelsCategory.CUTE;
+                break;
+        }
     }
 }

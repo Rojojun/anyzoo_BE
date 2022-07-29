@@ -32,6 +32,7 @@ public class PostImage {
         this.url = path;
         this.key = key;
     }
+
     public void updateToPost(Post post){
         this.postId = post.getId();
     }

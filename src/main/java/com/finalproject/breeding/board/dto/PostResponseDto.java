@@ -23,6 +23,7 @@ public class PostResponseDto {
     private String nickname;
     private String userProfileImg;
     private List<PostImage> img;
+    private Long commentCnt;
 
     public PostResponseDto(Post post) {
         this.postId = post.getId();
@@ -35,6 +36,7 @@ public class PostResponseDto {
         this.likeCnt = post.getBoardMain().getLikeCnt();
         this.dateTime = post.getBoardMain().getCreatedAt();
         this.postCategory = post.getPostNReelsCategory().name();
+        this.commentCnt = post.getBoardMain().getCommentCnt();
     }
 
 
