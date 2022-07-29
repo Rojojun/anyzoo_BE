@@ -16,9 +16,6 @@ public class UserInfo {
     private String img;
     private Long following;
     private Long follower;
-
-    private Long follower;
-    private Long following;
     private String phoneNumber;
 
     public UserInfo(User user){
@@ -29,9 +26,6 @@ public class UserInfo {
         this.img = user.getUserImage().getUrl();
         this.follower = user.getFollower();
         this.following = user.getFollowing();
-<<<<<<< HEAD
         this.phoneNumber = user.getPhoneNumber();
-=======
->>>>>>> release
     }
 }
