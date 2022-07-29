@@ -358,7 +358,7 @@ public class UserService {
 
 // HTTP Body 생성
             StringBuilder body = new StringBuilder();
-            body.append("grant_type=authorization_code&client_id=7ed074dd8ee05fafa99735fba28a41d2&redirect_uri=http://localhost:3000/oauth&code=" + code + "&client_secret=28ibusk6KsYMwzHk2MyKow5ed5wV8j8l");
+            body.append("grant_type=authorization_code&client_id=7ed074dd8ee05fafa99735fba28a41d2&redirect_uri=https://anyzoo.co.kr/oauth&code=" + code + "&client_secret=28ibusk6KsYMwzHk2MyKow5ed5wV8j8l");
 //https://anyzoo.co.kr/oauth
 
 // HTTP 요청 보내기
