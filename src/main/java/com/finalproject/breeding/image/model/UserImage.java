@@ -35,7 +35,7 @@ public class UserImage {
         this.key = key;
     }
     public UserImage(){
-        this.url = "https://anyzoo-photo-bucket.s3.ap-northeast-2.amazonaws.com/user/45deb63e-1432-4a41-8637-74314093895a%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C.png";
+        this.url = "https://anyzoo-photo-bucket.s3.ap-northeast-2.amazonaws.com/user/9fd7dbf5-c9c8-4d9a-adb5-b04ed11fae9fimage.png";
     }
 
     public UserImage(User kakaoUser, KakaoUserInfoDto kakaoUserInfoDto) {
