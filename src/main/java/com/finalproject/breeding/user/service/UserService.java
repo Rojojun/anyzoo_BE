@@ -7,17 +7,15 @@ import com.finalproject.breeding.dto.*;
 import com.finalproject.breeding.image.model.UserImage;
 import com.finalproject.breeding.image.repository.UserImageRepository;
 import com.finalproject.breeding.service.VerificationEmailSenderService;
-import com.finalproject.breeding.user.UserValidator;
+import com.finalproject.breeding.user.*;
 import com.finalproject.breeding.user.dto.requestDto.LoginDto;
+import com.finalproject.breeding.user.dto.requestDto.ProfileImageDto;
 import com.finalproject.breeding.user.dto.requestDto.SignupRequestDto;
 import com.finalproject.breeding.user.dto.requestDto.TokenRequestDto;
-import com.finalproject.breeding.user.UserEditDto;
 import com.finalproject.breeding.user.dto.responseDto.TokenDto;
 import com.finalproject.breeding.error.CustomException;
 import com.finalproject.breeding.error.ErrorCode;
 import com.finalproject.breeding.etc.model.RefreshToken;
-import com.finalproject.breeding.user.User;
-import com.finalproject.breeding.user.UserRole;
 import com.finalproject.breeding.user.dto.responseDto.UserInfo;
 import com.finalproject.breeding.user.repository.RefreshTokenRepository;
 import com.finalproject.breeding.user.repository.UserRepository;
@@ -219,6 +217,7 @@ public class UserService {
                         .verification(true)
                         .phoneNumber(signupRequestDto.getPhoneNumber())
                         .userRole(UserRole.ROLE_USER)
+                        .registerType(RegisterType.GENERAL)
                         .build()
         ));
 
@@ -286,8 +285,8 @@ public class UserService {
         User user = userRepository.findByUsername(socialLoginRequestDto.getEmail())
                 .orElseGet(() -> {
                             User tempUser = userRepository.save(new User(socialLoginRequestDto));
-//                            UserImage userImage = userImageRepository.save(new UserImage(tempUser, socialLoginRequestDto));
-//                            tempUser.updateProfileImage(userImage);
+                            UserImage userImage = userImageRepository.save(new UserImage(tempUser));
+                            tempUser.updateProfileImage(userImage);
                             return tempUser;
                         }
                 );
@@ -308,7 +307,8 @@ public class UserService {
         if (kakaoUser == null) {
         // role: 일반 사용자
             UserRole role = UserRole.ROLE_USER;
-            kakaoUser = new User(role, kakaoId, getSocialRandomValue("kakaoUser"));
+            RegisterType registerType = RegisterType.SOCIAL;
+            kakaoUser = new User(role, registerType ,kakaoId, getSocialRandomValue("kakaoUser"));
 
             User user = userRepository.save(kakaoUser);
 
@@ -438,21 +438,39 @@ public class UserService {
             }
     }
 
+    @Transactional
+    public Map<String, Object> editUserInfo(UserEditDto userEditDto) {
+        User user = getUser();
+        if(Optional.ofNullable(userEditDto.getNickname()).isPresent()) {
+            user.editUserNickname(userEditDto.getNickname());
+        }
+        if(Optional.ofNullable(userEditDto.getPhoneNumber()).isPresent()){
+            user.editUserPhoneNumber(userEditDto.getPhoneNumber());
+        }
+        if(Optional.ofNullable(userEditDto.getNewPassword()).isPresent()){
+            if(passwordEncoder.matches(userEditDto.getOldPassword(), user.getPassword())){
+                user.changePassword(passwordEncoder.encode(userEditDto.getNewPassword()));
+            }else{
+                throw new CustomException(ErrorCode.PASSWORDS_NOT_MATCH);
+            }
+        }
+        Map<String, Object> data = new HashMap<>();
+        data.put("nickname", new UserInfo(user));
+        return data;
+    }
 
     @Transactional
-    public Map<String, Object> edit(UserEditDto userEditDto) {
+    public Map<String, Object> editUserImage(ProfileImageDto profileImageDto){
         User user = getUser();
         userImageRepository.delete(user.getUserImage()); //유저가 기존에 저장한 프로필사진 삭제
 
         UserImage userImage;
-        if (userEditDto.getUserImage()==null){
+        if (profileImageDto.getUserImage()==null){
             userImageRepository.save(userImage = new UserImage());
         } else {
-            userImage = userImageRepository.findById(userEditDto.getUserImage()).orElseThrow(()->new CustomException(ErrorCode.Image_NOT_FOUND));
+            userImage = userImageRepository.findById(profileImageDto.getUserImage()).orElseThrow(()->new CustomException(ErrorCode.Image_NOT_FOUND));
         }
         userImage.updateToUser(user);
-
-        user.edit(userEditDto);
 
         Map<String, Object> data = new HashMap<>();
         data.put("nickname", new UserInfo(user));

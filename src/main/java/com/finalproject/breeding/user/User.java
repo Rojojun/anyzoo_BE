@@ -1,9 +1,8 @@
 package com.finalproject.breeding.user;
 
-import com.finalproject.breeding.dto.KakaoUserInfoDto;
+import com.finalproject.breeding.dto.SocialLoginRequestDto;
 import com.finalproject.breeding.etc.model.Timestamped;
 import com.finalproject.breeding.image.model.UserImage;
-import com.finalproject.breeding.dto.SocialLoginRequestDto;
 import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +15,7 @@ import java.util.UUID;
 @Getter
 @Entity
 @NoArgsConstructor
-public class User extends Timestamped{
+public class User extends Timestamped {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -49,7 +48,7 @@ public class User extends Timestamped{
     @Column
     private boolean verification;
 
-    @Column(nullable=true)
+    @Column(nullable = true)
     private String phoneNumber;
 
     @Column
@@ -64,16 +63,20 @@ public class User extends Timestamped{
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    private RegisterType registerType;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
-
     @Builder
-    public User(String username, String password, String nickname, UserRole userRole, Boolean verification, String phoneNumber, UserImage userImage){
+    public User(String username, String password, String nickname, RegisterType registerType, UserRole userRole, Boolean verification, String phoneNumber, UserImage userImage) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
         this.userImage = userImage;
         this.userRole = userRole;
+        this.registerType = registerType;
         this.exp = 0L;
         this.tier = 0;
         this.follower = 0L;
@@ -83,11 +86,12 @@ public class User extends Timestamped{
     }
 
     //Google
-    public User(SocialLoginRequestDto socialLoginRequestDto){
+    public User(SocialLoginRequestDto socialLoginRequestDto) {
         this.username = socialLoginRequestDto.getEmail();
         this.nickname = "googleUser" + UUID.randomUUID().toString().replaceAll("-", "").substring(0, 5);
         this.phoneNumber = "0000";
         this.userRole = UserRole.ROLE_USER;
+        this.registerType = RegisterType.SOCIAL;
         this.exp = 0L;
         this.tier = 0;
         this.follower = 0L;
@@ -96,10 +100,11 @@ public class User extends Timestamped{
     }
 
     //kakao
-    public User(UserRole role, Long kakaoId, String socialRandomValue){
+    public User(UserRole role, RegisterType registerType, Long kakaoId, String socialRandomValue) {
         this.username = socialRandomValue;
         this.nickname = socialRandomValue;
         this.userRole = role;
+        this.registerType = registerType;
         this.phoneNumber = "0000";
         this.exp = 0L;
         this.tier = 0;
@@ -109,47 +114,56 @@ public class User extends Timestamped{
         this.verification = true;
     }
 
-    public void edit(UserEditDto userEditDto){
-        this.nickname = userEditDto.getNickname();
-        this.password = userEditDto.getPassword();
-        //this.userImage = userEditDto.getImg();
+    public void editUserNickname(String nickname) {
+        this.nickname = nickname;
     }
 
-    public void changePassword(String newPassword){
+    public void editUserPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void changePassword(String newPassword) {
         this.password = newPassword;
     }
 
     //--------exp--------
-    public void oneLvUp(User user){
-        this.tier = user.getTier()+1;
-        this.exp = user.getExp()-10000L;
-    }
-    public void twoLvUp(User user){
-        this.tier = user.getTier()+1;
-        this.exp = user.getExp()-20000L;
-    }
-    public void threeLvUp(User user){
-        this.tier = user.getTier()+1;
-        this.exp = user.getExp()-40000L;
-    }
-    public void tenExpUp(User user){
-        this.exp = user.getExp()+10L;
-    }
-    public void fiveExpUp(User user){
-        this.exp = user.getExp()+5L;
+    public void oneLvUp(User user) {
+        this.tier = user.getTier() + 1;
+        this.exp = user.getExp() - 10000L;
     }
 
-    public void following(User user){
-        this.follower = user.getFollower()+1L;
+    public void twoLvUp(User user) {
+        this.tier = user.getTier() + 1;
+        this.exp = user.getExp() - 20000L;
     }
-    public void follower(User user){
-        this.following = user.getFollowing()+1L;
+
+    public void threeLvUp(User user) {
+        this.tier = user.getTier() + 1;
+        this.exp = user.getExp() - 40000L;
     }
-    public void unFollowing(User user){
-        this.follower = user.getFollower()-1L;
+
+    public void tenExpUp(User user) {
+        this.exp = user.getExp() + 10L;
     }
-    public void unFollower(User user){
-        this.following = user.getFollowing()-1L;
+
+    public void fiveExpUp(User user) {
+        this.exp = user.getExp() + 5L;
+    }
+
+    public void following(User user) {
+        this.follower = user.getFollower() + 1L;
+    }
+
+    public void follower(User user) {
+        this.following = user.getFollowing() + 1L;
+    }
+
+    public void unFollowing(User user) {
+        this.follower = user.getFollower() - 1L;
+    }
+
+    public void unFollower(User user) {
+        this.following = user.getFollowing() - 1L;
     }
 
     public void updateProfileImage(UserImage userImage) {
