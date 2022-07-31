@@ -73,6 +73,7 @@ public class AwsS3Service {
         // 파일 확장자명 벨리데이션 체크
         ArrayList<String> accessableLists = new ArrayList<>();
         accessableLists.add(".jpg");
+        accessableLists.add(".jpeg");
         accessableLists.add(".png");
         accessableLists.add(".gif");
 
@@ -128,6 +129,7 @@ public class AwsS3Service {
     public UserImage uploadUser(MultipartFile multipartFile, String dirName) throws IOException, java.io.IOException {
         ArrayList<String> accessableLists = new ArrayList<>();
         accessableLists.add(".jpg");
+        accessableLists.add(".jpeg");
         accessableLists.add(".png");
         accessableLists.add(".gif");
 
