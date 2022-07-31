@@ -462,7 +462,6 @@ public class UserService {
     @Transactional
     public Map<String, Object> editUserImage(ProfileImageDto profileImageDto){
         User user = getUser();
-        userImageRepository.delete(user.getUserImage()); //유저가 기존에 저장한 프로필사진 삭제
 
         UserImage userImage;
         if (profileImageDto.getUserImage()==null){
@@ -470,6 +469,7 @@ public class UserService {
         } else {
             userImage = userImageRepository.findById(profileImageDto.getUserImage()).orElseThrow(()->new CustomException(ErrorCode.Image_NOT_FOUND));
         }
+        user.updateProfileImage(userImage);
         userImage.updateToUser(user);
 
         Map<String, Object> data = new HashMap<>();
