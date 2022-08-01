@@ -71,9 +71,13 @@ public class AwsS3Service {
         // 파일 확장자명 벨리데이션 체크
         ArrayList<String> accessableLists = new ArrayList<>();
         accessableLists.add(".jpg");
+        accessableLists.add(".JPG");
         accessableLists.add(".jpeg");
+        accessableLists.add(".JPEG");
         accessableLists.add(".png");
+        accessableLists.add(".PNG");
         accessableLists.add(".gif");
+        accessableLists.add(".GIF");
 
         List<PostImage> postImages = new ArrayList<>();
 
@@ -127,9 +131,13 @@ public class AwsS3Service {
     public UserImage uploadUser(MultipartFile multipartFile, String dirName) throws IOException, java.io.IOException {
         ArrayList<String> accessableLists = new ArrayList<>();
         accessableLists.add(".jpg");
+        accessableLists.add(".JPG");
         accessableLists.add(".jpeg");
+        accessableLists.add(".JPEG");
         accessableLists.add(".png");
+        accessableLists.add(".PNG");
         accessableLists.add(".gif");
+        accessableLists.add(".GIF");
 
         File file = convertMultipartFileToFile(multipartFile)
                 .orElseThrow(() -> new CustomException(ErrorCode.IMAGE_UPLOAD_ERROR));
