@@ -6,6 +6,7 @@ import com.finalproject.breeding.dto.NewPasswordDto;
 import com.finalproject.breeding.dto.PhoneVerificationDto;
 import com.finalproject.breeding.dto.UserResponseDto;
 import com.finalproject.breeding.user.dto.requestDto.LoginDto;
+import com.finalproject.breeding.user.dto.requestDto.ProfileImageDto;
 import com.finalproject.breeding.user.dto.requestDto.SignupRequestDto;
 import com.finalproject.breeding.user.dto.requestDto.TokenRequestDto;
 import com.finalproject.breeding.etc.dto.response.StatusResponseDto;
@@ -87,21 +88,27 @@ public class UserController {
     //Google oauth api
     @GetMapping("/user/oauth/google")
     public ResponseEntity<UserResponseDto> socialLogin(@RequestHeader("code") String code){
-        return ResponseEntity.ok(new UserResponseDto(userService.googleLogin(code), "로그인 되었습니다"));
+        return ResponseEntity.ok(new UserResponseDto(userService.googleLogin(code), "로그인 되었습니다."));
     }
 
     //Kakao oauth api
     @GetMapping("/user/oauth/kakao")
     public ResponseEntity<UserResponseDto> kakaoLogin(@RequestHeader("code") String code) throws JsonProcessingException {
-        return ResponseEntity.ok(new UserResponseDto(userService.kakaoLogin(code), "로그인 되었습니다"));
+        return ResponseEntity.ok(new UserResponseDto(userService.kakaoLogin(code), "로그인 되었습니다."));
     }
 
 
     //----------------------------유저 정보 수정 관련-------------------------------
-    @PatchMapping("/user/edit")
-    public ResponseEntity<Object> edit(@RequestBody UserEditDto userEditDto){
-        Map<String, Object> data = userService.edit(userEditDto);
-        return new ResponseEntity<>(new StatusResponseDto("수정 되었습니다..", data), HttpStatus.OK);
+    @PatchMapping("/api/user/edit/userInfo")
+    public ResponseEntity<Object> editUserInfo(@RequestBody UserEditDto userEditDto){
+        Map<String, Object> data = userService.editUserInfo(userEditDto);
+        return new ResponseEntity<>(new StatusResponseDto("수정 되었습니다.", data), HttpStatus.OK);
+    }
+
+    @PatchMapping("/api/user/edit/userImage")
+    public ResponseEntity<Object> editUserImage(@RequestBody ProfileImageDto profileImageDto){
+        Map<String, Object> data = userService.editUserImage(profileImageDto);
+        return new ResponseEntity<>(new StatusResponseDto("변경 되었습니다.", data), HttpStatus.OK);
     }
 
     @PostMapping("/user/make/newPassword")
@@ -123,11 +130,6 @@ public class UserController {
        return new UserInfo(userService.getUser());
     }
 
-    @GetMapping("/api/user/userInfoTest")
-    @ResponseBody
-    public User getuser() {
-        return userService.getUser();
-    }
 
     //@ExceptionHandler(Exception.class)
     //@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

@@ -22,6 +22,7 @@ public class ReelsResponseDto {
     private String userProfileImg;
     private String video;
     private String thumbnail;
+    private  Long commentCnt;
 
     public ReelsResponseDto(Reels reels) {
         this.reelsId = reels.getId();
@@ -35,5 +36,6 @@ public class ReelsResponseDto {
         this.userProfileImg = reels.getUser().getUserImage().getUrl();
         this.video = reels.getVideo();
         this.thumbnail = reels.getTitleImg();
+        this.commentCnt = reels.getBoardMain().getCommentCnt();
     }
 }

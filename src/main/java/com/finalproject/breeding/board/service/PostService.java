@@ -107,11 +107,8 @@ public class PostService {
         if (!Objects.equals(user.getId(), post.getUser().getId())) {
             throw new CustomException(ErrorCode.POST_UPDATE_WRONG_ACCESS);
         }
-        List<PostImage> postImages = requestDto.getPostImages();
-
-        post.updatePost(requestDto, post.getBoardMain(), post.getPostImage());
-
-        imageUpdateToPost(postImages, post);
+        post.getBoardMain().updatePost(requestDto);
+        post.updatePost(requestDto);
 
         Map<String, Object> data = new HashMap<>();
         data.put("postId", post.getId());

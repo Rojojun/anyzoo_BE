@@ -8,8 +8,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ReelsRequest4EditDto {
-    private String content;
-    private String video;
-    private String thumbnail;
+    private String contents;
     private String categoryName;
 }

@@ -60,10 +60,8 @@ public class Reels {
         }
     }
 
-    public void updateReels(ReelsRequest4EditDto requestDto, BoardMain boardMain, String video, String thumbnail) {
+    public void updateReels(ReelsRequest4EditDto requestDto, BoardMain boardMain) {
         this.boardMain = boardMain;
-        this.video = video;
-        this.titleImg = thumbnail;
         switch (requestDto.getCategoryName()) {
             case "comic":
                 this.postNReelsCategory = PostNReelsCategory.COMIC;

@@ -12,7 +12,7 @@ import lombok.Setter;
 public class ImageResponseDto {
     private String url;
 
-    public ImageResponseDto(PostImage postImage){
+    public ImageResponseDto(PostImage postImage) {
         this.url = postImage.getUrl();
     }
 }

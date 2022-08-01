@@ -39,9 +39,6 @@ public class Post {
     @Enumerated(EnumType.STRING)
     private PostNReelsCategory postNReelsCategory;
 
-
-
-
     public Post(PostRequestDto postRequestDto, BoardMain boardMain, User user, List<PostImage> postImages) {
         this.boardMain = boardMain;
         this.user = user;
@@ -63,9 +60,7 @@ public class Post {
         }
     }
 
-    public void updatePost(PostRequest4EditDto requestDto, BoardMain boardMain, List<PostImage> postImage) {
-        this.boardMain = boardMain;
-        this.postImage = postImage;
+    public void updatePost(PostRequest4EditDto requestDto) {
         switch (requestDto.getCategoryName()) {
             case "comic":
                 this.postNReelsCategory = PostNReelsCategory.COMIC;

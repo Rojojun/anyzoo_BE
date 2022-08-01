@@ -7,17 +7,15 @@ import com.finalproject.breeding.dto.*;
 import com.finalproject.breeding.image.model.UserImage;
 import com.finalproject.breeding.image.repository.UserImageRepository;
 import com.finalproject.breeding.service.VerificationEmailSenderService;
-import com.finalproject.breeding.user.UserValidator;
+import com.finalproject.breeding.user.*;
 import com.finalproject.breeding.user.dto.requestDto.LoginDto;
+import com.finalproject.breeding.user.dto.requestDto.ProfileImageDto;
 import com.finalproject.breeding.user.dto.requestDto.SignupRequestDto;
 import com.finalproject.breeding.user.dto.requestDto.TokenRequestDto;
-import com.finalproject.breeding.user.UserEditDto;
 import com.finalproject.breeding.user.dto.responseDto.TokenDto;
 import com.finalproject.breeding.error.CustomException;
 import com.finalproject.breeding.error.ErrorCode;
 import com.finalproject.breeding.etc.model.RefreshToken;
-import com.finalproject.breeding.user.User;
-import com.finalproject.breeding.user.UserRole;
 import com.finalproject.breeding.user.dto.responseDto.UserInfo;
 import com.finalproject.breeding.user.repository.RefreshTokenRepository;
 import com.finalproject.breeding.user.repository.UserRepository;
@@ -28,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
 import org.apache.http.protocol.HTTP;
+import org.apache.tomcat.jni.Local;
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -46,6 +45,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -63,6 +64,9 @@ public class UserService {
 
     //잠시동안 저장할 유저 핸드폰 번호와 인증번호
     public static HashMap<String,String> phoneVerificationDB = new HashMap<>();
+
+    //인증코드드
+    public static HashMap<String, LocalDateTime> verificationDuration = new HashMap<>();
 
     //잠시동안 저장할 유저 이메일과 이메일 authToken
     public static HashMap<String,String> emailVerificationDB = new HashMap<>();
@@ -108,12 +112,13 @@ public class UserService {
         System.out.println("수신자 번호: " + phoneNumber);
         System.out.println("인증 번호: " + numStr);
         phoneVerificationDB.put(phoneNumber, numStr);
+        verificationDuration.put(phoneNumber, LocalDateTime.now());
 
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("to", phoneNumber); //수신전화번호
         params.put("from", "01083231544"); //발신전화번호
         params.put("type", "SMS");
-        params.put("text", "anyZoo 휴대폰인증 테스트 메세지 : 인증번호는" + "[" + numStr + "]" + "입니다.");
+        params.put("text", "ANYZOO 인증번호는" + "[" + numStr + "]" + "입니다.");
         params.put("app_version", "test app 1.2");
 
         try{
@@ -128,9 +133,19 @@ public class UserService {
     public boolean compareConfirmNumber(PhoneVerificationDto phoneVerificationDto){
         String tests = phoneVerificationDB.get(phoneVerificationDto.getPhoneNumber());
         if(Optional.ofNullable(tests).isPresent()){
+            LocalDateTime timeNow = LocalDateTime.now();
+            LocalDateTime beginningTime = verificationDuration.get(phoneVerificationDto.getPhoneNumber());
+            Duration duration = Duration.between(timeNow, beginningTime);
             if(tests.equals(phoneVerificationDto.getNumStr())){
-                phoneVerificationDB.remove(phoneVerificationDto.getPhoneNumber());
-                return true;
+                if(duration.getSeconds() > 181){
+                    phoneVerificationDB.remove(phoneVerificationDto.getPhoneNumber());
+                    verificationDuration.remove(phoneVerificationDto.getPhoneNumber());
+                    return false;
+                }else{
+                    phoneVerificationDB.remove(phoneVerificationDto.getPhoneNumber());
+                    verificationDuration.remove(phoneVerificationDto.getPhoneNumber());
+                    return true;
+                }
             }else{
                 return false;
             }
@@ -202,6 +217,7 @@ public class UserService {
                         .verification(true)
                         .phoneNumber(signupRequestDto.getPhoneNumber())
                         .userRole(UserRole.ROLE_USER)
+                        .registerType(RegisterType.GENERAL)
                         .build()
         ));
 
@@ -263,12 +279,13 @@ public class UserService {
     }
 
     //Google 로그인
+    @Transactional
     public SocialTokenDto googleLogin(String code) {
         SocialLoginRequestDto socialLoginRequestDto = googleRestTemplate.googleUserInfoByAccessToken(googleRestTemplate.findAccessTokenByCode(code).getAccess_token());
         User user = userRepository.findByUsername(socialLoginRequestDto.getEmail())
                 .orElseGet(() -> {
                             User tempUser = userRepository.save(new User(socialLoginRequestDto));
-                            UserImage userImage = userImageRepository.save(new UserImage(tempUser, socialLoginRequestDto));
+                            UserImage userImage = userImageRepository.save(new UserImage(tempUser));
                             tempUser.updateProfileImage(userImage);
                             return tempUser;
                         }
@@ -290,7 +307,8 @@ public class UserService {
         if (kakaoUser == null) {
         // role: 일반 사용자
             UserRole role = UserRole.ROLE_USER;
-            kakaoUser = new User(role, kakaoId, getSocialRandomValue());
+            RegisterType registerType = RegisterType.SOCIAL;
+            kakaoUser = new User(role, registerType ,kakaoId, getSocialRandomValue("kakaoUser"));
 
             User user = userRepository.save(kakaoUser);
 
@@ -302,9 +320,9 @@ public class UserService {
     }
 
 
-    public String getSocialRandomValue() {
+    public String getSocialRandomValue(String provider) {
         while (true) {
-            String value = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 15);
+            String value = provider + UUID.randomUUID().toString().replaceAll("-", "").substring(0, 5);
             if (!userRepository.existsByUsername(value) && !userRepository.existsByNickname(value)) {
                 return value;
             }
@@ -340,7 +358,7 @@ public class UserService {
 
 // HTTP Body 생성
             StringBuilder body = new StringBuilder();
-            body.append("grant_type=authorization_code&client_id=7ed074dd8ee05fafa99735fba28a41d2&redirect_uri=http://localhost:3000/oauth&code=" + code + "&client_secret=28ibusk6KsYMwzHk2MyKow5ed5wV8j8l");
+            body.append("grant_type=authorization_code&client_id=7ed074dd8ee05fafa99735fba28a41d2&redirect_uri=https://anyzoo.co.kr/oauth&code=" + code + "&client_secret=28ibusk6KsYMwzHk2MyKow5ed5wV8j8l");
 //https://anyzoo.co.kr/oauth
 
 // HTTP 요청 보내기
@@ -420,21 +438,42 @@ public class UserService {
             }
     }
 
+    @Transactional
+    public Map<String, Object> editUserInfo(UserEditDto userEditDto) {
+        User user = getUser();
+        if(Optional.ofNullable(userEditDto.getNickname()).isPresent()) {
+            user.editUserNickname(userEditDto.getNickname());
+        }
+        if(Optional.ofNullable(userEditDto.getPhoneNumber()).isPresent()){
+            user.editUserPhoneNumber(userEditDto.getPhoneNumber());
+        }
+        if(Optional.ofNullable(userEditDto.getPassword()).isPresent()){
+            user.changePassword(passwordEncoder.encode(userEditDto.getPassword()));
+        }
+        //        if(Optional.ofNullable(userEditDto.getNewPassword()).isPresent()){
+//            if(passwordEncoder.matches(userEditDto.getOldPassword(), user.getPassword())){
+//                user.changePassword(passwordEncoder.encode(userEditDto.getNewPassword()));
+//            }else{
+//                throw new CustomException(ErrorCode.PASSWORDS_NOT_MATCH);
+//            }
+//        }
+        Map<String, Object> data = new HashMap<>();
+        data.put("nickname", new UserInfo(user));
+        return data;
+    }
 
     @Transactional
-    public Map<String, Object> edit(UserEditDto userEditDto) {
+    public Map<String, Object> editUserImage(ProfileImageDto profileImageDto){
         User user = getUser();
-        userImageRepository.delete(user.getUserImage()); //유저가 기존에 저장한 프로필사진 삭제
 
         UserImage userImage;
-        if (userEditDto.getUserImage()==null){
+        if (profileImageDto.getUserImage()==null){
             userImageRepository.save(userImage = new UserImage());
         } else {
-            userImage = userImageRepository.findById(userEditDto.getUserImage()).orElseThrow(()->new CustomException(ErrorCode.Image_NOT_FOUND));
+            userImage = userImageRepository.findById(profileImageDto.getUserImage()).orElseThrow(()->new CustomException(ErrorCode.Image_NOT_FOUND));
         }
+        user.updateProfileImage(userImage);
         userImage.updateToUser(user);
-
-        user.edit(userEditDto);
 
         Map<String, Object> data = new HashMap<>();
         data.put("nickname", new UserInfo(user));

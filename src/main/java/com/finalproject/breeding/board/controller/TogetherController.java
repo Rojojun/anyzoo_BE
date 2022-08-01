@@ -1,9 +1,6 @@
 package com.finalproject.breeding.board.controller;
 
-import com.finalproject.breeding.board.dto.CityResponseDto;
-import com.finalproject.breeding.board.dto.ProvinceResponseDto;
-import com.finalproject.breeding.board.dto.TogetherRequestDto;
-import com.finalproject.breeding.board.dto.TogetherResponseDto;
+import com.finalproject.breeding.board.dto.*;
 import com.finalproject.breeding.board.repository.TogetherRepository;
 import com.finalproject.breeding.board.service.TogetherService;
 import com.finalproject.breeding.etc.dto.response.StatusResponseDto;
@@ -51,18 +48,38 @@ public class TogetherController {
 
     @GetMapping("/api/together/detail/{boardMainId}") // 특정 글 조회
     public TogetherResponseDto getTogether(@PathVariable Long boardMainId){
-        return togetherRepository.findByBoardMainId(boardMainId);
+        return togetherRepository.findTogetherByBoardMainId(boardMainId);
     }
 
-    @GetMapping("/api/together/category/{provinceId}") // 지역조회
+    @GetMapping("/api/together/category/province/{provinceId}") // 동 기준 글 조회
     public Slice<TogetherResponseDto> getProvinceTogether(HttpServletRequest httpServletRequest, @PathVariable Long provinceId){
         int page = Integer.parseInt(httpServletRequest.getParameter("page"));
         return togetherService.getProvinceTogether(page, provinceId);
     }
+
+    @GetMapping("/api/together/category/city/{cityId}") // 구 기준 글 조회
+    public Slice<TogetherResponseDto> getCityTogether(HttpServletRequest httpServletRequest, @PathVariable Long cityId){
+        int page = Integer.parseInt(httpServletRequest.getParameter("page"));
+        return togetherService.getCityTogether(page, cityId);
+    }
+
     @GetMapping("/api/together") // 전체조회
     public Slice<TogetherResponseDto> getProvinceTogether(HttpServletRequest httpServletRequest){
         int page = Integer.parseInt(httpServletRequest.getParameter("page"));
         return togetherService.getAllTogether(page);
     }
 
+    @PatchMapping("/api/together/detail/{boardMainId}")
+    public ResponseEntity<Object> updateTogether(@RequestBody TogetherRequestDto togetherRequestDto, @PathVariable Long boardMainId){
+        User user = userService.getUser();
+        Map<String, Object> data = togetherService.updateTogether(togetherRequestDto, boardMainId, user);
+        return new ResponseEntity<>(new StatusResponseDto("수정 되었습니다.", data), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/api/together/detail/{boardMainId}")
+    public ResponseEntity<Object> deleteTogether(@PathVariable Long boardMainId){
+        User user = userService.getUser();
+        togetherService.deleteTogether(boardMainId, user);
+        return new ResponseEntity<>(new StatusResponseDto("삭제 되었습니다.", ""), HttpStatus.OK);
+    }
 }

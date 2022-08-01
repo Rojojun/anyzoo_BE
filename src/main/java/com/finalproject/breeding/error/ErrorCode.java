@@ -14,7 +14,7 @@ public enum ErrorCode {
 
     //문자열 체크
     NOT_VALIDCONTENT(HttpStatus.BAD_REQUEST,400,"유효하지 않는 내용입니다."),
-    NOT_VALIDURL(HttpStatus.BAD_REQUEST,400,"요효하지 않는 URL 입니다."),
+    NOT_VALIDURL(HttpStatus.BAD_REQUEST,400,"유효하지 않는 URL 입니다."),
 
     //유저 인증
     NOT_VERIFIED_USER_INFORMATION(HttpStatus.INTERNAL_SERVER_ERROR, 500, "인증되지 않은 회원 정보입니다"),
@@ -59,12 +59,13 @@ public enum ErrorCode {
     //기타
     NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT(HttpStatus.INTERNAL_SERVER_ERROR, 998, "Security Context에 인증 정보가 없습니다."),
     NOT_FOUND_USER_INFO(HttpStatus.NOT_FOUND, 404, "해당 유저가 존재하지 않습니다"),
+    PASSWORDS_NOT_MATCH(HttpStatus.NOT_FOUND, 500, "비밀번호가 일치하지 않습니다"),
 
     // 이미지
     WRONG_INPUT_IMAGE(HttpStatus.BAD_REQUEST, 400, "이미지는 반드시 있어야 합니다"),
     Image_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "해당 이미지를 찾을 수 없습니다"),
     IMAGE_UPLOAD_ERROR(HttpStatus.BAD_REQUEST, 400, "이미지 업로드에 실패했습니다"),
-    WRONG_IMAGE_FORMAT(HttpStatus.BAD_REQUEST, 400, "지원하지 않는 파일 형식입니다"),
+    //WRONG_IMAGE_FORMAT(HttpStatus.BAD_REQUEST, 400, "지원하지 않는 파일 형식입니다"),
 
     // Post
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "해당 게시물을 찾을 수 없습니다"),
@@ -110,7 +111,14 @@ public enum ErrorCode {
     NOT_EXIST_ROOM(HttpStatus.NOT_FOUND,404,"채팅방이 존재하지 않습니다."),
 
     //sse
-    NOT_EXIST_NOTIFICATION(HttpStatus.NOT_FOUND,404,"존재하지 않는 알림입니다.");
+    NOT_EXIST_NOTIFICATION(HttpStatus.NOT_FOUND,404,"존재하지 않는 알림입니다."),
+
+    //video
+    TIME_VALIDATION_WRONG(HttpStatus.BAD_REQUEST, 500, "업로드 하려는 비디오의 길이가 4초보다 짧거나 300초를 초과합니다."),
+    RESOLUTION_VALIDAION_WRONG(HttpStatus.BAD_REQUEST, 500, "업로드 하려는 비디오의 화질이 300pixel 미만입니다."),
+
+    //FILES
+    EXTRACTION_VALIDATION_ERROR(HttpStatus.BAD_REQUEST, 500, "지원하지 않는 확장 파일입니다.");
 
 
 

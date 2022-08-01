@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserEditDto {
     String nickname;
+    String phoneNumber;
     String password;
-    Long userImage;
+//    String newPassword;
+//    String oldPassword;
 }
