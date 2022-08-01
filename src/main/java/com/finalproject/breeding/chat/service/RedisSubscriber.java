@@ -31,9 +31,9 @@ public class RedisSubscriber implements MessageListener {
             ChatRoomMessage roomMessage = objectMapper.readValue(publishMessage, ChatRoomMessage.class);
             // WS 구독자에게 채팅 메시지 전달
             // SendTo의 역할을 대체하는거 같음 Ex) /sub/chat/room/1 (1번 룸 가정하에...)
-            log.info("destination is (ROOM NUMBER): " + roomMessage.getChatRoomId());
-            log.info("destination is (ROOM PATH WITH NUMBER) : /sub/chat/room/" + roomMessage.getChatRoomId());
-            messagingTemplate.convertAndSend("/sub/chat/room/" + roomMessage.getChatRoomId(), roomMessage);
+            log.info("destination is (ROOM NUMBER): " + roomMessage.getRoomId());
+            log.info("destination is (ROOM PATH WITH NUMBER) : /sub/chat/room/" + roomMessage.getRoomId());
+            messagingTemplate.convertAndSend("/sub/chat/room/" + roomMessage.getRoomId(), roomMessage);
             } catch (Exception e) {
             log.error(e.getMessage());
         }

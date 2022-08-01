@@ -1,27 +1,34 @@
 package com.finalproject.breeding.chat.model;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.finalproject.breeding.chat.dto.ChatMessageRequestDto;
+import lombok.*;
 import org.springframework.data.web.JsonPath;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
-@Entity
 @Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@JsonDeserialize
 public class ChatRoomMessage {
+
+    private static final long serialVersionUID = 6494678977089006639L;
 
     // 메시지 타입 : 입장, 퇴장, 채팅
     public enum MessageType {
         ENTER, QUIT, TALK
     }
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    private Long id;
-
+    private MessageType type;
+    private Long roomId;
+    private Long memberId;
+    private String sender;
+    private String message;
+    private String createdAt;
+/*
     @JoinColumn(name = "CHAT_ROOM_USER_ID")
     @ManyToOne
     private ChatRoomUser chatRoomUser;
@@ -39,14 +46,24 @@ public class ChatRoomMessage {
 
     @Column
     @NotEmpty
-    private MessageType type;
+    private MessageType type;*/
 
     @Builder
-    public ChatRoomMessage(ChatRoomUser chatRoomUser, String message, MessageType type) {
-        this.chatRoomUser = chatRoomUser;
-        this.UserId = getUserId();
-        this.chatRoomId = getChatRoomId();
-        this.message = message;
+    public ChatRoomMessage(MessageType type, Long roomId, String sender, String senderEmail, String senderImg, String message, String createdAt) {
         this.type = type;
+        this.roomId = roomId;
+        this.sender = sender;
+        this.message = message;
+        this.createdAt = createdAt;
+    }
+
+    @Builder
+    public ChatRoomMessage(ChatMessageRequestDto chatMessageRequestDto) {
+        this.type = chatMessageRequestDto.getType();
+        this.roomId = chatMessageRequestDto.getRoomId();
+        this.memberId = chatMessageRequestDto.getMemberId();
+        this.sender = chatMessageRequestDto.getSender();
+        this.message = chatMessageRequestDto.getMessage();
+        this.createdAt = chatMessageRequestDto.getCreatedAt();
     }
 }

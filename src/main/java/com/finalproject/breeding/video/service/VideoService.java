@@ -30,13 +30,17 @@ public class VideoService {
         ArrayList<String> accessableLists = new ArrayList<>();
 
         accessableLists.add(".mp4");
+        accessableLists.add(".MP4");
         accessableLists.add(".avi");
-        accessableLists.add(".mov");
+        accessableLists.add(".AVI");
         accessableLists.add(".mov");
         accessableLists.add(".MOV");
         accessableLists.add(".m4v");
+        accessableLists.add(".M4V");
         accessableLists.add(".wmv");
+        accessableLists.add(".WMV");
         accessableLists.add(".mkv");
+        accessableLists.add(".MKV");
 
         if (accessableLists.contains(ext)) {
             log.info(ext, "파일 확장자 유효성 검증에 성공하였습니다.");

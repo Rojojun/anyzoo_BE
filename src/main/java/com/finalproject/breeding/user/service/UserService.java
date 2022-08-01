@@ -524,4 +524,9 @@ public class UserService {
         );
     }
 
+    public User getUserObject(String username) {
+        return userRepository.findByUsername(username).orElseThrow(
+                () -> new UsernameNotFoundException("존재하지 않는 유저입니다")
+        );
+    }
 }
