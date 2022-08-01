@@ -86,6 +86,11 @@ public class TogetherService {
         }
     }
 
+    public Slice<TogetherResponseDto> getCityTogether(int page, Long cityId) {
+        PageRequest pageRequest = PageRequest.of(page, 5);
+        return togetherRepository.findByProvinceCityIdOrderByBoardMainCreatedAtDesc(pageRequest, cityId);
+    }
+
 
     @Transactional(readOnly = true)
     public Slice<TogetherResponseDto> getProvinceTogether(int page, Long provinceId) {

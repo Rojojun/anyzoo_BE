@@ -51,11 +51,18 @@ public class TogetherController {
         return togetherRepository.findTogetherByBoardMainId(boardMainId);
     }
 
-    @GetMapping("/api/together/category/{provinceId}") // 지역조회
+    @GetMapping("/api/together/category/province/{provinceId}") // 동 기준 글 조회
     public Slice<TogetherResponseDto> getProvinceTogether(HttpServletRequest httpServletRequest, @PathVariable Long provinceId){
         int page = Integer.parseInt(httpServletRequest.getParameter("page"));
         return togetherService.getProvinceTogether(page, provinceId);
     }
+
+    @GetMapping("/api/together/category/city/{cityId}") // 구 기준 글 조회
+    public Slice<TogetherResponseDto> getCityTogether(HttpServletRequest httpServletRequest, @PathVariable Long cityId){
+        int page = Integer.parseInt(httpServletRequest.getParameter("page"));
+        return togetherService.getCityTogether(page, cityId);
+    }
+
     @GetMapping("/api/together") // 전체조회
     public Slice<TogetherResponseDto> getProvinceTogether(HttpServletRequest httpServletRequest){
         int page = Integer.parseInt(httpServletRequest.getParameter("page"));
