@@ -19,6 +19,7 @@ repositories {
 }
 
 dependencies {
+
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
@@ -49,7 +50,6 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-oauth2-client', version: '2.4.3'
 
     //이메일인증
@@ -60,8 +60,8 @@ dependencies {
 
     // https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
     // API 스펙 자동관리 툴 'swagger' 디펜던시
-    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
-    implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    // implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+    // implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 
     // S3, Spring-cloud-aws 의존성
     implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.3.1'
@@ -71,15 +71,18 @@ dependencies {
     // ffmpeg 의존성 추가
     implementation group: 'net.bramp.ffmpeg', name: 'ffmpeg', version: '0.7.0'
 
-    // 썸네일 추출을 위한 JCodec
-    implementation group: 'org.jcodec', name: 'jcodec-javase', version: '0.2.3'
-    implementation group: 'org.jcodec', name: 'jcodec', version: '0.2.3'
-
-    // 썸네일 Extract
-    implementation group: 'org.bytedeco', name: 'javacv-platform', version: '1.5.7'
-
     //카카오 소셜
     implementation 'com.google.code.gson:gson:2.8.7'
+
+    //websocket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.webjars:sockjs-client:1.1.2'
+    implementation 'org.webjars:stomp-websocket:2.3.3-1'
+
+    //redis
+    implementation 'it.ozimov:embedded-redis:0.7.2'
+    implementation 'javax.xml.bind:jaxb-api'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
 }
 

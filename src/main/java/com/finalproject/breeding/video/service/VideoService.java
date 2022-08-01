@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -31,6 +32,8 @@ public class VideoService {
         accessableLists.add(".mp4");
         accessableLists.add(".avi");
         accessableLists.add(".mov");
+        accessableLists.add(".mov");
+        accessableLists.add(".MOV");
         accessableLists.add(".m4v");
         accessableLists.add(".wmv");
         accessableLists.add(".mkv");

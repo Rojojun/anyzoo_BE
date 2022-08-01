@@ -39,9 +39,6 @@ public class Post {
     @Enumerated(EnumType.STRING)
     private PostNReelsCategory postNReelsCategory;
 
-
-
-
     public Post(PostRequestDto postRequestDto, BoardMain boardMain, User user, List<PostImage> postImages) {
         this.boardMain = boardMain;
         this.user = user;
