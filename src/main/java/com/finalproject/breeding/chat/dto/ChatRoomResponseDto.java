@@ -10,11 +10,11 @@ import lombok.ToString;
 @Getter
 @Setter
 public class ChatRoomResponseDto {
-    private Long id;
+    private Long chatRoomId;
     private User user;
 
     public ChatRoomResponseDto(ChatRoom chatRoom, User writer) {
-        this.id = chatRoom.getId();
+        this.chatRoomId = chatRoom.getId();
         this.user = writer;
     }
 }

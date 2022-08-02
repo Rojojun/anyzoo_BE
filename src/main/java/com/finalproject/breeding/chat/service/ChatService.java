@@ -78,7 +78,6 @@ public class ChatService {
         message.setCreatedAt(chatRoomMessage.getCreatedAt());
 
         chatRoomMessageRepository.save(message);
-
     }
     // 채팅방 전체 메시지 조회
     public List<ChatRoomMessage> getMessages(Long roomId) {

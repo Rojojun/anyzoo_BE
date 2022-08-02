@@ -9,4 +9,5 @@ import lombok.ToString;
 @ToString
 public class ChatRoomRequestDto {
     private String nickname;
+    private Long togetherId;
 }

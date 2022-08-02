@@ -77,7 +77,6 @@ public class ChatRoomService {
         String username = SecurityUtil.getCurrentUsername();
         Together together = togetherRepository.findByBoardMainId(togetherId);
         User writer = userRepository.findByUsername(username).orElse(null);
-
         User applicant = userRepository.findByNickname(requestDto.getNickname()).orElseThrow(
                 () -> new IllegalArgumentException("해당 하는 유저를 찾을 수가 없습니다."));
 
@@ -86,14 +85,14 @@ public class ChatRoomService {
         for (ChatRoom chatRoom : writerChatRoomList) {
             isExist = chatRoom.getUserList().contains(applicant);
         }
-        if (isExist) {
-            return null;
-        }
 
         assert writer != null;
         ChatRoom chatRoom = new ChatRoom(together, writer, applicant);
         chatRoomRepository.save(chatRoom);
 
+        if (isExist) {
+            return new ChatRoomResponseDto(chatRoom, writer);
+        }
         return new ChatRoomResponseDto(chatRoom, writer);
     }
 

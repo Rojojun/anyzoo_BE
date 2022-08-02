@@ -81,5 +81,6 @@ public class ChatRoom {
         this.togetherName = together;
         this.userList.add(writer);
         this.userList.add(applicant);
+        //this.id = roomId;
     }
 }
