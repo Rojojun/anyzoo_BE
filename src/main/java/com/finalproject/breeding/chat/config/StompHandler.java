@@ -1,6 +1,5 @@
 package com.finalproject.breeding.chat.config;
 
-import com.finalproject.breeding.chat.model.ChatRoom;
 import com.finalproject.breeding.chat.model.ChatRoomMessage;
 import com.finalproject.breeding.chat.service.ChatRoomService;
 import com.finalproject.breeding.chat.service.ChatService;

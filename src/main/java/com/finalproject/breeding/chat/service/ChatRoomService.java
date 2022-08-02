@@ -1,5 +1,6 @@
 package com.finalproject.breeding.chat.service;
 
+import com.finalproject.breeding.board.model.BoardMain;
 import com.finalproject.breeding.board.model.Together;
 import com.finalproject.breeding.board.repository.TogetherRepository;
 import com.finalproject.breeding.chat.dto.ChatRoomListDto;
@@ -13,6 +14,7 @@ import com.finalproject.breeding.user.User;
 import com.finalproject.breeding.user.repository.UserRepository;
 import com.finalproject.breeding.user.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.common.reflection.XMember;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ChatRoomService {
     // REDIS
@@ -73,9 +76,9 @@ public class ChatRoomService {
     }
 
     // 채팅방 생성
-    public ChatRoomResponseDto createChatRoom(ChatRoomRequestDto requestDto, Long togetherId) {
+    public ChatRoomResponseDto createChatRoom(ChatRoomRequestDto requestDto, Long boardMainId) {
         String username = SecurityUtil.getCurrentUsername();
-        Together together = togetherRepository.findByBoardMainId(togetherId);
+        Together together = togetherRepository.findByBoardMainId(boardMainId);
         User writer = userRepository.findByUsername(username).orElse(null);
         User applicant = userRepository.findByNickname(requestDto.getNickname()).orElseThrow(
                 () -> new IllegalArgumentException("해당 하는 유저를 찾을 수가 없습니다."));
@@ -83,13 +86,17 @@ public class ChatRoomService {
         boolean isExist = false;
         List<ChatRoom> writerChatRoomList = chatRoomRepository.findAllByUserListIsContaining(writer);
         for (ChatRoom chatRoom : writerChatRoomList) {
+            log.warn("{}", chatRoom.getUserList().get(0).getUsername());
+            log.warn("{}", applicant.getUsername());
             isExist = chatRoom.getUserList().contains(applicant);
+            if (isExist) {
+                return null;
+            }
         }
-        if (isExist) {
-            return null;
-        }
+
+
         assert writer != null;
-        ChatRoom chatRoom = new ChatRoom(together, writer, applicant);
+        ChatRoom chatRoom = new ChatRoom(boardMainId, together, writer, applicant);
         chatRoomRepository.save(chatRoom);
 
 
@@ -101,7 +108,9 @@ public class ChatRoomService {
         List<ChatRoomListDto> userChatRoom = new ArrayList<>();
         for (ChatRoom chatRoom : chatRoomRepository.findAllByOrderByCreatedAtDesc()) {
             if (chatRoom.getUserList().contains(user)) {
-                userChatRoom.add(new ChatRoomListDto(chatRoom.getTogetherName().getBoardMain().getId(), chatRoom, chatRoom.getUserList().get(0)));
+                log.info("{}", chatRoom.getId());
+                log.info("{}", chatRoom.getBoarMainId());
+                userChatRoom.add(new ChatRoomListDto(chatRoom.getBoarMainId(), chatRoom, chatRoom.getUserList().get(0)));
             }
         }
         return userChatRoom;

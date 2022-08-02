@@ -3,7 +3,6 @@ package com.finalproject.breeding.chat.controller;
 import com.finalproject.breeding.chat.dto.ChatMessageRequestDto;
 import com.finalproject.breeding.chat.model.ChatRoomMessage;
 import com.finalproject.breeding.chat.service.ChatService;
-import com.finalproject.breeding.chat.service.RedisPublisher;
 import com.finalproject.breeding.user.dto.requestDto.LoginDto;
 import com.finalproject.breeding.user.service.UserService;
 import lombok.Data;
@@ -25,7 +24,7 @@ import java.util.TimeZone;
 @RequiredArgsConstructor
 @CrossOrigin
 public class ChattingController {
-    private final RedisPublisher redisPublisher;
+    //private final RedisPublisher redisPublisher;
     private final UserService userService;
     private final ChatService chatService;
     /**

@@ -9,12 +9,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
     OK(HttpStatus.OK,  200, "true"),
-    OK_BUT_NO_USER(HttpStatus.OK, 200,  "유저를 찾을 수 없습니다"),
-
-
-    //문자열 체크
-    NOT_VALIDCONTENT(HttpStatus.BAD_REQUEST,400,"유효하지 않는 내용입니다."),
-    NOT_VALIDURL(HttpStatus.BAD_REQUEST,400,"유효하지 않는 URL 입니다."),
+    OK_BUT_NO_USER(HttpStatus.OK, 200,  "알 수 없는 에러 : 유저를 찾을 수 없습니다"),
 
     //유저 인증
     NOT_VERIFIED_USER_INFORMATION(HttpStatus.INTERNAL_SERVER_ERROR, 500, "인증되지 않은 회원 정보입니다"),
@@ -27,8 +22,6 @@ public enum ErrorCode {
     SIGNUP_MEMBERID_DUPLICATE_CHECK(HttpStatus.BAD_REQUEST, 400, "아이디 중복확인을 해주세요"),
     SIGNUP_NICKNAME_DUPLICATE_CHECK(HttpStatus.BAD_REQUEST, 400, "닉네임 중복확인을 해주세요"),
     SIGNUP_PHONENUMBER_DUPLICATE_CHECK(HttpStatus.BAD_REQUEST, 400, "이미 등록되어 있는 번호 입니다"),
-    SIGNUP_MAJOR_WRONG_INPUT(HttpStatus.BAD_REQUEST, 400, "분야를 선택해주세요"),
-    SIGNUP_USERID_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "userId가 존재하지 않습니다"),
 
     SIGNUP_MEMBERID_DUPLICATE(HttpStatus.BAD_REQUEST, 400, "해당 아이디가 이미 존재합니다"),
     SIGNUP_MEMBERID_CORRECT(HttpStatus.OK, 200, "사용할 수 있는 아이디입니다"),
@@ -37,8 +30,6 @@ public enum ErrorCode {
 
     // Token
     JWT_TOKEN_WRONG_SIGNATURE(HttpStatus.UNAUTHORIZED, 401, "잘못된 JWT 서명입니다"),
-    JWT_TOKEN_NOT_SUPPORTED(HttpStatus.UNAUTHORIZED, 401, "지원되지 않는 JWT 토큰입니다."),
-    JWT_TOKEN_WRONG_FORM(HttpStatus.UNAUTHORIZED, 401, "JWT 토큰이 잘못되었습니다."),
     JWT_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, 401, "TokenExpiredError"),
 
 
@@ -59,7 +50,6 @@ public enum ErrorCode {
     //기타
     NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT(HttpStatus.INTERNAL_SERVER_ERROR, 998, "Security Context에 인증 정보가 없습니다."),
     NOT_FOUND_USER_INFO(HttpStatus.NOT_FOUND, 404, "해당 유저가 존재하지 않습니다"),
-    PASSWORDS_NOT_MATCH(HttpStatus.NOT_FOUND, 500, "비밀번호가 일치하지 않습니다"),
 
     // 이미지
     WRONG_INPUT_IMAGE(HttpStatus.BAD_REQUEST, 400, "이미지는 반드시 있어야 합니다"),
@@ -71,10 +61,6 @@ public enum ErrorCode {
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "해당 게시물을 찾을 수 없습니다"),
     POST_UPDATE_WRONG_ACCESS(HttpStatus.BAD_REQUEST, 400, "본인의 게시물만 수정할 수 있습니다"),
     POST_DELETE_WRONG_ACCESS(HttpStatus.BAD_REQUEST, 400, "본인의 게시물만 삭제할 수 있습니다"),
-    POST_WRONG_INPUT(HttpStatus.BAD_REQUEST, 400, "비어있는 항목을 채워주세요"),
-    POST_MAJOR_WRONG_INPUT(HttpStatus.BAD_REQUEST, 400, "모집 분야를 선택해주세요"),
-    POST_TITLE_INPUT_LENGTH_ERROR(HttpStatus.BAD_REQUEST, 400, "제목을 공백 포함 20자 이내로 작성해주세요"),
-    POST_CONTENT_INPUT_LENGTH_ERROR(HttpStatus.BAD_REQUEST, 400, "내용을 공백 포함 250자 이내로 작성해주세요"),
     NOT_FOUND_PROVINCE(HttpStatus.NOT_FOUND, 404, "해당 지역이 존재하지 않습니다"),
 
     // comment
@@ -82,25 +68,7 @@ public enum ErrorCode {
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "해당 댓글을 찾을 수 없습니다"),
     COMMENT_UPDATE_WRONG_ACCESS(HttpStatus.BAD_REQUEST, 400, "본인의 댓글만 수정할 수 있습니다"),
     COMMENT_DELETE_WRONG_ACCESS(HttpStatus.BAD_REQUEST, 400, "본인의 댓글만 삭제할 수 있습니다"),
-
     USER_UPDATE_WRONG_ACCESS(HttpStatus.BAD_REQUEST, 400, "본인이 아니면 수정할 수 없습니다"),
-
-    NOT_FOUND_BOARDKIND_INFO(HttpStatus.NOT_FOUND, 404, "해당 카테고리가 존재하지 않습니다"),
-    NOT_FOUND_CATEGORY_INFO(HttpStatus.NOT_FOUND, 404, "해당 카테고리가 존재하지 않습니다"),
-
-    // apply
-    APPLY_WRONG_ERROR(HttpStatus.BAD_REQUEST, 400, "본인의 프로젝트에 지원 신청 할 수 없습니다"),
-    ALREADY_STARTED_ERROR(HttpStatus.BAD_REQUEST, 400, "모집중인 프로젝트가 아닙니다"),
-    ALREADY_APPLY_POST_ERROR(HttpStatus.BAD_REQUEST,400, "이미 지원한 프로젝트입니다"),
-    APPLY_MAJOR_WRONG_INPUT(HttpStatus.BAD_REQUEST,400, "지원할 분야를 선택해주세요"),
-    APPLY_MAJOR_NOT_EXIST(HttpStatus.NOT_FOUND, 404,"해당 분야는 모집하지 않습니다"),
-    APPLY_PEOPLE_SET_CLOSED(HttpStatus.BAD_REQUEST, 400, "해당 분야의 정원이 다 찼습니다"),
-    APPLY_NOT_FOUND(HttpStatus.BAD_REQUEST,404, "해당 지원 정보를 찾을 수 없습니다"),
-    APPLY_OVER_NO_AUTHORITY(HttpStatus.FORBIDDEN,403, "권한이 없습니다"),
-    APPLY_MESSAGE_INPUT_LENGTH_ERROR(HttpStatus.BAD_REQUEST, 400, "지원 메시지는 20자 이내로 작성해주세요"),
-    EXCEED_APPLY_USER_NUMBER(HttpStatus.INTERNAL_SERVER_ERROR,500,"전공 모집인원이 초과되었습니다."),
-
-    NO_DIFFERENCE_STATUS(HttpStatus.FORBIDDEN,403, "Status 변경 사항이 없습니다"),
 
     // mail
     EMAIL_WRONG_PATTERN(HttpStatus.BAD_REQUEST, 400, "이메일 형식을 맞춰주세요"),

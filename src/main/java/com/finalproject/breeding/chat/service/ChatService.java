@@ -24,7 +24,6 @@ import java.util.List;
 public class ChatService {
     // 채팅방에 발행되는 메시지를 처리할 Listener
     // 1:N 방식으로 topic처리 Listener
-    private final RedisMessageListenerContainer redisMessageListener;
     private final ChannelTopic channelTopic;
     private final TokenProvider tokenProvider;
     private final ChatRoomMessageRepository chatRoomMessageRepository;

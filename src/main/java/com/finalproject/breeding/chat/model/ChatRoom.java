@@ -1,16 +1,12 @@
 package com.finalproject.breeding.chat.model;
 
 import com.finalproject.breeding.board.model.Together;
-import com.finalproject.breeding.chat.dto.ChatRoomRequestDto;
 import com.finalproject.breeding.user.User;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +22,12 @@ public class ChatRoom {
     @Id
     private Long id;
 
-    @JoinColumn(name = "ROOM_NAME")
+    @JoinColumn(name = "TOGETHER_ID")
     @OneToOne
     private Together togetherName;
+
+    @JoinColumn(name = "BOARD_MAIN_ID")
+    private Long boarMainId;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "USER_ID")
@@ -77,8 +76,9 @@ public class ChatRoom {
         this.userList.add(applicant);
     }
 */
-    public ChatRoom(Together together, User writer, User applicant) {
+    public ChatRoom(Long boardMain, Together together, User writer, User applicant) {
         this.togetherName = together;
+        this.boarMainId = boardMain;
         this.userList.add(writer);
         this.userList.add(applicant);
         //this.id = roomId;

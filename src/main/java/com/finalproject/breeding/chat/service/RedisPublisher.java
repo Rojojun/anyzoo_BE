@@ -1,3 +1,4 @@
+/*
 package com.finalproject.breeding.chat.service;
 
 import com.finalproject.breeding.chat.model.ChatRoomMessage;
@@ -15,3 +16,4 @@ public class RedisPublisher {
         redisTemplate.convertAndSend(topic.getTopic(), message);
     }
 }
+*/
