@@ -85,14 +85,14 @@ public class ChatRoomService {
         for (ChatRoom chatRoom : writerChatRoomList) {
             isExist = chatRoom.getUserList().contains(applicant);
         }
-
+        if (isExist) {
+            return null;
+        }
         assert writer != null;
         ChatRoom chatRoom = new ChatRoom(together, writer, applicant);
         chatRoomRepository.save(chatRoom);
 
-        if (isExist) {
-            return new ChatRoomResponseDto(chatRoom, writer);
-        }
+
         return new ChatRoomResponseDto(chatRoom, writer);
     }
 
@@ -101,7 +101,7 @@ public class ChatRoomService {
         List<ChatRoomListDto> userChatRoom = new ArrayList<>();
         for (ChatRoom chatRoom : chatRoomRepository.findAllByOrderByCreatedAtDesc()) {
             if (chatRoom.getUserList().contains(user)) {
-                userChatRoom.add(new ChatRoomListDto(chatRoom, chatRoom.getUserList().get(0)));
+                userChatRoom.add(new ChatRoomListDto(chatRoom.getTogetherName().getBoardMain().getId(), chatRoom, chatRoom.getUserList().get(0)));
             }
         }
         return userChatRoom;

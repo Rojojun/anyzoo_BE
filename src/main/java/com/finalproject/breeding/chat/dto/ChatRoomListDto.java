@@ -1,6 +1,5 @@
 package com.finalproject.breeding.chat.dto;
 
-import com.finalproject.breeding.board.model.Together;
 import com.finalproject.breeding.chat.model.ChatRoom;
 import com.finalproject.breeding.user.User;
 import lombok.Getter;
@@ -13,15 +12,15 @@ import java.util.List;
 @Setter
 public class ChatRoomListDto {
     private Long id;
-    private String channel;
+    private Long boardMainid;
     private List<User> memberList;
     private String nickname;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    public ChatRoomListDto(ChatRoom chatRoom, User member) {
+    public ChatRoomListDto(Long boardMain , ChatRoom chatRoom, User member) {
         this.id = chatRoom.getId();
-        // this.channel = together.getTitle();
+        this.boardMainid = boardMain;
         this.memberList = chatRoom.getUserList();
         this.nickname = member.getNickname();
         this.createdAt = chatRoom.getCreatedAt();
