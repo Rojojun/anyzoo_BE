@@ -13,6 +13,9 @@
 ![Untitled (1)](https://user-images.githubusercontent.com/72805486/182786077-cab2fc73-b298-4f7c-8335-ee9caf97f153.png)
 Click here 👉 https://www.erdcloud.com/d/HJ73CvgLYEqHFsTiq
 
+## 🎯 트러블슈팅
+Click here 👉 https://www.notion.so/BE-38f43a80fe71481aabb9cb1ea01ad986
+
 ## 🐹 애니쥬 소개
 ### **나의 반려동물을 자랑하고 일일/주간 랭킹에 도전해보자.**
 ### **반려동물을 키우면서 가지는 꿀팁들을 우리 같이 공유해봐요!**
