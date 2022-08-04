@@ -10,7 +10,7 @@
 ![슬라이드4](https://user-images.githubusercontent.com/72805486/182712927-fdd67e39-67cb-4db0-bb95-5c66b5602d0f.png)
 
 ## ⚙️ ERD
-![Group 1](https://user-images.githubusercontent.com/72805486/182712991-c1666ba0-9ac0-41ce-ad26-855f84e842e5.png)
+![Untitled (1)](https://user-images.githubusercontent.com/72805486/182786077-cab2fc73-b298-4f7c-8335-ee9caf97f153.png)
 Click here 👉 https://www.erdcloud.com/d/HJ73CvgLYEqHFsTiq
 
 ## 🐹 애니쥬 소개
