@@ -11,6 +11,7 @@
 
 ## ⚙️ ERD
 ![Group 1](https://user-images.githubusercontent.com/72805486/182712991-c1666ba0-9ac0-41ce-ad26-855f84e842e5.png)
+Click here 👉 https://www.erdcloud.com/d/HJ73CvgLYEqHFsTiq
 
 ## 🐹 애니쥬 소개
 ### **나의 반려동물을 자랑하고 일일/주간 랭킹에 도전해보자.**
