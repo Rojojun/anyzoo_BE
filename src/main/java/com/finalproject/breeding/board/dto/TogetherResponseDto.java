@@ -45,5 +45,4 @@ public class TogetherResponseDto {
         this.peopleCnt = together.getPeopleCnt();
         this.limitPeople = together.getLimitPeople();
     }
-
 }

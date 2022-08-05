@@ -1,6 +1,5 @@
 package com.finalproject.breeding.board.model;
 
-
 import com.finalproject.breeding.board.dto.PostRequest4EditDto;
 import com.finalproject.breeding.board.dto.PostRequestDto;
 import com.finalproject.breeding.board.model.category.PostNReelsCategory;

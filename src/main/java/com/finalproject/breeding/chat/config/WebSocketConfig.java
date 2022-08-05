@@ -1,6 +1,7 @@
 package com.finalproject.breeding.chat.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -14,6 +15,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     private final StompHandler stompHandler;
 
+    @Autowired
     public WebSocketConfig(StompHandler stompHandler) {
         this.stompHandler = stompHandler;
     }
@@ -30,12 +32,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/chatting") // url/chatting 웹 소켓 연결 주소
-//                .setAllowedOrigins("https://mungfriend.com") // 프론트엔드 HTTPS 서버 주소
-                .setAllowedOriginPatterns("*")
+        registry.addEndpoint("/ws-stomp") // url/chatting 웹 소켓 연결 주소
+                // .setAllowedOrigins("https://mungfriend.com") // 프론트엔드 HTTPS 서버 주소
+                .setAllowedOriginPatterns("*");
                 // 프론트 엔드포인트 : http://mungfriend.s3-website.ap-northeast-2.amazonaws.com
                 // 클라우드 프론트 : https://d3n0oswt21uayp.cloudfront.net
-                .withSockJS(); // sock.js를 통하여 낮은 버전의 브라우저에서도 websocket 이 동작할수 있게 한다
+                //.withSockJS(); // sock.js를 통하여 낮은 버전의 브라우저에서도 websocket 이 동작할수 있게 한다
     }
 
     // StompHandler 인터셉터 설정

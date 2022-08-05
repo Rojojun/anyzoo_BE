@@ -2,6 +2,7 @@ package com.finalproject.breeding.board.model;
 
 import com.finalproject.breeding.board.dto.TogetherRequestDto;
 import com.finalproject.breeding.board.model.category.ProvinceAreas;
+import com.finalproject.breeding.chat.model.ChatRoom;
 import com.finalproject.breeding.image.model.TogetherImage;
 import com.finalproject.breeding.user.User;
 import lombok.Builder;
