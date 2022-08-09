@@ -4,7 +4,7 @@ ABSPATH=$(readlink -f $0)
 ABSDIR=$(dirname $ABSPATH)
 source ${ABSDIR}/profile.sh
 
-REPOSITORY=/home/ubuntu/app/step3
+REPOSITORY=/home/ubuntu/zoo/step3
 PROJECT_NAME=springboot-webservice
 
 RESPONSE_CODE2=$(curl -s -o /dev/null -w "%{http_code}" https://ab.choideveloper.shop/profile)
