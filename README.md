@@ -14,7 +14,7 @@
 Click here 👉 https://www.erdcloud.com/d/HJ73CvgLYEqHFsTiq
 
 ## 🎯 트러블슈팅
-Click here 👉 https://www.notion.so/BE-38f43a80fe71481aabb9cb1ea01ad986
+Click here 👉 https://www.notion.so/Troubleshooting_BE-e7e269c58f314411bd2bf100980d61c6
 
 ## 🐹 애니쥬 소개
 ### **나의 반려동물을 자랑하고 일일/주간 랭킹에 도전해보자.**
